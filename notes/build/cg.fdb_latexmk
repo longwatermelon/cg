@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1683743853 "/home/long/workspace/cg/notes/cg.tex" "build/cg.pdf" "cg" 1683743854 0
-  "/home/long/workspace/cg/notes/cg.tex" 1683743853 4932 97348d77573208c104bd84514accb451 ""
+["pdflatex"] 1683745390 "/home/long/workspace/cg/notes/cg.tex" "build/cg.pdf" "cg" 1683745391 0
+  "/home/long/workspace/cg/notes/cg.tex" 1683745390 5284 6ba4b52eaeb017cbf5380f075e87c3f8 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1680514707 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1680514707 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1680514707 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -30,6 +30,7 @@
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1680514707 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1680514707 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1680514707 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
+  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1680514707 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb" 1680514707 136101 f533469f523533d38317ab5729d00c8a ""
   "/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1680514707 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1680514707 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
@@ -188,10 +189,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1680514707 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1680587401 4489108 b792e88589579c1ee40003d436ebd5cf ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1680587386 8204060 8649dac4506be64545d650fd2b770df4 ""
-  "build/cg.aux" 1683743854 1276 9da23a43846e5ed07b41f013fc686574 "pdflatex"
-  "build/cg.out" 1683743854 786 7884995f3622f83a8181c9d9a75948cf "pdflatex"
-  "build/cg.toc" 1683743854 476 24fda4bffe7ceb261ac4c013b2213061 "pdflatex"
-  "cg.tex" 1683743853 4932 97348d77573208c104bd84514accb451 ""
+  "build/cg.aux" 1683745391 1276 9da23a43846e5ed07b41f013fc686574 "pdflatex"
+  "build/cg.out" 1683745391 786 7884995f3622f83a8181c9d9a75948cf "pdflatex"
+  "build/cg.toc" 1683745391 476 24fda4bffe7ceb261ac4c013b2213061 "pdflatex"
+  "cg.tex" 1683745390 5284 6ba4b52eaeb017cbf5380f075e87c3f8 ""
   "images/cubic-hermite-interpolation.png" 1683739885 63810 1535f709c022783012ece7318adf6e0b ""
   "images/parametric-hermite.png" 1683742144 109783 b691229f046e898fda55bca3f5d56e59 ""
   (generated)
