@@ -507,4 +507,16 @@ The new geometry matrix is then represented as $G \cdot B \cdot
 B_1^{-1}$, which shows that to convert between bezier and b-spline,
 a different set of data is required for the same curve.
 
+\subsection{From curves to surfaces}
+\includegraphics[scale=2]{images/surface-example.png}
+
+Given $u$ changes vertically and $v$ changes horizontally,
+\begin{align*}
+    P(u,v) =& \ (1-u)^3 P_1(v)\\
+    &+ 3u(1-u)^2 P_2(v)\\
+    &+ 3u^2(1-u) P_3(v)\\
+    &+ u^3 P_4(v)
+\end{align*}
+
+
 \end{document}

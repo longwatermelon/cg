@@ -9,3 +9,4 @@
 \contentsline {subsubsection}{\numberline {1.1.6}Orders of continuity}{6}{subsubsection.1.1.6}%
 \contentsline {subsubsection}{\numberline {1.1.7}Cubic B-splines}{6}{subsubsection.1.1.7}%
 \contentsline {subsubsection}{\numberline {1.1.8}Bezier vs B-spline}{6}{subsubsection.1.1.8}%
+\contentsline {subsection}{\numberline {1.2}From curves to surfaces}{7}{subsection.1.2}%

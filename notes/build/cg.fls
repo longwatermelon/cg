@@ -951,6 +951,11 @@ INPUT ./images/bezier-vs-bspline.png
 INPUT images/bezier-vs-bspline.png
 INPUT ./images/bezier-vs-bspline.png
 INPUT ./images/bezier-vs-bspline.png
+INPUT ./images/surface-example.png
+INPUT ./images/surface-example.png
+INPUT images/surface-example.png
+INPUT ./images/surface-example.png
+INPUT ./images/surface-example.png
 INPUT build/cg.aux
 INPUT build/cg.out
 INPUT build/cg.out
