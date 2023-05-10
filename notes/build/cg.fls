@@ -946,6 +946,11 @@ INPUT ./images/parametric-hermite.png
 INPUT ./images/parametric-hermite.png
 INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+INPUT ./images/bezier-vs-bspline.png
+INPUT ./images/bezier-vs-bspline.png
+INPUT images/bezier-vs-bspline.png
+INPUT ./images/bezier-vs-bspline.png
+INPUT ./images/bezier-vs-bspline.png
 INPUT build/cg.aux
 INPUT build/cg.out
 INPUT build/cg.out

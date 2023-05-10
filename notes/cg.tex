@@ -155,40 +155,356 @@ where cubic hermite interpolation can be done for both dimensions.
 
 \subsubsection{Cubic blossom}
 
-The cubic blossom of a function $f(t)$ is $F(t_1,t_2,t_3)$.
+The cubic blossom of a function $\vec f(t)$ is $\vec F(t_1,t_2,t_3)$.
 
 Cubic blossoms have three properties:
 \begin{enumerate}
     \item Symmetric
         \begin{subitemize}
-            \item $F(t_1,t_2,t_3) = F(t_1,t_3,t_2) = F(t_3,t_1,t_2) \cdots$
+            \item $\vec F(t_1,t_2,t_3) = \vec F(t_1,t_3,t_2) = \vec F(t_3,t_1,t_2) \cdots$
         \end{subitemize}
     \item Affine
         \begin{subitemize}
-            \item $F(\alpha u + (1-\alpha)v,t_2,t_3) = \alpha F(u,t_2,t_3) + 
-                 (1-\alpha)F(v,t_2,t_3)$
+            \item $\vec F(\alpha u + (1-\alpha)v,t_2,t_3) = \alpha \vec F(u,t_2,t_3) + 
+                 (1-\alpha)\vec F(v,t_2,t_3)$
+            \item If only one of $\vec F$'s arguments $t_c = \alpha u +
+                (1-\alpha)v$ is changing between different points on $\vec F$,
+                then any value $\vec F(t_c,t_2,t_3)$ in between $\vec F(u,t_2,t_3)$ and
+                $\vec F(v,t_2,t_3)$ is scaled equivalently with $\alpha$ like
+                $t_c$ is scaled between $u$ and $v$.
+                
         \end{subitemize}
     \item Diagonal
         \begin{subitemize}
-            \item $f(t) = F(t,t,t)$
+            \item $\vec f(t) = \vec F(t,t,t)$
         \end{subitemize}
 \end{enumerate}
 
 Blossoming examples
 \begin{itemize}
-    \item $f(t) = t^3 \mapsto F(t_1,t_2,t_3) = t_1t_2t_3$
-    \item $f(t) = t^2 \mapsto F(t_1,t_2,t_3) = (t_1t_2 + 
+    \item $\vec f(t) = t^3 \mapsto \vec F(t_1,t_2,t_3) = t_1t_2t_3$
+    \item $\vec f(t) = t^2 \mapsto \vec F(t_1,t_2,t_3) = (t_1t_2 + 
             t_1t_3 + t_2t_3)/3$
-    \item $f(t) = t \mapsto F(t_1,t_2,t_3) = (t_1 + t_2
+    \item $\vec f(t) = t \mapsto \vec F(t_1,t_2,t_3) = (t_1 + t_2
             + t_3)/3$
-    \item $f(t) = 1 \mapsto F(t_1,t_2,t_3) = 1$
-    \item $f(t) = 3t^3 - t + 1 = 3(t_1t_2t_3) - (t_1 + t_2
+    \item $\vec f(t) = 1 \mapsto \vec F(t_1,t_2,t_3) = 1$
+    \item $\vec f(t) = 3t^3 - t + 1 = 3(t_1t_2t_3) - (t_1 + t_2
             + t_3)/3 + 1$
 \end{itemize}
 
 Cubic curves can be blossomed by blossoming each coordinate function
 separately, which will give a function that maps 3 $t$ variables to
 two dimensions $x$ and $y$: $\vec F(t_1,t_2,t_3): \mathbb R^3
-\mapsto \mathbb R^2$. Some ways to obtain a blossom of a cubic curve:
+\mapsto \mathbb R^2$. A cubic curve can be obtained from a blossom
+by specifying four points $\vec F(0,0,0),\vec F(0,0,1),\vec F(0,1,1)
+,\vec F(1,1,1)$ (which form a cubic control polygon) and subdividing
+the surface given by the selected points (known as the De Castelijau's Algorithm).
+Only these four points are required because of the symmetry property of a blossom.
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \draw[color=red, very thick] (0,0) .. controls (2,4) and (6, 4.5) .. (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+\end{tikzpicture}
+
+Subdividing the polygon:
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+
+    \filldraw[color=red] (1,2) circle (0.1)
+            node[color=black, anchor=east] {$\vec F(0,0,\frac 1 2)$};
+    \filldraw[color=red] (4,4.25) circle (0.1)
+            node[color=black, anchor=south] {$\vec F(0,\frac 1 2,1)$};
+    \filldraw[color=red] (7,2.25) circle (0.1)
+            node[color=black, anchor=west] {$\vec F(\frac 1 2, 1, 1)$};
+
+    \draw[color=blue, very thick] (1,2) -- (4,4.25) -- (7,2.25);
+\end{tikzpicture}
+
+$\vec F$'s arguments at the subdivision points can be determined due to the affine
+property of a blossom.
+
+Further subdivision
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+
+    \filldraw[color=red] (1,2) circle (0.1)
+            node[color=black, anchor=east] {$\vec F(0,0,\frac 1 2)$};
+    \filldraw[color=red] (4,4.25) circle (0.1)
+            node[color=black, anchor=south] {$\vec F(0,\frac 1 2,1)$};
+    \filldraw[color=red] (7,2.25) circle (0.1)
+            node[color=black, anchor=west] {$\vec F(\frac 1 2, 1, 1)$};
+
+    \draw[color=blue, very thick] (1,2) -- (4,4.25) -- (7,2.25);
+
+    \filldraw[color=red] (2.5,3.125) circle (0.1)
+            node[color=black, anchor=north west, scale=.8] {$\vec F(0,\frac 1 2,\frac 1 2)$};
+    \filldraw[color=red] (5.5,3.25) circle (0.1)
+            node[color=black, anchor=north east, scale=.8] {$\vec F(\frac 1 2, 0, \frac 1 2)$};
+\end{tikzpicture}
+
+One more subdivision (most recent two subdivision point values omitted
+because there's no room left)
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+
+    \filldraw[color=red] (1,2) circle (0.1)
+            node[color=black, anchor=east] {$\vec F(0,0,\frac 1 2)$};
+    \filldraw[color=red] (4,4.25) circle (0.1)
+            node[color=black, anchor=south] {$\vec F(0,\frac 1 2,1)$};
+    \filldraw[color=red] (7,2.25) circle (0.1)
+            node[color=black, anchor=west] {$\vec F(\frac 1 2, 1, 1)$};
+
+    \draw[color=blue, very thick] (1,2) -- (4,4.25) -- (7,2.25);
+    \filldraw[color=red] (2.5,3.125) circle (0.1);
+    \filldraw[color=red] (5.5,3.25) circle (0.1);
+    \draw[color=blue, very thick] (2.5,3.125) -- (5.5,3.25);
+    \filldraw[color=red] (4,3.1875) circle (0.1)
+            node[color=black, anchor=north] {$\vec F(\frac 1 2, \frac 1 2
+            , \frac 1 2)$};
+\end{tikzpicture}
+
+The final subdivision point can be shown to equal $\vec f(\frac 1 2)$
+because of the diagonal property of blossoms, meaning the $\vec f$ curve
+will intersect this third subdivision point:
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+
+    \filldraw[color=red] (1,2) circle (0.1)
+            node[color=black, anchor=east] {$\vec F(0,0,\frac 1 2)$};
+    \filldraw[color=red] (4,4.25) circle (0.1)
+            node[color=black, anchor=south] {$\vec F(0,\frac 1 2,1)$};
+    \filldraw[color=red] (7,2.25) circle (0.1)
+            node[color=black, anchor=west] {$\vec F(\frac 1 2, 1, 1)$};
+
+    \draw[color=blue, very thick] (1,2) -- (4,4.25) -- (7,2.25);
+    \filldraw[color=red] (2.5,3.125) circle (0.1);
+    \filldraw[color=red] (5.5,3.25) circle (0.1);
+    \draw[color=blue, very thick] (2.5,3.125) -- (5.5,3.25);
+
+    \filldraw[color=red] (4,3.1875) circle (0.1);
+    \draw[color=red, very thick] (0,0) .. controls (2,4) and (6, 4.5) .. (8,0);
+\end{tikzpicture}
+
+Other values of $\vec f$ can be found with subdividing the cubic control
+polygon on different values. For example, to find $\vec f(\frac 1 4)$,
+each edge would be divided $\frac 1 4$ of the way along it.
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+
+    \filldraw[color=red] (.5,1) circle (0.1);
+    \filldraw[color=red] (3,4.125) circle (0.1);
+    \filldraw[color=red] (6.5,3.375) circle (0.1);
+
+    \draw[color=blue, very thick] (.5,1) -- (3,4.125)
+        node[pos=.25,draw=red,fill=red,shape=circle,
+        minimum size=5pt,inner sep=0pt] (A) {} -- (6.5,3.375)
+        node[pos=.25,draw=red,fill=red,shape=circle,
+        minimum size=5pt,inner sep=0pt] (B) {};
+    \draw[color=blue, very thick] (A) -- (B)
+        node[pos=.25, draw=red,fill=red,shape=circle,
+        minimum size=5pt,inner sep=0pt] {} node[pos=.25,anchor=north west,
+        color=black] {$\vec f(\frac 1 4)$};
+
+    \draw[color=red, very thick] (0,0) .. controls (2,4) and (6, 4.5) .. (8,0);
+\end{tikzpicture}
+
+\subsubsection{Bernstein polynomials}
+
+Another basis that can represent cubic curves. Bernstein basis is
+canonical for Bezier.
+
+\begin{tikzpicture}
+    \draw[color=blue, very thick] (0,0) -- (2,4)
+        -- (6,4.5) -- (8,0);
+    \draw[color=red, very thick] (0,0) .. controls (2,4) and (6, 4.5) .. (8,0);
+    \node[anchor=north] at (0,0) {$\vec F(0,0,0) = \vec f(0)$};
+    \node[anchor=south east] at (2,4) {$\vec F(0,0,1)$};
+    \node[anchor=south west] at (6,4.5) {$\vec F(0,1,1)$};
+    \node[anchor=north west] at (8,0) {$\vec F(1,1,1) = \vec f(1)$};
+\end{tikzpicture}
+
+The red curve above can be represented as $\vec f(t) = \vec F(0,0,0)
+B_0(t) + \vec F(0,0,1)B_1(t) + \vec F(0,1,1)B_2(t) + F(1,1,1)B_3(t)$, 
+knowing
+\begin{align*}
+    B_0(t) &= (1-t)^3 = 1-3t+3t^2-t^3\\
+    B_1(t) &= 3t(1-t)^2 = 3t-6t^2+3t^3\\
+    B_2(t) &= 3t^2(1-t) = 3t^2-3t^3\\
+    B_3(t) &= t^3
+\end{align*}
+
+Changing basis from monomial to Bernstein:
+\[
+    \begin{pmatrix}
+        1 & -3 & 3 & -1\\
+        0 & 3 & -6 & 3\\
+        0 & 0 & 3 & -3\\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+        1\\
+        t\\
+        t^2\\
+        t^3
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        B_0(t)\\
+        B_1(t)\\
+        B_2(t)\\
+        B_3(t)
+    \end{pmatrix}
+\]
+
+And to change from Bernstein to monomial, the inverse of the matrix
+can be used.
+
+\subsubsection{General spline formulation}
+
+$\vec \gamma(t) =$ Geometry $\cdot$ Spline basis $\cdot$ Monomial basis
+\begin{itemize}
+    \item Geometry contains control point coordinates
+    \item Spline basis defines the type of spline (Hermite, Bernstein, etc)
+    \item Monomial basis is a column vector $(1,t,t^2,\cdots,t^n)$
+\end{itemize}
+
+Example of a spline represented in the Bernstein basis:
+\[
+    P(t) =
+    \begin{pmatrix}
+        x(t)\\
+        y(t)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        x_1 & x_2 & x_3 & x_4\\
+        y_1 & y_2 & y_3 & y_4
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & -3 & 3 & -1\\
+        0 & 3 & -6 & 3\\
+        0 & 0 & 3 & -3\\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+        1\\
+        t\\
+        t^2\\
+        t^3
+    \end{pmatrix}
+\]
+
+\subsubsection{Orders of continuity}
+
+$C^0$ = continuous (seam can be sharp)
+
+$G^1$ = geometric continuity (Tangent vectors align at the seam)
+
+$C^1$ = parametric continuity (Same velocity at the seam)
+
+$C^2$ = curvature continuity (Tangents and tangent derivatives are the same)
+
+\subsubsection{Cubic B-splines}
+
+$\ge$ 4 control points
+
+Chain together splines in fours, popping the back control point off and
+pushing the next control point on
+
+\begin{tikzpicture}
+    \draw[color=red,very thick] (0,0) .. controls (1, 1) and (2.5, -.5)
+        .. (3, 0) .. controls (4.2,3) and (5.5,2) .. (6,1);
+    \filldraw (0,0) circle (.1) node[anchor=east] {$P_0$};
+    \filldraw (1,1) circle (.1) node[anchor=south] {$P_1$};
+    \filldraw (2.5,-.5) circle (.1) node[anchor=north] {$P_2$};
+    \filldraw (3,0) circle (.1) node[anchor=west] {$P_3$};
+    \filldraw (4.2,3) circle (.1) node[anchor=south] {$P_4$};
+    \filldraw (5.5,2) circle (.1) node[anchor=south] {$P_5$};
+    \filldraw (6,1) circle (.1) node[anchor=west] {$P_6$};
+\end{tikzpicture}
+
+The full curve is composed of many smaller splines, in which the
+$n$th spline is formed by points $P_{n..n+3}$. The benefit of this
+method is that it guarantees $C^1$ continuity since every spline shares
+three control points with the one that comes before and after it.
+
+The end points won't connect with this method, but repeating endpoints
+will fix it.
+
+The basis functions as well as the basis conversion matrix
+for cubic b-spline are listed here:
+\begin{align*}
+    B_1(t) &= \frac 1 6 (1-t)^3\\
+    B_2(t) &= \frac 1 6 (3t^3-6t^2+4)\\
+    B_3(t) &= \frac 1 6 (-3t^3+3t^2+3t+1)\\
+    B_4(t) &= \frac 1 6 t^3
+\end{align*}
+\[
+    B_{B-spline} =
+    \frac 1 6
+    \begin{pmatrix}
+        1 & -3 & 3 & -1\\
+        4 & 0 & -6 & 3\\
+        1 & 3 & 3 & -3\\
+        0 & 0 & 0 & 1
+    \end{pmatrix}
+\]
+
+\subsubsection{Bezier vs B-spline}
+
+\includegraphics[scale=.5]{images/bezier-vs-bspline.png}
+
+Bezier is derived from Bernstein polynomials, while B-spline uses a
+different set of basis functions. Additionally, Bezier will try
+to intersect with control points and only guarantees $C^1$ continuity,
+while B-spline does not and guarantees $C^2$ continuity.
+
+Converting between bezier and b-spline, given $G$ = geometry,
+$B_0$ = current basis matrix, $T(t)$ = monomial basis, and $B_1$ =
+the basis matrix to convert to:
+\begin{align*}
+    \vec \gamma(t) &= G \cdot B_0 \cdot T(t)\\
+    &= G \cdot B_0 \cdot B_1^{-1} \cdot B_1 \cdot T(t)\\
+    &= (G \cdot B_0 \cdot B_1^{-1}) \cdot B_1 \cdot T(t)
+\end{align*}
+
+The new geometry matrix is then represented as $G \cdot B \cdot
+B_1^{-1}$, which shows that to convert between bezier and b-spline,
+a different set of data is required for the same curve.
 
 \end{document}
