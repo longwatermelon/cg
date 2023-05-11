@@ -5,7 +5,7 @@ LDFLAGS=-L../lib/ -lcurves -lSDL2
 
 .PHONY: libcurve
 
-all: splines
+all: surface
 
 %: demo/%.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -I. $^ $(LDFLAGS)

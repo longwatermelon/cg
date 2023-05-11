@@ -708,6 +708,41 @@ $\bm p_0$ using $T'_1$ and $T'_2$. $\bm p'_0$ can be determined using
 $\bm p'_0 = w_{01}\bm p'_{01} + w_{02}\bm p'_{02} = 0.5\bm p'_{01} + 0.5
 \bm p'_{02}$.
 
-\subsection{Particle systems}
+\section{Raytracing}
+
+\subsection{Geometry representation}
+
+A ray is represented as $\bm p(t) = \bm o + \bm d t$, $\bm o$
+being the ray origin and $\bm d$ being the ray direction. All
+solutions for $t$ under section 2.1 refer
+to the $t$ parameter for $\bm p(t)$.
+
+\subsubsection{Sphere}
+
+Implicit equation: $H(\bm P) = \bm P \cdot \bm P - r^2 = 0$
+
+Intersection detection ($\bm c_o$ is origin, $\bm R_d$ is
+normalized ray direction, $\bm c_s$ is sphere center, $r$ is
+sphere radius)
+\begin{gather*}
+    \bm c_{\Delta} = \bm c_s - \bm c_o\\
+    a = \bm R_d \cdot \bm R_d\\
+    b = 2(\bm c_{\Delta} \cdot \bm R_d)\\
+    c = \bm c_{\Delta} \cdot \bm c_{\Delta} - r^2\\
+    d = b^2 - 4ac\\
+    t = \frac{b \pm \sqrt{d}}{2a}
+\end{gather*}
+
+If $d < 0$, there is no intersection. If both solutions for $t$
+are negative, there is no intersection.
+If only one solution for $t$ is positive, that is where the
+intersection occurs. If both solutions for $t$ are positive,
+the intersection occurs at the closest $t$.
+
+\subsubsection{Triangle}
+
+Any point $\bm P$ on a triangle $(\bm a,\bm b,\bm c)$ can be represented as $\bm P(
+\alpha,\beta,\gamma) = \alpha \bm a + \beta \bm b + \gamma \bm
+c$, with $\alpha + \beta + \gamma = 1$.
 
 \end{document}

@@ -22,4 +22,7 @@
 \contentsline {subsubsection}{\numberline {1.4.1}SSD}{9}{subsubsection.1.4.1}%
 \contentsline {subsubsection}{\numberline {1.4.2}Vertex weights}{9}{subsubsection.1.4.2}%
 \contentsline {subsubsection}{\numberline {1.4.3}Linear blend skinning}{9}{subsubsection.1.4.3}%
-\contentsline {subsection}{\numberline {1.5}Particle systems}{10}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Raytracing}{10}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Geometry representation}{10}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Sphere}{10}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Triangle}{10}{subsubsection.2.1.2}%
