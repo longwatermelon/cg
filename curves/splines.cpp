@@ -6,6 +6,12 @@
 #include <array>
 #include <vector>
 
+enum class SplineType
+{
+    BSPLINE,
+    BEZIER
+};
+
 glm::vec2 bspline_p_t(float t, const std::vector<glm::vec2> &control, int n)
 {
     std::array<float, 4> basis_fns = {
@@ -21,14 +27,32 @@ glm::vec2 bspline_p_t(float t, const std::vector<glm::vec2> &control, int n)
     return p;
 }
 
-void draw_bspline(SDL_Renderer *rend, const std::vector<glm::vec2> &control)
+glm::vec2 bernstein_p_t(float t, const std::vector<glm::vec2> &control, int n)
 {
-    for (int n = 0; n <= control.size() - 4; ++n)
+    std::array<float, 4> basis_fns = {
+        std::pow(1.f - t, 3.f),
+        3.f * t * std::pow(1.f - t, 2.f),
+        3.f * t * t * (1.f - t),
+        std::pow(t, 3.f)
+    };
+
+    glm::vec2 p(0.f);
+    for (int i = 0; i < 4; ++i)
+        p += control[n + i] * basis_fns[i];
+    return p;
+}
+
+void draw_bspline(SDL_Renderer *rend, const std::vector<glm::vec2> &control, SplineType type)
+{
+    auto fn = type == SplineType::BSPLINE ? bspline_p_t : bernstein_p_t;
+    int inc = type == SplineType::BSPLINE ? 1 : 3;
+
+    for (size_t n = 0; n <= control.size() - 4; n += inc)
     {
-        glm::vec2 prev = bspline_p_t(0.f, control, n);
+        glm::vec2 prev = fn(0.f, control, n);
         for (float t = .001f; t <= 1.f; t += .001f)
         {
-            glm::vec2 p = bspline_p_t(t, control, n);
+            glm::vec2 p = fn(t, control, n);
             SDL_RenderDrawLineF(rend, prev.x, prev.y, p.x, p.y);
             prev = p;
         }
@@ -38,7 +62,7 @@ void draw_bspline(SDL_Renderer *rend, const std::vector<glm::vec2> &control)
 int main(int argc, char **argv)
 {
     SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window *win = SDL_CreateWindow("B-spline",
+    SDL_Window *win = SDL_CreateWindow("B-spline / Bezier (space to switch)",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         600, 600, SDL_WINDOW_SHOWN);
     SDL_Renderer *rend = SDL_CreateRenderer(win, -1,
@@ -57,8 +81,11 @@ int main(int argc, char **argv)
         { 450.f, 420.f },
         { 500.f, 440.f },
         { 530.f, 380.f },
-        { 530.f, 380.f }
+        { 490.f, 300.f },
+        { 490.f, 300.f }
     };
+
+    SplineType sptype = SplineType::BSPLINE;
 
     while (running)
     {
@@ -66,6 +93,10 @@ int main(int argc, char **argv)
         {
             if (evt.type == SDL_QUIT)
                 running = false;
+            if (evt.type == SDL_KEYDOWN)
+                if (evt.key.keysym.sym == SDLK_SPACE)
+                    sptype = sptype == SplineType::BSPLINE ?
+                        SplineType::BEZIER : SplineType::BSPLINE;
         }
 
         SDL_RenderClear(rend);
@@ -78,7 +109,7 @@ int main(int argc, char **argv)
         }
 
         SDL_SetRenderDrawColor(rend, 255, 255, 255, 255);
-        draw_bspline(rend, control);
+        draw_bspline(rend, control, sptype);
 
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderPresent(rend);
