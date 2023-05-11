@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{amsmath}
+\usepackage{bm}
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{indentfirst}
@@ -507,7 +508,9 @@ The new geometry matrix is then represented as $G \cdot B \cdot
 B_1^{-1}$, which shows that to convert between bezier and b-spline,
 a different set of data is required for the same curve.
 
-\subsection{From curves to surfaces}
+\subsection{2D Surfaces}
+
+\subsubsection{Bicubic Bezier surfaces}
 \includegraphics[scale=2]{images/surface-example.png}
 
 Given $u$ changes vertically and $v$ changes horizontally,
@@ -518,5 +521,193 @@ Given $u$ changes vertically and $v$ changes horizontally,
     &+ u^3 P_4(v)
 \end{align*}
 
+For any constant $u$ for $0 \le u \le 1$ there is a bezier curve
+as a function of $v$ for $0 \le v \le 1$ at that $u$, and vice
+versa.
+
+\includegraphics[scale=2]{images/bicubic-bezier-surface.png}
+\begin{align*}
+    P(u,v) &= \sum_{i=1}^4 B_i(u) P_i(v)\\
+    P_i(v) &= \sum_{j=1}^4 B_j(v) P_{i,j}
+\end{align*}
+
+Which can be compactly expressed as:
+\begin{align*}
+    P(u,v) &= \sum_{i=1}^4 B_i(u) \left[ \sum_{j=1}^4 P_{i,j} B_j(v) \right]\\
+           &= \sum_{i=1}^4 \sum_{j=1}^4 P_{i,j} B_{i,j}(u,v)
+\end{align*}
+
+where $B_{i,j}(u,v) = B_i(u)B_j(v)$.
+
+\subsubsection{Tangents and Normals for patches}
+
+The partial derivatives $\partial P/\partial u$ and
+$\partial P/\partial v$ are tangent vectors.
+
+Normal vector is equal to the cross product of the tangent vectors:
+\[ \vec N = \frac{\partial P}{\partial u} \times \frac{\partial P}
+{\partial v} \]
+
+$\vec N$ is typically not unit, so it needs to be normalized
+
+\subsubsection{Matrix notation for patches}
+\[
+    P(u,v) =
+    \begin{pmatrix}
+        B_1(u) & \cdots & B_4(u)
+    \end{pmatrix}
+    \begin{pmatrix}
+        P_{1,1} & \cdots & P_{1,4}\\
+        \vdots & \ddots & \vdots\\
+        P_{4,1} & \cdots & P_{4,4}
+    \end{pmatrix}
+    \begin{pmatrix}
+        B_1(v)\\
+        \vdots\\
+        B_4(v)
+    \end{pmatrix}
+\]
+
+\subsubsection{Implicit surfaces}
+
+$f(x,y,z) = 0$ is on the surface
+
+$f(x,y,z) < 0$ is inside the surface
+
+$f(x,y,z) > 0$ is outside the surface
+
+\subsection{Hierarchical modeling}
+
+\subsubsection{Forward kinematics}
+
+Specifies base position and joint angles. To compute the final position
+and orientation of a joint in world coordinates, the motion of all its
+ancestor joints must be computed as well.
+
+Given values for joint dof (degree of freedom) $\vec \theta = [\theta_1,\theta_2,
+\cdots,\theta_n]^T$, compute the end effector in world space $\vec{\bm e} =
+[\bm e_1,\bm e_2,\cdots,\bm e_m]^T$.
+
+$\vec{\bm e} = F(\bm \theta)$
+
+\includegraphics[scale=2]{images/arm.png}
+
+In the diagram above, $P$ in world coordinates can be calculated with
+$P_{world} = M_{01}M_{12}M_{23}P_{local}$, or $T(0,6)R(-45)T(5,0)R(50)
+T(4,0)R(30)P_{local}P_{local}$, $T$ being a transformation matrix and $R$
+being a rotation matrix.
+
+\subsubsection{Inverse kinematics}
+
+Forward kinematics has some issues such as determining what orientation
+the arm should be in to interact with other objects, which is what
+inverse kinematics aims to solve.
+
+In forward kinematics, $(\bm e_1,\bm e_2) = F(\theta_1,\theta_2,\theta_3)$;
+however, in inverse kinematics, $(\theta_1,\theta_2,\theta_3) = G(\bm e_1,
+\bm e_2)$.
+
+Inverse kinematics is difficult because sometimes there is no solution / multiple
+solutions to a problem. Typically it can't be analytically solved and requires numerical methods.
+\begin{itemize}
+    \item Jacobian iterative method
+    \item Optimization based methods
+\end{itemize}
+
+Given position of a point in local coordinates $\bm v_s$ and desired
+position in world coordinates $\bm v_w$, find skeleton parameters
+$\bm p$.
+\[ \bm v_w = S(\bm p)\bm v_s = S(x_h,y_h,z_h,\theta_h,\phi_h,\sigma_h,
+\theta_t,\phi_t,\sigma_t,\theta_c,\theta_f,\phi_f) \bm v_s \]
+
+\subsubsection{Jacobian}
+
+$\bm e = F(\bm \theta)$ where $\bm e$ is known and $\bm \theta$
+is to be solved for.
+
+The Jacobian is the matrix of partial derivatives
+of $\bm F$: $J = \dif F/\dif \bm \theta$
+
+For $\bm F = [\bm F_1,\bm F_2,\cdots,\bm F_m]^T$ and $\bm \theta
+= [\theta_1,\theta_2,\cdots,\theta_n]^T$:
+\[
+    J =
+    \begin{bmatrix}
+        \frac{\partial \bm F_1}{\partial \theta_1} & \cdots & \frac{\partial F_1}{\partial \theta_n}\\
+        \vdots & \ddots & \vdots\\
+        \frac{\partial F_m}{\partial \theta_1} & \cdots & \frac{\partial F_m}{\partial \theta_n}
+    \end{bmatrix}
+\]
+
+\subsection{Skinning}
+
+\subsubsection{SSD}
+
+Skin is made up of vertices, some of which are attached
+to a single bone, while others are attached to multiple.
+
+Example
+
+\includegraphics[scale=.4]{images/skinning-vertices.png}
+
+\subsubsection{Vertex weights}
+
+Weight $w_{ij}$ is assigned for each vertex $\bm p_i$ for each
+bone $\bm b_j$. ("How much will vertex $i$ move with bone $j$?")
+
+$w_{ij} = 1$ means $\bm p_i$ is rigidly attached to bone $\bm b_j$.
+Weights should not be negative, and the sum of weights across
+all bones for each vertex should equal 1.
+
+The number of bones that can influence a single vertex is typically
+limited to $N = 4$ bones/vertex.
+
+\subsubsection{Linear blend skinning}
+
+First transform each vertex $\bm p_i$ with each bone as if it were
+tied to it rigidly, and then blend the results using weights.
+
+Given $\bm p'_{ij}$ is vertex $i$ transformed by bone $j$, $T_j$ is
+the current transformation of bone $j$, and $\bm p'_i$ is the new
+position of vertex $i$:
+\begin{align*}
+    \bm p'_{ij} &= T_j \bm p_i\\
+    \bm p'_i &= \sum_j w_{ij} \bm p'_{ij}
+\end{align*}
+
+Example
+
+\begin{tikzpicture}
+    \draw (0,0) rectangle (4,2);
+    \draw (4,0) rectangle (8,2);
+    \node at (2,1) {Bone 1 $T_1$};
+    \node at (6,1) {Bone 2 $T_2$};
+    \filldraw[draw=black,fill=red] (4,0) circle (.1) node[anchor=north]
+    {$\bm p_0$};
+    \filldraw[draw=black,fill=yellow] (4,1) circle (.1);
+
+    \node at (4,-1.5) {$\downarrow$};
+
+    \draw[rotate around={-30:(4,-5)}] (4,-6) rectangle (0,-4);
+    \draw[rotate around={30:(4,-5)}] (4,-6) rectangle (8,-4);
+    \node[rotate around={-30:(4,-5)}] at (-0.8,-5.3) {Bone 1 $T'_1$};
+    \node[rotate around={30:(4,-5)}] at (7.8,-1.3) {Bone 2 $T'_2$};
+    \filldraw[draw=black,fill=yellow] (4,-5) circle (.1);
+
+    \filldraw[draw=black,fill=red,rotate around={-30:(4,-5)}] (4,-6)
+        circle (.1) node[anchor=north] (A) {$\bm p'_{01}$};
+    \filldraw[draw=black,fill=red,rotate around={30:(4,-5)}] (4,-6)
+        circle (.1) node[anchor=north] (B) {$\bm p'_{02}$};
+    \filldraw[draw=black,fill=red] (4,-6) circle(.1) node[anchor=north]
+        (C) {$\bm p'_0$};
+\end{tikzpicture}
+
+Vertex $\bm p_0$ has weights $w_{01} = 0.5$ and $w_{02} = 0.5$. Points
+$\bm p'_{01}$ and $\bm p'_{02}$ are generated by transforming point
+$\bm p_0$ using $T'_1$ and $T'_2$. $\bm p'_0$ can be determined using
+$\bm p'_0 = w_{01}\bm p'_{01} + w_{02}\bm p'_{02} = 0.5\bm p'_{01} + 0.5
+\bm p'_{02}$.
+
+\subsection{Particle systems}
 
 \end{document}

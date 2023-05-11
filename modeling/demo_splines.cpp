@@ -22,7 +22,8 @@ int main(int argc, char **argv)
     SDL_Event evt;
 
     std::vector<glm::vec2> control = {
-        { 100.f, 300.f },
+        { 110.f, 200.f },
+        { 110.f, 200.f },
         { 100.f, 300.f },
         { 200.f, 350.f },
         { 250.f, 250.f },
