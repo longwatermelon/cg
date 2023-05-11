@@ -1,7 +1,7 @@
 CXX=g++
-CXXFLAGS=-std=c++17 -O2 -ggdb -Wall
+CXXFLAGS=-std=c++17 -ggdb -Wall
 INC=
-LDFLAGS=-L../lib/ -lcurves -lSDL2
+LDFLAGS=-L../lib/ -lcurves -lanimation -lSDL2
 
 .PHONY: %
 
