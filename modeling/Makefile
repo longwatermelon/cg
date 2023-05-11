@@ -7,8 +7,8 @@ LDFLAGS=-L../lib/ -lcurves -lSDL2
 
 all: splines
 
-%: demo_%.cpp
-	$(CXX) $(CXXFLAGS) $(INC) $^ $(LDFLAGS)
+%: demo/%.cpp
+	$(CXX) $(CXXFLAGS) $(INC) -I. $^ $(LDFLAGS)
 
 libcurve:
 	$(CXX) $(CXXFLAGS) $(INC) -c curves.cpp
