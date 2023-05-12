@@ -712,23 +712,40 @@ $\bm p'_0 = w_{01}\bm p'_{01} + w_{02}\bm p'_{02} = 0.5\bm p'_{01} + 0.5
 
 \subsection{Geometry representation}
 
-A ray is represented as $\bm p(t) = \bm o + \bm d t$, $\bm o$
-being the ray origin and $\bm d$ being the ray direction. All
+A ray is represented as $\bm p(t) = \bm R_o + \bm R_d t$, $\bm R_o$
+being the ray origin and $\bm R_d$ being the ray direction. All
 solutions for $t$ under section 2.1 refer
 to the $t$ parameter for $\bm p(t)$.
+
+Implicit equations $H(\bm P)$ are boolean functions.
+For example, given the implicit equation $H(\bm P) = \bm a \cdot \bm P = 0$,
+$H(\bm P)$ returns $\bm a \cdot \bm P \le 0$.
+
+For the computation of intersections with any object, the object should be
+assumed to be at the origin, with the ray being transformed by the inverse
+of the object transformation matrix, as well as the ray direction.
+For point transformation, use $w = 1$, and direction transformation
+$w = 0$ because direction transformation doesn't include translation.
+
+If ray direction is normalized, $t_{ws} \ne t_{os}$.
+and must be rescaled after the intersection. If ray direction is not normalized,
+$t_{ws} = t_{os}$, which is why it's preferred to not normalize
+transformed ray direction.
+
+\includegraphics[scale=.5]{images/raytrace-world-to-object.png}
+
+To transform object normals properly, use $\bm n_{ws} = (M^{-1})^T \bm
+n_{os}$.
 
 \subsubsection{Sphere}
 
 Implicit equation: $H(\bm P) = \bm P \cdot \bm P - r^2 = 0$
 
-Intersection detection ($\bm c_o$ is origin, $\bm R_d$ is
-normalized ray direction, $\bm c_s$ is sphere center, $r$ is
-sphere radius)
+Intersection detection ($r$ is sphere radius)
 \begin{gather*}
-    \bm c_{\Delta} = \bm c_s - \bm c_o\\
     a = \bm R_d \cdot \bm R_d\\
-    b = 2(\bm c_{\Delta} \cdot \bm R_d)\\
-    c = \bm c_{\Delta} \cdot \bm c_{\Delta} - r^2\\
+    b = 2(-\bm R_o \cdot \bm R_d)\\
+    c = \bm R_o \cdot \bm R_o - r^2\\
     d = b^2 - 4ac\\
     t = \frac{b \pm \sqrt{d}}{2a}
 \end{gather*}
@@ -739,10 +756,216 @@ If only one solution for $t$ is positive, that is where the
 intersection occurs. If both solutions for $t$ are positive,
 the intersection occurs at the closest $t$.
 
+\subsubsection{Infinite plane}
+
+Implicit equation: $H(\bm P) = \bm n \cdot \bm P + D = 0$, with $\bm n$
+= plane normal, $D = -(\bm n \cdot \bm P_0)$, $\bm P_0$ = some point on
+the plane.
+
+If there is an intersection, $\bm n \cdot \bm P + D$ gives the distance from
+$\bm P$ to $\bm P_0$.
+
 \subsubsection{Triangle}
 
 Any point $\bm P$ on a triangle $(\bm a,\bm b,\bm c)$ can be represented as $\bm P(
 \alpha,\beta,\gamma) = \alpha \bm a + \beta \bm b + \gamma \bm
 c$, with $\alpha + \beta + \gamma = 1$.
+
+If $\alpha$, $\beta$, $\gamma$ $\ge 0$ then the barycentric coordinates are inside
+the triangle.
+
+\textbf{Computation of $\alpha$, $\beta$, $\gamma$ - geometric approach} ($A$ = area
+of entire triangle, $A_x$ = area of subsection of triangle opposite to
+triangle vertex $\bm x$, $\bm P$ = random point on triangle)
+
+\begin{tikzpicture}
+    \filldraw[fill=white!80!blue,very thick] (0,0) node[anchor=north east]
+        {$\bm a$} -- (2,2) node[anchor=south] {$\bm b$} -- (3.5,-1)
+        node[anchor=north west] {$\bm c$} -- (0,0);
+    \filldraw[fill=white!60!blue,very thick] (0,0) -- (2,2) -- (1.833,0.333)
+        -- (0,0);
+    \filldraw[fill=red,draw=black] (1.833,0.333) circle (.1) node[anchor=north west]
+        {$\bm P$};
+    \node at (1.5,1) {$A_c$};
+\end{tikzpicture}
+
+\begin{align*}
+    \alpha &= \frac{A_a}{A}\\
+    \beta &= \frac{A_b}{A}\\
+    \gamma &= \frac{A_c}{A}
+\end{align*}
+
+\textbf{Computation of $\alpha$, $\beta$, $\gamma$ - algebraic approach}
+
+Since $\alpha$, $\beta$, and $\gamma$ sum to 1, $\alpha = 1 - \beta - \gamma$,
+allowing for $\bm P(\alpha,\beta,\gamma)$ to be written as $\bm P(\beta,
+\gamma) = (1-\beta-\gamma)\bm a + \beta \bm b + \gamma \bm c$, or
+$\bm P(\beta,\gamma) = \bm a + \beta (\bm b - \bm a) + \gamma (\bm c
+- \bm a)$. To simplify, $\bm P(\beta,\gamma)$ can also be written as
+$\bm a + \beta \vec e_1 + \gamma \vec e_2$, where $\vec e$ is an edge vector.
+\begin{gather*}
+    \bm P = \bm a + \beta \vec e_1 + \gamma \vec e_2\\
+    \vec e_1 \cdot (\bm P - \bm a) = \vec e_1 \cdot (\beta \vec e_1 + \gamma \vec e_2)\\
+    \vec e_2 \cdot (\bm P - \bm a) = \vec e_2 \cdot (\beta \vec e_1 + \gamma \vec e_2)\\
+    \begin{pmatrix}
+        \vec e_1 \cdot (\bm P - \bm a)\\
+        \vec e_2 \cdot (\bm P - \bm a)
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \vec e_1 \cdot \vec e_1 & \vec e_1 \cdot \vec e_2\\
+        \vec e_2 \cdot \vec e_1 & \vec e_2 \cdot \vec e_2
+    \end{pmatrix}
+    \begin{pmatrix}
+        \beta\\
+        \gamma
+    \end{pmatrix}
+\end{gather*}
+
+Intersection with barycentric triangle - set ray equal to barycentric equation
+\begin{gather*}
+    \bm P(t) = \bm P(\beta,\gamma)\\
+    \bm R_0 + t \bm R_d = \bm a + \beta (\bm b - \bm a) + \gamma
+    (\bm c - \bm a)
+\end{gather*}
+
+Intersection if $\beta + \gamma \le 1$, $\beta \ge 0$, $\gamma \ge 0$
+
+Separate equation into x, y, z components and turn it into matrix
+form:
+\[
+    \begin{pmatrix}
+        \bm a_x - \bm R_{ox}\\
+        \bm a_y - \bm R_{oy}\\
+        \bm a_z - \bm R_{oz}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        \bm a_x - \bm b_x & \bm a_x - \bm c_x & \bm R_{dx}\\
+        \bm a_y - \bm b_y & \bm a_y - \bm c_y & \bm R_{dy}\\
+        \bm a_z - \bm b_z & \bm a_z - \bm c_z & \bm R_{dz}
+    \end{pmatrix}
+    \begin{pmatrix}
+        \beta\\
+        \gamma\\
+        t
+    \end{pmatrix}
+\]
+
+Cramer's rule can be used to solve for one variable at a time:
+\begin{gather*}
+    A = \begin{pmatrix}
+         a_x -  b_x &  a_x -  c_x &  R_{dx}\\
+         a_y -  b_y &  a_y -  c_y &  R_{dy}\\
+         a_z -  b_z &  a_z -  c_z &  R_{dz}
+    \end{pmatrix}\\
+    \beta = \frac{
+        \begin{vmatrix}
+            a_x - R_{ox} & a_x - c_x & R_{dx}\\
+            a_y - R_{oy} & a_y - c_y & R_{dy}\\
+            a_z - R_{oz} & a_z - c_z & R_{dz}
+        \end{vmatrix}
+    }{|A|}\\
+    \gamma = \frac{
+        \begin{vmatrix}
+            a_x - b_x & a_x - R_{ox} & R_{dx}\\
+            a_y - b_y & a_y - R_{oy} & R_{dy}\\
+            a_z - b_z & a_z - R_{oz} & R_{dz}
+        \end{vmatrix}
+    }{|A|}\\
+    t = \frac{
+        \begin{vmatrix}
+            a_x - b_x & a_x - c_x & a_x - R_{ox}\\
+            a_y - b_y & a_y - c_y & a_y - R_{oy}\\
+            a_z - b_z & a_z - c_z & a_z - R_{oz}
+        \end{vmatrix}
+    }{|A|}
+\end{gather*}
+
+\subsection{Fundamentals}
+\subsubsection{Raycasting}
+
+Raycasting is the process of casting a ray for every pixel on the
+screen, which means $\bm R_d$ needs to be determined for each pixel.
+
+With $z$ = distance from ray origin to screen, $f$ = fov, $p_x$ and
+$p_y$ = pixel x and y, $w$ and $h$ = screen width and height:
+
+\begin{tikzpicture}
+    \filldraw (0,0) circle (.1) node[anchor=north west] {$\bm R_o$};
+    \draw[very thick,color=gray] (0,0) -- (-2,4);
+    \draw[very thick,color=gray] (0,0) -- (2,4);
+    \draw[very thick] (-2,4) -- (2,4) node[anchor=south,pos=.5]
+        {Screen};
+    \draw[very thick] (0,0) -- (0,4) node[anchor=west,pos=.7]
+        {$z$};
+    \draw[-latex] (0,0) -- (-.5,4) node[anchor=east,pos=.7] {$\bm R_d$};
+\end{tikzpicture}
+
+With $\theta$ = x angle, $\phi$ = y angle:
+\begin{gather*}
+    \theta = \frac{x}{w} f - \frac{f}{2}\\
+    \phi = \frac{y}{h} f - \frac{f}{2}\\
+    p_x = \sin(\theta)\\
+    p_y = \sin(\phi)\\
+    \bm R_d = [p_x,p_y,1,0]^T
+\end{gather*}
+
+\subsubsection{Shadows}
+
+Shadows can be implemented by casting a ray from the original ray
+intersection point towards each light, and determining if they contribute
+to the light at that point.
+
+Rays will often self-intersect when checking for shadows on the surface
+they start off of, which is why the new $\bm R_o$ should be equal
+to $\bm R_{hit} + \epsilon \bm n$, with $\bm R_{hit}$ = ray object
+intersection point, $\bm n$ = object surface normal, $\epsilon$ =
+some small value (ex. 0.001), depending on how large objects typically
+are.
+
+For light sources that have area, cast multiple rays to different spots
+on the light source and take the fraction of the rays that hit the light.
+
+\includegraphics{images/epsilon-vs-no-epsilon.jpeg}
+
+\subsubsection{Reflection}
+
+\includegraphics[scale=2]{images/reflection.png}
+
+For reflection, the result ray $\bm R$ is expressed as
+$\bm R = \bm V - 2(\bm V \cdot \bm N) \bm N$.
+
+Amount of reflection in traditional raytracing is determined by some
+constant $k_s$ which gave the final pixel color as $c_p = k_sc_m
++ (1-k_s)c_r$, with $c_p$ = final pixel color, $c_m$ = material color,
+$c_r$ = color the reflected ray returns.
+
+Fresnel discovered that reflections at a grazing angle reflected more,
+and Schlick approximated $R(\theta) = R_0 + (1-R_0)(1-\cos(\theta))^5$,
+with $R(\theta)$ = reflectiveness, $R_0$ = base reflectiveness.
+
+Ideally a raytracer should cast multiple rays with slight variation in
+the same general direction and take the average of their resulting colors
+when reflecting to render a more realistic surface.
+
+\subsubsection{Refraction}
+
+\includegraphics[scale=.5]{images/refraction.png}
+
+Snell-Descartes law states $n_i \sin(\theta_i) = n_T \sin(\theta_T)$
+\[ \frac{\sin(\theta_T)}{\sin(\theta_i)} = \frac{n_i}{n_T} = n_r \]
+
+$n_r$ is called the relative index of refraction
+
+The vector $\bm T$ can be calculated using $\bm T = \left(n_r(\bm N \cdot
+\bm I) - \sqrt{1 - n_r^2(1-(\bm N \cdot \bm I)^2)}\right) \bm N - n_r \bm I$
+
+Similar to reflection, refraction should use the same technique of
+average of multiple rays to render more realistic surfaces.
+
+\subsection{Optimization}
+
+\subsubsection{Conservative bounding volume}
 
 \end{document}
