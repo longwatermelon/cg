@@ -4,9 +4,8 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
-void render(SDL_Renderer *rend, animation::Joint *shoulder)
+void render_fk(SDL_Renderer *rend, animation::Joint *shoulder, glm::vec2 arm_pos)
 {
-    glm::vec2 arm_pos = { 100.f, 100.f };
     glm::vec2 prev_pos = arm_pos;
 
     animation::Joint *j = shoulder;
@@ -23,6 +22,13 @@ void render(SDL_Renderer *rend, animation::Joint *shoulder)
         if (!j->child) break;
         j = j->child->child;
     }
+}
+
+void render_skin(SDL_Renderer *rend, animation::Joint *base)
+{
+    render_fk(rend, base, { 300.f, 400.f });
+
+    SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
 }
 
 int main(int argc, char **argv)
@@ -46,6 +52,13 @@ int main(int argc, char **argv)
     auto b23 = std::make_unique<animation::Bone>(elbow.get(), wrist.get());
     auto b34 = std::make_unique<animation::Bone>(wrist.get(), end.get());
 
+    auto shoulder2 = std::make_unique<animation::Joint>(glm::vec2(0.f, 0.f), 0.f);
+    auto elbow2 = std::make_unique<animation::Joint>(glm::vec2(100.f,0.f), M_PI / 2.f);
+    auto end2 = std::make_unique<animation::Joint>(glm::vec2(100.f,0.f), 0.f);
+
+    auto b122 = std::make_unique<animation::Bone>(shoulder2.get(), elbow2.get());
+    auto b232 = std::make_unique<animation::Bone>(elbow2.get(), end2.get());
+
     while (running)
     {
         while (SDL_PollEvent(&evt))
@@ -54,9 +67,12 @@ int main(int argc, char **argv)
                 running = false;
         }
 
+        elbow2->angle = std::abs(M_PI / 2.f * sinf((float)SDL_GetTicks() / 1000));
+
         SDL_RenderClear(rend);
 
-        render(rend, shoulder.get());
+        render_fk(rend, shoulder.get(), { 100.f, 100.f });
+        render_skin(rend, shoulder2.get());
 
         SDL_SetRenderDrawColor(rend, 0, 0, 0, 255);
         SDL_RenderPresent(rend);

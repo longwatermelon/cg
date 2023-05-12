@@ -7,9 +7,9 @@
 int main(int argc, char **argv)
 {
     std::array<float, 16> my = {
-        0.f, 0.f, 0.f, 0.f,
-        0.f, 2.f, 2.f, 0.f,
-        0.f, 2.f, 2.f, 0.f,
+        0.f, 0.f, 2.f, 0.f,
+        2.f, 0.f, 2.f, 0.f,
+        2.f, 0.f, 0.f, 2.f,
         0.f, 0.f, 0.f, 0.f
     };
     float inc = .005f;
