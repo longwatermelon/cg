@@ -964,8 +964,207 @@ The vector $\bm T$ can be calculated using $\bm T = \left(n_r(\bm N \cdot
 Similar to reflection, refraction should use the same technique of
 average of multiple rays to render more realistic surfaces.
 
+\subsubsection{Lighting}
+
+Typically light intensity as a function of distance is expressed as
+$I(x) = 1/(ax^2 + bx + c)$, with $I$ = intensity, $x$ = distance,
+$a$, $b$, $c$ = positive nonzero constants.
+
+The amount of light energy received by a surface is determined by
+the angle between the light vector and surface normal: $\hat{\bm l}
+\cdot \hat{\bm n}$, with $\hat{\bm l}$ = unit light vector pointing towards
+the light from the surface, $\hat{\bm n}$ = unit surface normal. Combined
+with falloff, $I_{in} = I_{light} \frac{\cos\theta}{r^2}$, with $\theta$
+measured between light direction $\bm l$ and surface normal $\bm n$.
+
+Directional lights are lights that are "infinitely far", such as the
+sun. In that case, it's easier to model light intensity at any point
+on a surface as $I_{in} = I_{light} \cos\theta$.
+
+Spotlights typically have some angle for which there is no attenuation,
+and then begin to fall off at some larger angle, combined with distance
+falloff $1/r^2$.
+
+\subsubsection{BRDF}
+
+BRDF, or Bidirectional Reflectance Distribution Function calculates
+the ratio of light coming from one direction that gets reflected
+in another direction
+
+BRDF = $f_r(\theta_i,\phi_i;\theta_0,\phi_0)$ or $f_r(\bm l,
+\bm v)$, with $\bm l$ = light direction, $\bm v$ = view direction
+
+$I_{out} = I_{in}(\bm l) f_r(\bm l, \bm v)$ where $I_{out}(\bm v)
+= \frac{I_{light} \cos(\theta_i)}{r^2} f_r(\bm l,\bm v)$
+
+$\bm l$ and $\bm v$ must be in a local coordinate system.
+
+\includegraphics[scale=2]{images/brdf.png}
+
+BRDF will typically be graphed with $\bm l$ constant and then
+plot $I_{out}$ as a function of $\bm v$. In the plot below, the distance
+from the center of the sphere represents $f_r$.
+
+\includegraphics[scale=2]{images/brdf-plot.png}
+
+When keeping $\bm l$ and $\bm v$ fixed, if rotation of the surface
+around the normal does not change the reflection , the material is
+isotropic (ex. sphere). Surfaces with strongly oriented microgeometry elements
+are anisotropic (ex. brushed metal, hair, fur).
+
+In ideal diffuse reflectance (reflectance is the same anywhere across
+the object), BRDF is a constant $f_r(\bm l,\bm v) = $ const, where the
+constant is typically written as $\rho/\pi$ where $\rho$ is the
+albedo, a coefficient between 0 and 1 that says what fraction
+of light is reflected. When $\rho$ = 0, the surface completely
+absorbs the light and no light comes out, with more light being
+reflected as $\rho$ increases. The constant can also be written
+as $\bm k_d$, with one $\rho$ value for each RGB channel, giving
+$\bm k_d = (\rho_{red}/\pi,\rho_{green}/\pi,\rho_{blue}/\pi)$.
+
+The function for ideal diffuse reflectance is given by
+$\bm L_o = \bm k_d \max(0,\bm n \cdot \bm l) L_i/r^2$,
+with $\bm L_o$ = shaded color, $\bm n$ = surface normal,
+$\bm l$ = light direction (towards light), $L_i$ = light intensity,
+$r$ = distance from point on surface to light.
+
+In ideal specular reflectance, the BRDF function will typically look
+like a lobe:
+
+\includegraphics[scale=.6]{images/specular-brdf.png}
+
+The amount of light reflected is dependent on the angle between
+the view direction and the reflected light direction:
+
+\includegraphics[scale=.5]{images/brdf-specular-reflectance.png}
+
+The function for ideal specular reflectance can then be given by
+$\bm L_o = \bm k_s (\bm v \cdot \bm r)^q L_i/r^2$, with $\bm L_o$
+= output color to screen, $\bm k_s$ = specular reflection coefficient,
+$q$ = specular exponent, $L_i$ = light intensity, $r$ = distance
+from point on surface to light.
+
+The specular exponent's effect can be seen in the graph below, with $\alpha$
+being the angle between $\bm v$ and the $\bm r$ vector (above diagram)
+and the vertical axis representing the output intensity:
+
+\includegraphics[scale=.5]{images/specular-exponent-graph.png}
+
+\subsubsection{Phong lighting model}
+
+Phong lighting model is made up of ambient, diffuse, and specular
+light. Ambient light is the base color of objects when all lights
+are off, diffuse is light intensity and angle dependent
+which gives a rough surface look, specular light adds shininess.
+
+The equation for the phong lighting model can be given by:
+\[
+    \bm L_o = \left(\bm k_a + \bm k_d(\bm n \cdot \bm l) + \bm k_s
+    (\bm v \cdot \bm r)^q\right) \frac{L_i}{r^2}
+\]
+
+What the variables represent are listed in the previous BRDF subsection.
+
+The chart below shows the BRDF graphs of lights at different $\phi$
+angles from the vertical axis:
+
+\includegraphics{images/phong-brdf-shapes.png}
+
+One issue with phong is that it doesn't capture higher specular
+reflection at grazing angles, which is what the Blinn-Torrance phong
+variation attempts to solve.
+
+\includegraphics[scale=.5]{images/blinn-torrance.png}
+
+\[ \bm L_{o,s} = \bm k_s (\bm n \cdot \bm h)^q \frac{L_i}{r^2} \]
+
+where
+\[ \bm h = \frac{\bm l + \bm v}{||\bm l + \bm v||} \]
+
+Specular BRDF lobe comparison (Blinn-Torrance vs phong):
+
+\includegraphics[scale=.5]{images/phong-blinn-lobe-comparison.png}
+
+The half vector lobe is preferable because it's more consistent with
+what is observed in real world measurments.
+
+\subsubsection{Normal interpolation}
+
+Normal interpolation gives the illusion that a triangle mesh
+is smoother than it actually is. For any point on a triangle
+in the triangle mesh, get its barycentric coordinates and multiply
+them by the vertex normals of the three triangle vertices. Remember
+to renormalize normals after interpolation.
+$\bm n(\alpha,\beta,\gamma) = \alpha \bm n_0 + \beta \bm n_1 + \gamma \bm n_2$
+
 \subsection{Optimization}
 
-\subsubsection{Conservative bounding volume}
+\subsubsection{Bounding volume: Axis-aligned bounding box}
+
+A bounding volume encloses an object entirely, and if a ray
+doesn't intersect the bounding volume it will not attempt to
+check for intersections with the more complicated object.
+
+\includegraphics[scale=2]{images/bounding-volume.png}
+
+Box can be described as $(x_1,y_1,z_1) \rightarrow (x_2,y_2,z_2)$ where
+$x_1 < x_2$, $y_1 < y_2$, $z_1 < z_2$. To check if a ray intersects
+with the bounding box, check intervals of $t$ for which the ray is
+within the range of the bounding box.
+
+After the three intervals of $t$ for dimensions x, y, and z have been
+determined, the starting point of intersection $t_{start}$ is the max of the mins
+and the ending point of the intersection $t_{end}$ is the min of the maxes.
+If $t_{start} > t_{end}$, there is no intersection.
+
+\subsubsection{Bounding volume hierarchy (BVH)}
+
+A bounding volume might not be enough for optimization if the object
+it encloses has a large number of triangles, which a BVH solves by
+splitting objects into two and calculating bounding volumes of the smaller
+sections of the object. Each sub bounding volume will then create its
+own two smaller bounding volumes, and eventually a binary tree will
+be created of bounding volumes.
+
+The best way to split bounding volumes is typically to sort all triangles
+according to one dimension and splitting that list in half to create
+two new bounding volumes.
+
+When intersecting with bounding volumes, the first bounding volume
+intersected is not necessarily the only one that needs to be intersected.
+What determines that is if the ray intersects with a triangle.
+
+Bounding volumes are allowed to intersect with each other in a BVH.
+
+\subsubsection{Kd-trees}
+
+Each space splits itself into two parts somewhere that neatly
+divides objects into two spaces. Unlike BVH, Kd-tree partitions do not overlap.
+
+\includegraphics{images/kd-tree.png}
+
+Kd-tree construction
+\begin{itemize}
+    \item Start with scene AABB
+    \item Decide which dimension to split on (longest dimension is
+        typically good)
+    \item Decide distance to split
+    \begin{subitemize}
+        \item It may be impossible to get a clean split, in which
+            case any objects overlapping the boundary should be considered
+            to be part of both spaces
+    \end{subitemize}
+    \item Stop when a minimum number of primitives is reached
+    \begin{subitemize}
+        \item Other criteria can be used as well
+    \end{subitemize}
+\end{itemize}
+
+Kd-tree traversal
+\begin{itemize}
+    \item If leaf, intersect with contained primitives. If no intersection
+        continue as normal.
+    \item If any of the two children, intersect with those children recursively
+\end{itemize}
 
 \end{document}
