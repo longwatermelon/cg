@@ -1050,6 +1050,11 @@ INPUT ./images/phong-blinn-lobe-comparison.png
 INPUT images/phong-blinn-lobe-comparison.png
 INPUT ./images/phong-blinn-lobe-comparison.png
 INPUT ./images/phong-blinn-lobe-comparison.png
+INPUT ./images/texture-map.png
+INPUT ./images/texture-map.png
+INPUT images/texture-map.png
+INPUT ./images/texture-map.png
+INPUT ./images/texture-map.png
 INPUT ./images/bounding-volume.png
 INPUT ./images/bounding-volume.png
 INPUT images/bounding-volume.png

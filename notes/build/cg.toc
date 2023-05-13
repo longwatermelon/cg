@@ -36,7 +36,9 @@
 \contentsline {subsubsection}{\numberline {2.2.6}BRDF}{13}{subsubsection.2.2.6}%
 \contentsline {subsubsection}{\numberline {2.2.7}Phong lighting model}{15}{subsubsection.2.2.7}%
 \contentsline {subsubsection}{\numberline {2.2.8}Normal interpolation}{16}{subsubsection.2.2.8}%
-\contentsline {subsection}{\numberline {2.3}Optimization}{16}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Bounding volume: Axis-aligned bounding box}{16}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.2.9}Textures}{16}{subsubsection.2.2.9}%
+\contentsline {subsection}{\numberline {2.3}Optimization}{17}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Bounding volume: Axis-aligned bounding box}{17}{subsubsection.2.3.1}%
 \contentsline {subsubsection}{\numberline {2.3.2}Bounding volume hierarchy (BVH)}{17}{subsubsection.2.3.2}%
 \contentsline {subsubsection}{\numberline {2.3.3}Kd-trees}{17}{subsubsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.4}Advanced techniques}{18}{subsection.2.4}%

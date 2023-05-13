@@ -1097,6 +1097,17 @@ them by the vertex normals of the three triangle vertices. Remember
 to renormalize normals after interpolation.
 $\bm n(\alpha,\beta,\gamma) = \alpha \bm n_0 + \beta \bm n_1 + \gamma \bm n_2$
 
+\subsubsection{Textures}
+
+Each vertex on a triangle will contain $(u,v)$ coordinates which
+indicate where it is on the texture, which can then be interpolated
+with barycentric coordinates to give the texture at any point on the
+triangle.
+
+\includegraphics[scale=.5]{images/texture-map.png}
+
+This technique of texture interpolation can also be used for normals.
+
 \subsection{Optimization}
 
 \subsubsection{Bounding volume: Axis-aligned bounding box}
@@ -1166,5 +1177,7 @@ Kd-tree traversal
         continue as normal.
     \item If any of the two children, intersect with those children recursively
 \end{itemize}
+
+\subsection{Advanced techniques}
 
 \end{document}
