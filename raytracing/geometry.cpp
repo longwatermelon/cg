@@ -34,7 +34,7 @@ namespace raytrace
 
     glm::vec3 Scene::cast_ray(Ray r) const
     {
-        if (spheres[0].ray_intersect(r, nullptr))
+        if (planes[0].ray_intersect(r, nullptr))
             return { 1.f, 0.f, 0.f };
 
         return {0.f, 0.f, 0.f };
@@ -87,6 +87,18 @@ namespace raytrace
         {
             if (t) *t = byt[2];
             if (bary) *bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] };
+            return true;
+        }
+
+        return false;
+    }
+
+    bool Plane::ray_intersect(Ray r, float *t) const
+    {
+        float denom = glm::dot(-this->n, r.d);
+        if (denom > 0.f)
+        {
+            if (t) *t = glm::dot(toD(this->p0) - toD(r.o), this->n) / denom;
             return true;
         }
 

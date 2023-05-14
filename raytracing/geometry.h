@@ -62,10 +62,21 @@ namespace raytrace
         glm::mat4 T;
     };
 
+    struct Plane
+    {
+        Plane(glm::vec3 p0, glm::vec3 n)
+            : p0(toP(p0)), n(toD(n)) {}
+
+        bool ray_intersect(Ray r, float *t) const;
+
+        glm::vec4 p0, n;
+    };
+
     struct Scene
     {
         std::vector<Sphere> spheres;
         std::vector<Triangle> triangles;
+        std::vector<Plane> planes;
 
         // Return colors all in 0 - 1 range
         glm::vec3 cast_ray(Ray r) const;
