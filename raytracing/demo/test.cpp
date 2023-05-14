@@ -17,22 +17,22 @@ int main(int argc, char **argv)
         .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f }),
         .m = mat
     });
-    // rt::Triangle tri{
-    //     .verts = {
-    //         rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-    //         rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) } ,
-    //         rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
-    //     },
-    //     .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f })
-    // };
+    rt::Triangle tri{
+        .verts = {
+            rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
+            rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
+            rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) }
+        },
+        .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 4.5f })
+    };
 
-    // rt::Mesh mesh{
-    //     .tris = {
-    //         tri
-    //     },
-    //     .m = mat
-    // };
-    // sc.meshes.emplace_back(mesh);
+    rt::Mesh mesh{
+        .tris = {
+            tri
+        },
+        .m = mat
+    };
+    sc.meshes.emplace_back(mesh);
 
     sc.planes.emplace_back(rt::Plane{
         .p0 = rt::toP({ 0.f, 1.f, 5.f }),

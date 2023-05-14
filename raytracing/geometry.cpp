@@ -35,7 +35,7 @@ namespace rt
             t = std::min(t1, t2);
         }
 
-        glm::vec4 n = glm::normalize(toD(r.o));
+        glm::vec4 n = glm::normalize(r.along(t));
         r.transform(this->T);
 
         return Intersection{
