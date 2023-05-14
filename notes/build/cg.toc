@@ -42,3 +42,5 @@
 \contentsline {subsubsection}{\numberline {2.3.2}Bounding volume hierarchy (BVH)}{17}{subsubsection.2.3.2}%
 \contentsline {subsubsection}{\numberline {2.3.3}Kd-trees}{17}{subsubsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.4}Advanced techniques}{18}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Antialiasing: Fourier transforms}{18}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Global illumination}{18}{subsubsection.2.4.2}%

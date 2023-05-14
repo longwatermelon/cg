@@ -747,7 +747,7 @@ Intersection detection ($r$ is sphere radius)
     b = 2(-\bm R_o \cdot \bm R_d)\\
     c = \bm R_o \cdot \bm R_o - r^2\\
     d = b^2 - 4ac\\
-    t = \frac{b \pm \sqrt{d}}{2a}
+    t = \frac{-b \pm \sqrt{d}}{2a}
 \end{gather*}
 
 If $d < 0$, there is no intersection. If both solutions for $t$
@@ -1179,5 +1179,44 @@ Kd-tree traversal
 \end{itemize}
 
 \subsection{Advanced techniques}
+
+\subsubsection{Antialiasing: Fourier transforms}
+
+\includegraphics[scale=.5]{images/fourier-fx.png}
+
+Raytracing on this 1D graph can be simulated by taking x values in
+constant intervals and evaluating $f$ at those points. After reconstruction,
+high frequency information (two negative bumps in the middle of the
+graph) gets lost due to lower sampling frequency.
+
+A fourier transform creates a function $\mathcal F [f](\xi)$ out of f:
+
+\includegraphics[scale=.5]{images/fourier-f-to-F.png}
+
+Definition of a fourier transform
+\[ \mathcal F[f](\xi) := \int_{-\infty}^{\infty} f(x) e^{2\pi ix\xi} \dif x \]
+
+\subsubsection{Global illumination}
+
+In simple raytracing, a ray is cast towards each light from the
+intersection point. In global illumination, a ray is cast towards
+every direction on the hemisphere.
+
+\includegraphics[scale=.5]{images/reflectance-equation.png}
+
+Reflectance equation, with $L_{out}$ = outgoing light in direction
+$\bm v$, $\bm x$ = intersection point,
+\[ L_{out} = \int_{\Omega} = L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
+\cos\theta \dif \bm l \]
+
+The full rendering equation just includes light sources in $E_{out}$,
+which is 0 if not a light source:
+\[ L_{out} = \int_{\Omega} = L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
+\cos\theta \dif \bm l + E_{out}(\bm x,\bm v) \]
+
+Analytical solution to rendering equation is usually impossible;
+however, there are many ways to solve it approximately, including
+Monte-Carlo raytracing, which casts random rays from the hit point
+to evaluate the integral
 
 \end{document}
