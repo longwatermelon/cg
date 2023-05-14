@@ -34,7 +34,7 @@ namespace raytrace
 
     glm::vec3 Scene::cast_ray(Ray r) const
     {
-        if (triangles[0].ray_intersect(r, nullptr, nullptr))
+        if (spheres[0].ray_intersect(r, nullptr))
             return { 1.f, 0.f, 0.f };
 
         return {0.f, 0.f, 0.f };
@@ -56,8 +56,14 @@ namespace raytrace
         float t1 = (-b - std::sqrt(d)) / (2.f * a);
         float t2 = (-b + std::sqrt(d)) / (2.f * a);
 
+        // No intersection
         if (t1 < 0 && t2 < 0) return false;
 
+        // Inside sphere, one intersection
+        if (t1 <= 0.f) return t2;
+        if (t2 <= 0.f) return t1;
+
+        // Two intersections
         if (t) *t = std::min(t1, t2);
         return true;
     }
