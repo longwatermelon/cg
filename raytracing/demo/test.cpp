@@ -4,22 +4,48 @@
 
 int main(int argc, char **argv)
 {
-    raytrace::Scene sc;
-    sc.spheres.emplace_back(1.f,
-        glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f }));
-    raytrace::Triangle tri({
-        raytrace::Vertex({ -1.f, -1.f, 0.f }),
-        raytrace::Vertex({ 1.f, -1.f, 0.f }),
-        raytrace::Vertex({ -1.f, 1.f, 0.f })
+    rt::Scene sc;
+
+    rt::Material mat = {
+        .k_a = { .2f, 0.f, 0.f },
+        .k_d = { .5f, 0.f, 0.f },
+        .k_s = { .7f, 0.f, 0.f }
+    };
+
+    sc.spheres.emplace_back(rt::Sphere{
+        .r = 1.f,
+        .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f }),
+        .m = mat
     });
-    tri.T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f });
+    // rt::Triangle tri{
+    //     .verts = {
+    //         rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
+    //         rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) } ,
+    //         rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
+    //     },
+    //     .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f })
+    // };
 
-    raytrace::Mesh mesh({ tri });
-    sc.meshes.emplace_back(mesh);
+    // rt::Mesh mesh{
+    //     .tris = {
+    //         tri
+    //     },
+    //     .m = mat
+    // };
+    // sc.meshes.emplace_back(mesh);
 
-    sc.planes.emplace_back(raytrace::Plane({ 0.f, 1.f, 5.f }, { 0.f, -1.f, 0.f }));
+    sc.planes.emplace_back(rt::Plane{
+        .p0 = rt::toP({ 0.f, 1.f, 5.f }),
+        .n = rt::toD({ 0.f, -1.f, 0.f }),
+        .m = mat
+    });
 
-    raytrace::render(sc, "out.ppm");
+    sc.lights.emplace_back(rt::PointLight{
+        .pos = rt::toP({ 2.f, -2.f, 0.f }),
+        .in = .5f
+    });
+
+    rt::render(sc, "out.ppm");
 
     return 0;
 }

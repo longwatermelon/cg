@@ -3,7 +3,7 @@ CXXFLAGS=-std=c++17 -ggdb -Wall
 INC=
 LDFLAGS=-L../lib/ -lraytrace
 
-LIBSRC=raytrace.cpp geometry.cpp
+LIBSRC=raytrace.cpp geometry.cpp lighting.cpp util.cpp
 LIBOBJ=$(LIBSRC:.cpp=.o)
 
 .PHONY: lib
