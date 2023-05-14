@@ -2,4 +2,4 @@
 make lib
 make
 ./a.out
-gimp out.ppm
+feh out.ppm

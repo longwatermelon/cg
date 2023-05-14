@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
     sc.spheres.emplace_back(rt::Sphere{
         .r = 1.f,
-        .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 5.f }),
+        .T = glm::translate(glm::mat4(1.f), { 0.f, 1.1f, 5.f }),
         .m = mat
     });
     rt::Triangle tri{

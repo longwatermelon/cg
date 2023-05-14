@@ -102,7 +102,7 @@ namespace rt
             return Intersection{
                 .intersects = true,
                 .ray = r,
-                .t = glm::dot(toD(this->p0) - toD(r.o), this->n) / denom,
+                .t = -glm::dot(toD(this->p0) - toD(r.o), this->n) / denom,
                 .n = this->n,
                 .m = &this->m
             };

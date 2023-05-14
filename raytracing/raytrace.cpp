@@ -61,9 +61,9 @@ namespace rt
         for (int i = 0; i < WIDTH * HEIGHT; ++i)
         {
             ofs <<
-                std::abs(255.f * std::min(std::max(frame[i].r, 0.f), 1.f)) << ' ' <<
-                std::abs(255.f * std::min(std::max(frame[i].g, 0.f), 1.f)) << ' ' <<
-                std::abs(255.f * std::min(std::max(frame[i].b, 0.f), 1.f)) <<
+                (int)std::abs(255.f * std::min(std::max(frame[i].r, 0.f), 1.f)) << ' ' <<
+                (int)std::abs(255.f * std::min(std::max(frame[i].g, 0.f), 1.f)) << ' ' <<
+                (int)std::abs(255.f * std::min(std::max(frame[i].b, 0.f), 1.f)) <<
                 '\n';
         }
 
