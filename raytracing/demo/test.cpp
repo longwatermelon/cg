@@ -1,11 +1,14 @@
 #include "../raytrace.h"
 #include "../geometry.h"
+#include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 int main(int argc, char **argv)
 {
     rt::Scene sc;
+    sc.cam = glm::translate(glm::mat4(1.f), { 5.f, 0.f, -4.f })
+             * rt::rotation({ 0.f, -0.5f, 0.f });
 
     rt::Material mat = {
         .k_a = { .2f, 0.f, 0.f },
@@ -28,6 +31,14 @@ int main(int argc, char **argv)
         .q = 10.f
     };
 
+    rt::Material mat4 = {
+        .k_a = { 0.f, .2f, .3f },
+        .k_d = { 0.f, .5f, .7f },
+        .k_s = { 0.f, .7f, .5f },
+        .q = 10.f,
+        .reflective = true
+    };
+
     sc.spheres.emplace_back(rt::Sphere{
         .r = 1.f,
         .T = glm::translate(glm::mat4(1.f), { 0.f, 1.f, 5.f }) *
@@ -38,6 +49,12 @@ int main(int argc, char **argv)
                 0.f, 0.f, 0.f, 1.f
             }),
         .m = mat2
+    });
+
+    sc.spheres.emplace_back(rt::Sphere{
+        .r = 1.f,
+        .T = glm::translate(glm::mat4(1.f), { 2.f, -1.f, 8.f }),
+        .m = mat4
     });
 
     rt::Mesh mesh{

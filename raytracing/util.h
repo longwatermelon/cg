@@ -13,6 +13,8 @@ namespace rt
 
     glm::vec3 to3(glm::vec4 p);
 
+    glm::mat4 rotation(glm::vec3 rot);
+
     struct Ray
     {
         void transform(glm::mat4 T)
@@ -33,6 +35,7 @@ namespace rt
     {
         glm::vec3 k_a, k_d, k_s;
         float q;
+        bool reflective{ false };
     };
 
     struct Intersection

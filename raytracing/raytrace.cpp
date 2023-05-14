@@ -10,6 +10,7 @@ namespace rt
 {
     Intersection Scene::cast_ray(Ray r) const
     {
+        r.transform(this->cam);
         Intersection nearest{ .intersects = false, .t = INFINITY };
 
         for (const auto &sph : this->spheres)

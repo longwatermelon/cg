@@ -7,6 +7,7 @@ namespace rt
 {
     struct Scene
     {
+        glm::mat4 cam;
         std::vector<Sphere> spheres;
         std::vector<Mesh> meshes;
         std::vector<Plane> planes;
