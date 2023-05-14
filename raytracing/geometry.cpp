@@ -11,32 +11,29 @@ namespace rt
         glm::vec4 od = toD(r.o);
 
         float a = glm::dot(r.d, r.d);
-        float b = 2 * (glm::dot(od, r.d));
+        float b = 2.f * glm::dot(od, r.d);
         float c = glm::dot(od, od) - this->r * this->r;
         float d = b * b - 4.f * a * c;
 
         if (d < 0.f)
             return Intersection{ .intersects = false };
 
-        float t1 = (-b - std::sqrt(d)) / (2.f * a);
-        float t2 = (-b + std::sqrt(d)) / (2.f * a);
-
-        // No intersection
-        if (t1 < 0 && t2 < 0) return Intersection{ .intersects = false };
+        float t1 = (-b + std::sqrt(d)) / (2.f * a);
+        float t2 = (-b - std::sqrt(d)) / (2.f * a);
 
         float t = INFINITY;
-        // Inside sphere, one intersection
-        if (t1 <= 0.f) t = t2;
-        else if (t2 <= 0.f) t = t1;
 
-        if (t == INFINITY)
-        {
-            // Two intersections
+        if (t1 <= 1e-4f)
+            return Intersection{ .intersects = false };
+
+        if (t2 <= 1e-4f)
+            t = t1;
+        else
             t = std::min(t1, t2);
-        }
 
-        glm::vec4 n = glm::normalize(r.along(t));
+        glm::vec4 n = toD(glm::normalize(r.along(t)));
         r.transform(this->T);
+        n = glm::normalize(toD(glm::transpose(glm::inverse(this->T)) * n));
 
         return Intersection{
             .intersects = true,
@@ -85,8 +82,8 @@ namespace rt
         Intersection nearest{ .intersects = false, .t = INFINITY };
         for (const auto &tri : this->tris)
         {
-            Intersection in;
-            if ((in = tri.ray_intersect(r)).t < nearest.t)
+            Intersection in = tri.ray_intersect(r);
+            if (in.intersects && in.t < nearest.t)
                 nearest = in;
         }
 
@@ -111,5 +108,10 @@ namespace rt
         return Intersection{
             .intersects = false
         };
+    }
+
+    glm::vec4 reflect(glm::vec4 in, glm::vec4 n)
+    {
+        return glm::normalize(in - 2 * glm::dot(in, n) * n);
     }
 }

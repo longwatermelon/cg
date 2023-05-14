@@ -32,6 +32,7 @@ namespace rt
     struct Material
     {
         glm::vec3 k_a, k_d, k_s;
+        float q;
     };
 
     struct Intersection

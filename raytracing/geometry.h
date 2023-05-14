@@ -43,4 +43,6 @@ namespace rt
         glm::vec4 p0, n;
         Material m;
     };
+
+    glm::vec4 reflect(glm::vec4 in, glm::vec4 n);
 }
