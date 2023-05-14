@@ -1,19 +1,25 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
+#include <array>
 
 namespace raytrace
 {
     // convert point to direction (homogeneous coords)
-    glm::vec4 todir(glm::vec4 p);
+    glm::vec4 toD(glm::vec4 p);
     // convert direction to point (homogeneous coords)
-    glm::vec4 topoint(glm::vec4 p);
+    glm::vec4 toP(glm::vec4 p);
+
+    glm::vec4 toD(glm::vec3 p);
+    glm::vec4 toP(glm::vec3 p);
+
+    glm::vec3 to3(glm::vec4 p);
 
     struct Ray
     {
         Ray(glm::vec3 o, glm::vec3 d)
-            : o({ o.x, o.y, o.z, 1.f }),
-              d({ d.x, d.y, d.z, 0.f }) {}
+            : o(toP(o)),
+              d(toD(d)) {}
 
         void transform(glm::mat4 T)
         {
@@ -31,17 +37,37 @@ namespace raytrace
         Sphere(float r, glm::mat4 T)
             : r(r), T(T) {}
 
+        bool ray_intersect(Ray r, float *t) const;
+
         float r;
+        glm::mat4 T;
+    };
+
+    struct Vertex
+    {
+        Vertex(glm::vec3 pos)
+            : pos(toP(pos)) {}
+
+        glm::vec4 pos;
+    };
+
+    struct Triangle
+    {
+        Triangle(std::array<Vertex, 3> verts)
+            : verts(verts) {}
+
+        bool ray_intersect(Ray r, float *t, glm::vec3 *bary) const;
+
+        std::array<Vertex, 3> verts;
         glm::mat4 T;
     };
 
     struct Scene
     {
         std::vector<Sphere> spheres;
+        std::vector<Triangle> triangles;
 
         // Return colors all in 0 - 1 range
         glm::vec3 cast_ray(Ray r) const;
     };
-
-    bool ray_sphere_intersect(Ray r, const Sphere &sph, float *t);
 }
