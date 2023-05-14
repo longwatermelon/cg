@@ -45,6 +45,7 @@ namespace raytrace
 
     struct Vertex
     {
+        Vertex() = default;
         Vertex(glm::vec3 pos)
             : pos(toP(pos)) {}
 
@@ -53,6 +54,7 @@ namespace raytrace
 
     struct Triangle
     {
+        Triangle() = default;
         Triangle(std::array<Vertex, 3> verts)
             : verts(verts) {}
 
@@ -60,6 +62,17 @@ namespace raytrace
 
         std::array<Vertex, 3> verts;
         glm::mat4 T;
+    };
+
+    struct Mesh
+    {
+        Mesh(const std::vector<Triangle> &tris)
+            : tris(tris) {}
+
+        bool ray_intersect(Ray r, float *t, const Triangle *tri,
+            glm::vec3 *bary) const;
+
+        std::vector<Triangle> tris;
     };
 
     struct Plane
@@ -75,7 +88,7 @@ namespace raytrace
     struct Scene
     {
         std::vector<Sphere> spheres;
-        std::vector<Triangle> triangles;
+        std::vector<Mesh> meshes;
         std::vector<Plane> planes;
 
         // Return colors all in 0 - 1 range

@@ -34,10 +34,40 @@ namespace raytrace
 
     glm::vec3 Scene::cast_ray(Ray r) const
     {
-        if (planes[0].ray_intersect(r, nullptr))
-            return { 1.f, 0.f, 0.f };
+        float closest = INFINITY;
+        for (const auto &sph : this->spheres)
+        {
+            float t;
+            if (sph.ray_intersect(r, &t) && t < closest)
+            {
+                closest = t;
+            }
+        }
 
-        return {0.f, 0.f, 0.f };
+        for (const auto &mesh : this->meshes)
+        {
+            float t;
+            Triangle tri;
+            glm::vec3 bary;
+            if (mesh.ray_intersect(r, &t, &tri, &bary) && t < closest)
+            {
+                closest = t;
+            }
+        }
+
+        for (const auto &plane : this->planes)
+        {
+            float t;
+            if (plane.ray_intersect(r, &t) && t < closest)
+            {
+                closest = t;
+            }
+        }
+
+        if (closest == INFINITY)
+            return { 0.f, 0.f, 0.f };
+
+        return { 1.f, 0.f, 0.f };
     }
 
     bool Sphere::ray_intersect(Ray r, float *t) const
@@ -91,6 +121,25 @@ namespace raytrace
         }
 
         return false;
+    }
+
+    bool Mesh::ray_intersect(Ray r, float *t, const Triangle *tri,
+        glm::vec3 *bary) const
+    {
+        float closest = INFINITY;
+        for (const auto &tri : this->tris)
+        {
+            float dist;
+            glm::vec3 b;
+            if (tri.ray_intersect(r, &dist, &b) && dist < closest)
+            {
+                closest = dist;
+                if (bary) *bary = b;
+                if (t) *t = dist;
+            }
+        }
+
+        return closest != INFINITY;
     }
 
     bool Plane::ray_intersect(Ray r, float *t) const
