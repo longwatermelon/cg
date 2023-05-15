@@ -44,5 +44,9 @@ namespace rt
         Material m;
     };
 
+    // in is away from camera
     glm::vec4 reflect(glm::vec4 in, glm::vec4 n);
+    // n_r = n_i / n_t
+    // in is towards camera
+    glm::vec4 refract(glm::vec4 in, glm::vec4 n, float n_r);
 }

@@ -3,9 +3,9 @@
 
 namespace rt
 {
-    Intersection Scene::cast_ray(Ray r, bool cam_transform) const
+    Intersection Scene::cast_ray(Ray r, SceneRayOpts opts) const
     {
-        if (cam_transform)
+        if (!(opts & SC_NO_TRANSFORM_CAM))
             r.transform(this->cam);
 
         Intersection nearest{ .intersects = false, .t = INFINITY };

@@ -4,6 +4,8 @@
 #include "scene.h"
 #include <cstdio>
 
+static const float EPSILON = 1e-3f;
+
 namespace rt
 {
     glm::vec3 phong(const Intersection &in, const Scene &sc)
@@ -12,28 +14,15 @@ namespace rt
             return { 0.f, 0.f, 0.f };
 
         glm::vec4 hit = in.ray.along(in.t);
-        const float epsilon = 1e-3f;
 
         glm::vec3 total_color(0.f);
         for (const auto &light : sc.lights)
         {
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
-            bool normal_lighting = true;
-
-            // Shadows
-            {
-                Ray sray;
-                sray.o = hit + epsilon * in.n;
-                sray.d = glm::normalize(toD(light.pos - sray.o));
-                Intersection in_s = sc.cast_ray(sray, false);
-
-                if (in_s.intersects && in_s.t < glm::length(to3(light.pos - sray.o)))
-                    normal_lighting = false;
-            }
 
             // Color
-            if (normal_lighting)
+            if (!check_shadowed(in, sc, light))
             {
                 glm::vec3 diffuse = in.m->k_d *
                     glm::dot(in.n, glm::normalize(toD(light.pos - hit)));
@@ -46,16 +35,12 @@ namespace rt
                 color += diffuse + specular;
             }
 
-            // Reflection
+            // Reflection and refraction
             if (in.m->reflectiveness > 0.f)
-            {
-                glm::vec4 reflect_dir = reflect(in.ray.d, in.n);
-                color = (1.f - in.m->reflectiveness) * color +
-                        in.m->reflectiveness * phong(sc.cast_ray(Ray{
-                    .o = hit + epsilon * in.n,
-                    .d = reflect_dir
-                }, false), sc);
-            }
+                color = reflect_color(in, sc, color, phong);
+
+            if (in.m->refract_n > 1.f)
+                color = refract_color(in, sc, color, phong);
 
             float distance = glm::distance(in.ray.along(in.t), light.pos);
             total_color += (light.in / (.1f * distance * distance + .5f)) *
@@ -63,5 +48,36 @@ namespace rt
         }
 
         return total_color;
+    }
+
+    glm::vec3 reflect_color(const Intersection &in, const Scene &sc, glm::vec3 obj_col,
+        const std::function<glm::vec3(const Intersection&, const Scene&)> &lighting_fn)
+    {
+        glm::vec4 reflect_dir = reflect(in.ray.d, in.n);
+        return (1.f - in.m->reflectiveness) * obj_col +
+                in.m->reflectiveness * lighting_fn(sc.cast_ray(Ray{
+            .o = in.ray.along(in.t) + EPSILON * in.n,
+            .d = reflect_dir
+        }, SC_NO_TRANSFORM_CAM), sc);
+    }
+
+    glm::vec3 refract_color(const Intersection &in, const Scene &sc, glm::vec3 obj_col,
+        const std::function<glm::vec3(const Intersection&, const Scene&)> &lighting_fn)
+    {
+        // // Assume no objects inside other objects
+        // float n_r = glm::dot(in.ray.d, in.n) <= 1.f ?
+        //     1.f / in.m->refract_n :
+        //     in.m->refract_n;
+        // glm::vec4 refract_dir = refract(-in.ray.d, in.n, n_r);
+    }
+
+    bool check_shadowed(const Intersection &in, const Scene &sc, const PointLight &l)
+    {
+        Ray sray;
+        sray.o = in.ray.along(in.t) + EPSILON * in.n;
+        sray.d = glm::normalize(toD(l.pos - sray.o));
+        Intersection in_s = sc.cast_ray(sray, SC_NO_TRANSFORM_CAM);
+
+        return in_s.intersects && in_s.t < glm::length(to3(l.pos - sray.o));
     }
 }

@@ -116,4 +116,13 @@ namespace rt
     {
         return glm::normalize(in - 2 * glm::dot(in, n) * n);
     }
+
+    glm::vec4 refract(glm::vec4 in, glm::vec4 n, float n_r)
+    {
+        return (
+            n_r * glm::dot(in, n) -
+            std::sqrt(1.f - n_r * n_r *
+                (1.f - std::pow(glm::dot(in, n), 2.f)))
+        ) * n - n_r * in;
+    }
 }

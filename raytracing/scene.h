@@ -10,6 +10,11 @@ namespace rt
     struct Plane;
     struct PointLight;
 
+    enum SceneRayOpts
+    {
+        SC_NO_TRANSFORM_CAM = 1
+    };
+
     struct Scene
     {
         glm::mat4 cam;
@@ -18,6 +23,6 @@ namespace rt
         std::vector<Plane> planes;
         std::vector<PointLight> lights;
 
-        Intersection cast_ray(Ray r, bool cam_transform = true) const;
+        Intersection cast_ray(Ray r, SceneRayOpts opts = (SceneRayOpts)0) const;
     };
 }
