@@ -12,25 +12,28 @@ namespace rt
             return { 0.f, 0.f, 0.f };
 
         glm::vec4 hit = in.ray.along(in.t);
+        const float epsilon = 1e-3f;
 
         glm::vec3 total_color(0.f);
         for (const auto &light : sc.lights)
         {
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
+            bool normal_lighting = true;
 
             // Shadows
             {
                 Ray sray;
-                sray.o = hit + 1e-3f * in.n;
+                sray.o = hit + epsilon * in.n;
                 sray.d = glm::normalize(toD(light.pos - sray.o));
                 Intersection in_s = sc.cast_ray(sray, false);
 
                 if (in_s.intersects && in_s.t < glm::length(to3(light.pos - sray.o)))
-                    goto final_color;
+                    normal_lighting = false;
             }
 
             // Color
+            if (normal_lighting)
             {
                 glm::vec3 diffuse = in.m->k_d *
                     glm::dot(in.n, glm::normalize(toD(light.pos - hit)));
@@ -43,7 +46,17 @@ namespace rt
                 color += diffuse + specular;
             }
 
-final_color:
+            // Reflection
+            if (in.m->reflectiveness > 0.f)
+            {
+                glm::vec4 reflect_dir = reflect(in.ray.d, in.n);
+                color = (1.f - in.m->reflectiveness) * color +
+                        in.m->reflectiveness * phong(sc.cast_ray(Ray{
+                    .o = hit + epsilon * in.n,
+                    .d = reflect_dir
+                }, false), sc);
+            }
+
             float distance = glm::distance(in.ray.along(in.t), light.pos);
             total_color += (light.in / (.1f * distance * distance + .5f)) *
                 color;

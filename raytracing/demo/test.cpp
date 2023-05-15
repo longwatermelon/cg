@@ -7,14 +7,15 @@
 int main(int argc, char **argv)
 {
     rt::Scene sc;
-    sc.cam = glm::translate(glm::mat4(1.f), { 5.f, 0.f, -4.f })
+    sc.cam = glm::translate(glm::mat4(1.f), { 5.f, 0.f, -3.f })
              * rt::rotation({ 0.f, -0.5f, 0.f });
 
     rt::Material mat = {
-        .k_a = { .2f, 0.f, 0.f },
-        .k_d = { .5f, 0.f, 0.f },
-        .k_s = { .7f, 0.f, 0.f },
-        .q = 50.f
+        .k_a = { .2f, .2f, .2f },
+        .k_d = { .5f, .5f, .5f },
+        .k_s = { .7f, .7f, .7f },
+        .q = 50.f,
+        .reflectiveness = .6f
     };
 
     rt::Material mat2 = {
@@ -35,8 +36,7 @@ int main(int argc, char **argv)
         .k_a = { 0.f, .2f, .3f },
         .k_d = { 0.f, .5f, .7f },
         .k_s = { 0.f, .7f, .5f },
-        .q = 10.f,
-        .reflective = true
+        .q = 10.f
     };
 
     sc.spheres.emplace_back(rt::Sphere{
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
     sc.spheres.emplace_back(rt::Sphere{
         .r = 1.f,
-        .T = glm::translate(glm::mat4(1.f), { 2.f, -1.f, 8.f }),
+        .T = glm::translate(glm::mat4(1.f), { 2.2f, -1.f, 8.f }),
         .m = mat4
     });
 

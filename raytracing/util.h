@@ -35,7 +35,7 @@ namespace rt
     {
         glm::vec3 k_a, k_d, k_s;
         float q;
-        bool reflective{ false };
+        float reflectiveness{ 0.f };
     };
 
     struct Intersection
