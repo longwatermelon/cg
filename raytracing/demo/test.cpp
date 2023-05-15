@@ -9,7 +9,6 @@ int main(int argc, char **argv)
     rt::Scene sc;
     sc.cam = glm::translate(glm::mat4(1.f), { 5.f, 0.f, -4.f })
              * rt::rotation({ 0.f, -0.5f, 0.f });
-    // sc.cam = glm::mat4(1.f);
 
     rt::Material mat = {
         .k_a = { .2f, 0.f, 0.f },
@@ -92,40 +91,6 @@ int main(int argc, char **argv)
     });
 
     rt::render(sc, "out.ppm");
-
-    //////////// DEBUG
-    // sc.spheres.emplace_back(rt::Sphere{
-    //     .r = 1.f,
-    //     .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, -5.f }),
-    //     .m = mat
-    // });
-
-    // rt::Mesh mesh{
-    //     .tris = {
-    //         rt::Triangle{
-    //             .verts = {
-    //                 rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-    //                 rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
-    //                 rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) }
-    //             }
-    //         },
-    //         rt::Triangle{
-    //             .verts = {
-    //                 rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
-    //                 rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
-    //                 rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
-    //             }
-    //         }
-    //     },
-    //     .m = mat,
-    //     .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, -5.f })
-    // };
-    // sc.meshes.emplace_back(mesh);
-
-    // sc.cast_ray(rt::Ray{
-    //     .o = rt::toP({ 0.f, 0.f, 0.f }),
-    //     .d = rt::toD({ 0.f, 0.f, 1.f })
-    // });
 
     return 0;
 }
