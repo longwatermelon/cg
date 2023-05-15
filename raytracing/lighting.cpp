@@ -1,11 +1,12 @@
 #include "lighting.h"
 #include "geometry.h"
 #include "util.h"
+#include "scene.h"
 #include <cstdio>
 
 namespace rt
 {
-    glm::vec3 phong(const Intersection &in, const std::vector<PointLight> &lights)
+    glm::vec3 phong(const Intersection &in, const Scene &sc)
     {
         if (!in.intersects)
             return { 0.f, 0.f, 0.f };
@@ -13,11 +14,12 @@ namespace rt
         glm::vec4 hit = in.ray.along(in.t);
 
         glm::vec3 total_color(0.f);
-        for (const auto &light : lights)
+        for (const auto &light : sc.lights)
         {
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
 
+            // Color
             {
                 glm::vec3 diffuse = in.m->k_d *
                     glm::dot(in.n, glm::normalize(toD(light.pos - hit)));
