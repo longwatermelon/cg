@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++17 -ggdb -Wall
+CXXFLAGS=-std=c++17 -ggdb -Wall -O3
 INC=
 LDFLAGS=-L../lib/ -lraytrace
 

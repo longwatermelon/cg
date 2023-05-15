@@ -46,8 +46,6 @@ namespace rt
 
     Intersection Triangle::ray_intersect(Ray r) const
     {
-        r.transform(glm::inverse(this->T));
-
         glm::vec3 v = to3(this->verts[0].pos - r.o);
         glm::vec3 a_b = to3(this->verts[0].pos - this->verts[1].pos);
         glm::vec3 a_c = to3(this->verts[0].pos - this->verts[2].pos);
@@ -61,7 +59,6 @@ namespace rt
 
         if (byt[0] + byt[1] <= 1.f && byt[0] >= 0.f && byt[1] >= 0.f)
         {
-            r.transform(this->T);
             return Intersection{
                 .intersects = true,
                 .ray = r,
@@ -79,6 +76,7 @@ namespace rt
 
     Intersection Mesh::ray_intersect(Ray r) const
     {
+        r.transform(glm::inverse(this->T));
         Intersection nearest{ .intersects = false, .t = INFINITY };
         for (const auto &tri : this->tris)
         {
@@ -87,6 +85,7 @@ namespace rt
                 nearest = in;
         }
 
+        nearest.ray.transform(this->T);
         nearest.m = &this->m;
         return nearest;
     }

@@ -64,19 +64,18 @@ int main(int argc, char **argv)
                     rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
                     rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
                     rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) }
-                },
-                .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 4.5f })
+                }
             },
             rt::Triangle{
                 .verts = {
-                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ 1.f, 1.f, 0.f }) }
-                },
-                .T = glm::translate(glm::mat4(1.f), { .1f, .1f, 4.5f })
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
+                }
             }
         },
-        .m = mat3
+        .m = mat3,
+        .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 4.5f })
     };
     sc.meshes.emplace_back(mesh);
 

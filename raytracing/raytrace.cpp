@@ -3,14 +3,14 @@
 #include <array>
 #include <fstream>
 
-#define WIDTH 500
-#define HEIGHT 500
+#define WIDTH 1000
+#define HEIGHT 1000
 
 namespace rt
 {
     void render(const Scene &sc, const std::string &outf)
     {
-        std::array<glm::vec3, WIDTH * HEIGHT> frame;
+        std::vector<glm::vec3> frame(WIDTH * HEIGHT);
         for (int y = 0; y < HEIGHT; ++y)
         {
             for (int x = 0; x < WIDTH; ++x)

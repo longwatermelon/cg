@@ -25,7 +25,6 @@ namespace rt
         Intersection ray_intersect(Ray r) const;
 
         std::array<Vertex, 3> verts;
-        glm::mat4 T;
     };
 
     struct Mesh
@@ -34,6 +33,7 @@ namespace rt
 
         std::vector<Triangle> tris;
         Material m;
+        glm::mat4 T;
     };
 
     struct Plane
