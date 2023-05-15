@@ -19,6 +19,17 @@ namespace rt
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
 
+            // Shadows
+            {
+                Ray sray;
+                sray.o = hit + 1e-3f * in.n;
+                sray.d = glm::normalize(toD(light.pos - sray.o));
+                Intersection in_s = sc.cast_ray(sray, false);
+
+                if (in_s.intersects && in_s.t < glm::length(to3(light.pos - sray.o)))
+                    goto final_color;
+            }
+
             // Color
             {
                 glm::vec3 diffuse = in.m->k_d *
@@ -32,6 +43,7 @@ namespace rt
                 color += diffuse + specular;
             }
 
+final_color:
             float distance = glm::distance(in.ray.along(in.t), light.pos);
             total_color += (light.in / (.1f * distance * distance + .5f)) *
                 color;

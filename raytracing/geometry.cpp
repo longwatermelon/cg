@@ -59,6 +59,9 @@ namespace rt
 
         if (byt[0] + byt[1] <= 1.f && byt[0] >= 0.f && byt[1] >= 0.f)
         {
+            if (byt[2] < 0.f)
+                return Intersection{ .intersects = false };
+
             return Intersection{
                 .intersects = true,
                 .ray = r,
