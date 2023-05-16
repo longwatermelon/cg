@@ -35,6 +35,8 @@ namespace rt
         glm::vec4 n = toD(glm::normalize(r.along(t)));
         r.transform(this->T);
         n = glm::normalize(toD(glm::transpose(glm::inverse(this->T)) * n));
+        if (glm::dot(n, r.d) > 0.f)
+            n = -n;
 
         return Intersection{
             .intersects = true,
