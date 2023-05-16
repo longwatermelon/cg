@@ -13,21 +13,21 @@ namespace rt
         for (const auto &sph : this->spheres)
         {
             Intersection in = sph.ray_intersect(r);
-            if (in.intersects && in.t < nearest.t)
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }
 
         for (const auto &mesh : this->meshes)
         {
             Intersection in = mesh.ray_intersect(r);
-            if (in.intersects && in.t < nearest.t)
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }
 
         for (const auto &plane : this->planes)
         {
             Intersection in = plane.ray_intersect(r);
-            if (in.intersects && in.t < nearest.t)
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }
 

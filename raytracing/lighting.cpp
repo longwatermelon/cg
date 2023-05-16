@@ -40,7 +40,7 @@ namespace rt
                 color = reflect_color(in, sc, color, phong);
 
             if (in.m->refract_n > 1.f)
-                color = refract_color(in, sc, color, phong);
+                color = refract_color(in, sc, phong);
 
             float distance = glm::distance(in.ray.along(in.t), light.pos);
             total_color += (light.in / (.1f * distance * distance + .5f)) *
@@ -50,8 +50,10 @@ namespace rt
         return total_color;
     }
 
-    glm::vec3 reflect_color(const Intersection &in, const Scene &sc, glm::vec3 obj_col,
-        const std::function<glm::vec3(const Intersection&, const Scene&)> &lighting_fn)
+    glm::vec3 reflect_color(const Intersection &in, const Scene &sc,
+                            glm::vec3 obj_col,
+        const std::function<glm::vec3(const Intersection&, const Scene&)>
+            &lighting_fn)
     {
         glm::vec4 reflect_dir = reflect(in.ray.d, in.n);
         return (1.f - in.m->reflectiveness) * obj_col +
@@ -61,14 +63,27 @@ namespace rt
         }, SC_NO_TRANSFORM_CAM), sc);
     }
 
-    glm::vec3 refract_color(const Intersection &in, const Scene &sc, glm::vec3 obj_col,
-        const std::function<glm::vec3(const Intersection&, const Scene&)> &lighting_fn)
+    glm::vec3 refract_color(const Intersection &in, const Scene &sc,
+        const std::function<glm::vec3(const Intersection&, const Scene&)>
+            &lighting_fn, int counter)
     {
-        // // Assume no objects inside other objects
-        // float n_r = glm::dot(in.ray.d, in.n) <= 1.f ?
-        //     1.f / in.m->refract_n :
-        //     in.m->refract_n;
-        // glm::vec4 refract_dir = refract(-in.ray.d, in.n, n_r);
+        if (!in.intersects || counter > 4)
+            return { 0.f, 0.f, 0.f };
+
+        if (in.m->refract_n <= 1.f)
+            return lighting_fn(in, sc);
+
+        // Assume no objects inside other objects
+        float n_r = glm::dot(in.ray.d, in.n) <= 1.f ?
+            1.f / in.m->refract_n :
+            in.m->refract_n;
+        glm::vec4 refract_dir = refract(-in.ray.d, in.n, n_r);
+        Ray ray{
+            .o = in.ray.along(in.t) + EPSILON * -in.n,
+            .d = refract_dir
+        };
+        Intersection next_in = sc.cast_ray(ray, SC_NO_TRANSFORM_CAM);
+        return refract_color(next_in, sc, lighting_fn, counter + 1);
     }
 
     bool check_shadowed(const Intersection &in, const Scene &sc, const PointLight &l)
