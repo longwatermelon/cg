@@ -83,17 +83,30 @@ namespace rt
 
     Intersection Mesh::ray_intersect(Ray r) const
     {
-        r.transform(glm::inverse(this->T));
         Intersection nearest{ .intersects = false, .t = INFINITY };
         for (const auto &tri : this->tris)
         {
             Intersection in = tri.ray_intersect(r);
-            if (in.intersects && in.t < nearest.t)
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
+                nearest = in;
+        }
+
+        nearest.m = &this->m;
+        return nearest;
+    }
+
+    Intersection Model::ray_intersect(Ray r) const
+    {
+        r.transform(glm::inverse(this->T));
+        Intersection nearest{ .intersects = false, .t = INFINITY };
+        for (const auto &mesh : this->meshes)
+        {
+            Intersection in = mesh.ray_intersect(r);
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }
 
         nearest.ray.transform(this->T);
-        nearest.m = &this->m;
         return nearest;
     }
 

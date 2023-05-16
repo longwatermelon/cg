@@ -17,9 +17,9 @@ namespace rt
                 nearest = in;
         }
 
-        for (const auto &mesh : this->meshes)
+        for (const auto &model : this->models)
         {
-            Intersection in = mesh.ray_intersect(r);
+            Intersection in = model.ray_intersect(r);
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }

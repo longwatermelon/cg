@@ -6,7 +6,7 @@
 namespace rt
 {
     struct Sphere;
-    struct Mesh;
+    struct Model;
     struct Plane;
     struct PointLight;
 
@@ -19,7 +19,7 @@ namespace rt
     {
         glm::mat4 cam;
         std::vector<Sphere> spheres;
-        std::vector<Mesh> meshes;
+        std::vector<Model> models;
         std::vector<Plane> planes;
         std::vector<PointLight> lights;
 

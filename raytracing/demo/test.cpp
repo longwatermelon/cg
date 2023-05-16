@@ -7,15 +7,15 @@
 int main(int argc, char **argv)
 {
     rt::Scene sc;
-    sc.cam = glm::translate(glm::mat4(1.f), { 0.f, 0.f, -5.f });
-            //  * rt::rotation({ 0.f, -0.5f, 0.f });
+    sc.cam = glm::translate(glm::mat4(1.f), { 5.f, 0.f, -5.f })
+             * rt::rotation({ 0.f, -0.5f, 0.f });
 
     rt::Material mat = {
         .k_a = { .2f, .2f, .2f },
         .k_d = { .5f, .5f, .5f },
         .k_s = { .7f, .7f, .7f },
-        .q = 50.f
-        // .reflectiveness = .6f
+        .q = 50.f,
+        .reflectiveness = .6f
     };
 
     rt::Material mat2 = {
@@ -40,10 +40,6 @@ int main(int argc, char **argv)
     };
 
     rt::Material refract_mat = {
-        // .k_a = .2f * glm::vec3{ 1.f, 1.f, 1.f },
-        // .k_d = .5f * glm::vec3{ 1.f, 1.f, 1.f },
-        // .k_s = .7f * glm::vec3{ 1.f, 1.f, 1.f },
-        // .q = 10.f
         .refract_n = 2.f
     };
 
@@ -67,31 +63,35 @@ int main(int argc, char **argv)
 
     sc.spheres.emplace_back(rt::Sphere{
         .r = .5f,
-        .T = glm::translate(glm::mat4(1.f), { 0.f, .5f, 0.f }),
+        .T = glm::translate(glm::mat4(1.f), { 1.f, .5f, 1.f }),
         .m = refract_mat
     });
 
-    rt::Mesh mesh{
-        .tris = {
-            rt::Triangle{
-                .verts = {
-                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
-                }
-            },
-            rt::Triangle{
-                .verts = {
-                    rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
-                }
+    rt::Model model{
+        .meshes = {
+            rt::Mesh{
+                .tris = {
+                    rt::Triangle{
+                        .verts = {
+                            rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
+                            rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
+                            rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
+                        }
+                    },
+                    rt::Triangle{
+                        .verts = {
+                            rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
+                            rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
+                            rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
+                        }
+                    }
+                },
+                .m = mat3
             }
         },
-        .m = mat3,
         .T = glm::translate(glm::mat4(1.f), { 0.f, 0.f, 4.5f })
     };
-    sc.meshes.emplace_back(mesh);
+    sc.models.emplace_back(model);
 
     sc.planes.emplace_back(rt::Plane{
         .p0 = rt::toP({ 0.f, 1.f, 5.f }),
@@ -100,8 +100,8 @@ int main(int argc, char **argv)
     });
 
     sc.lights.emplace_back(rt::PointLight{
-        .pos = rt::toP({ 1.f, 0.f, 3.f }),
-        .in = 1.f
+        .pos = rt::toP({ 1.f, -1.f, 3.f }),
+        .in = 1.2f
     });
 
     rt::render(sc, "out.ppm");

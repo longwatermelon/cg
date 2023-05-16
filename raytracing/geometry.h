@@ -33,6 +33,13 @@ namespace rt
 
         std::vector<Triangle> tris;
         Material m;
+    };
+
+    struct Model
+    {
+        Intersection ray_intersect(Ray r) const;
+
+        std::vector<Mesh> meshes;
         glm::mat4 T;
     };
 
