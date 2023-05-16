@@ -4,8 +4,8 @@
 #include <array>
 #include <fstream>
 
-#define WIDTH 1000
-#define HEIGHT 1000
+#define WIDTH 2000
+#define HEIGHT 2000
 
 namespace rt
 {

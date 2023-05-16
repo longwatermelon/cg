@@ -71,12 +71,12 @@ int main(int argc, char **argv)
         .meshes = {
             rt::Mesh{
                 .verts = {
-                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
+                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) },
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) },
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }), .norm = rt::toD({ 0.f, 0.f, -1.f }) }
                 },
                 .indices = {
                     0, 1, 2,
@@ -100,7 +100,17 @@ int main(int argc, char **argv)
         .in = 1.2f
     });
 
-    rt::render(sc, "out.ppm");
+    rt::Model monkey;
+    monkey.load_meshes("res/monkey.obj");
+    monkey.generate_mesh_aabb();
+    monkey.T = glm::translate(glm::mat4(1.f), { 2.5f, .75f, 2.f });
+    monkey.meshes[0].m = refract_mat;
+    sc.models.emplace_back(monkey);
+
+    rt::render(sc, "out.ppm", rt::RenderConfig{
+        .render_opts = rt::RENDER_LOG_PROGRESS,
+        .scene_opts = rt::SC_INTERP_NORMALS
+    });
 
     return 0;
 }

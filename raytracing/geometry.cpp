@@ -105,6 +105,9 @@ namespace rt
                 n = toD(glm::normalize(glm::cross(-a_b, -a_c)));
             }
 
+            if (glm::dot(n, r.d) > 0.f)
+                n = -n;
+
             return Intersection{
                 .intersects = true,
                 .ray = r,
