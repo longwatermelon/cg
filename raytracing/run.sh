@@ -1,5 +1,5 @@
 #!/bin/sh
 make lib
 make
-./a.out
+time ./a.out
 feh out.ppm
