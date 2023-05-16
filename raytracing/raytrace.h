@@ -11,7 +11,12 @@ namespace rt
         RENDER_LOG_PROGRESS = 1
     };
 
+    struct RenderConfig
+    {
+        RenderOptions render_opts = (RenderOptions)0;
+        SceneRayOpts scene_opts = (SceneRayOpts)0;
+    };
+
     void render(const Scene &sc, const std::string &outf,
-                RenderOptions ropt = (RenderOptions)0,
-                SceneRayOpts scopt = (SceneRayOpts)0);
+            RenderConfig cfg = RenderConfig());
 }

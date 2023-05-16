@@ -18,7 +18,7 @@ namespace rt
 
     struct Scene
     {
-        glm::mat4 cam;
+        glm::mat4 cam{ glm::mat4(1.f) };
         std::vector<Sphere> spheres;
         std::vector<Model> models;
         std::vector<Plane> planes;

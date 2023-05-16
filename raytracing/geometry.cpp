@@ -3,6 +3,8 @@
 #include "util.h"
 #include <algorithm>
 #include <cstdio>
+#include <fstream>
+#include <sstream>
 #include <glm/gtx/string_cast.hpp>
 
 namespace rt
@@ -130,6 +132,12 @@ namespace rt
         }
 
         nearest.ray.transform(this->T);
+        nearest.n = glm::normalize(
+            toD(glm::transpose(
+                glm::inverse(this->T)
+            ) * nearest.n)
+        );
+
         return nearest;
     }
 
@@ -137,6 +145,68 @@ namespace rt
     {
         for (auto &mesh : this->meshes)
             mesh.bounding_box = AABB::create(mesh);
+    }
+
+    void Model::load_meshes(const std::string &path)
+    {
+        std::ifstream ifs(path);
+        std::string first;
+
+        std::vector<glm::vec4> pos, norms;
+
+        for (std::string line; std::getline(ifs, line);)
+        {
+            std::stringstream ss(line);
+            ss >> first;
+
+            if (first == "o")
+            {
+                this->meshes.emplace_back(Mesh{
+                    .m = Material{
+                        .k_a = { .2f, 0.f, 0.f },
+                        .k_d = { .5f, 0.f, 0.f },
+                        .k_s = { .7f, 0.f, 0.f },
+                        .q = 50.f
+                    }
+                });
+            }
+
+            if (first == "v")
+            {
+                glm::vec4 p;
+                ss >> p.x >> p.y >> p.z;
+                pos.emplace_back(p);
+            }
+
+            if (first == "vn")
+            {
+                glm::vec4 n;
+                ss >> n.x >> n.y >> n.z;
+                norms.emplace_back(n);
+            }
+
+            if (first == "f")
+            {
+                char c;
+                int int_;
+                for (int i = 0; i < 3; ++i)
+                {
+                    int ip, in;
+                    ss >> ip >> c;
+                    if (ss.peek() == '/') ss >> c;
+                    else ss >> int_ >> c;
+                    ss >> in;
+
+                    this->meshes.back().verts.emplace_back(Vertex{
+                        .pos = pos[ip - 1],
+                        .norm = norms[in - 1]
+                    });
+                    this->meshes.back().indices.emplace_back(
+                        this->meshes.back().verts.size() - 1
+                    );
+                }
+            }
+        }
     }
 
     Intersection Plane::ray_intersect(Ray r) const

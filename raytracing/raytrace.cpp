@@ -10,12 +10,12 @@
 namespace rt
 {
     void render(const Scene &sc, const std::string &outf,
-                RenderOptions ropt, SceneRayOpts scopt)
+                RenderConfig cfg)
     {
         std::vector<glm::vec3> frame(WIDTH * HEIGHT);
         for (int y = 0; y < HEIGHT; ++y)
         {
-            if (ropt & RENDER_LOG_PROGRESS)
+            if (cfg.render_opts & RENDER_LOG_PROGRESS)
             {
                 printf("\r%d rows rendered", y);
                 fflush(stdout);
@@ -31,11 +31,13 @@ namespace rt
                                 glm::vec3{ std::sin(th), std::sin(phi), 1.f }))
                 };
 
-                frame[y * WIDTH + x] = phong(sc.cast_ray(r, scopt), sc);
+                frame[y * WIDTH + x] = phong(
+                    sc.cast_ray(r, cfg.scene_opts), sc
+                );
             }
         }
 
-        if (ropt & RENDER_LOG_PROGRESS)
+        if (cfg.render_opts & RENDER_LOG_PROGRESS)
             printf("\r%d rows rendered\n", HEIGHT);
 
         std::ofstream ofs(outf);

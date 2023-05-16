@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <array>
+#include <string>
 
 namespace rt
 {
@@ -43,6 +44,8 @@ namespace rt
     {
         Intersection ray_intersect(Ray r, bool smooth_shading) const;
         void generate_mesh_aabb();
+
+        void load_meshes(const std::string &path);
 
         std::vector<Mesh> meshes;
         glm::mat4 T;
