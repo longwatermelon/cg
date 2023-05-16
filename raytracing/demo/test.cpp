@@ -15,8 +15,7 @@ int main(int argc, char **argv)
         .k_d = { .5f, .5f, .5f },
         .k_s = { .7f, .7f, .7f },
         .q = 50.f,
-        .reflectiveness = .6f,
-        .double_sided = true
+        .reflectiveness = .6f
     };
 
     rt::Material mat2 = {

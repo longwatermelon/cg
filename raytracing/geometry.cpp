@@ -40,7 +40,7 @@ namespace rt
             .intersects = true,
             .ray = r,
             .t = t,
-            .n = this->m.double_sided ? make_doublesided(n, r.d) : n,
+            .n = n,
             .m = &this->m
         };
     }
@@ -92,9 +92,6 @@ namespace rt
 
         nearest.ray.transform(this->T);
         nearest.m = &this->m;
-        if (this->m.double_sided)
-            nearest.n = make_doublesided(nearest.n, nearest.ray.d);
-
         return nearest;
     }
 
@@ -107,7 +104,7 @@ namespace rt
                 .intersects = true,
                 .ray = r,
                 .t = -glm::dot(toD(this->p0) - toD(r.o), this->n) / denom,
-                .n = this->m.double_sided ? make_doublesided(this->n, r.d) : this->n,
+                .n = this->n,
                 .m = &this->m
             };
         }
