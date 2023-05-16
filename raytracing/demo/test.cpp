@@ -70,21 +70,17 @@ int main(int argc, char **argv)
     rt::Model model{
         .meshes = {
             rt::Mesh{
-                .tris = {
-                    rt::Triangle{
-                        .verts = {
-                            rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
-                            rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-                            rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
-                        }
-                    },
-                    rt::Triangle{
-                        .verts = {
-                            rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
-                            rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
-                            rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
-                        }
-                    }
+                .verts = {
+                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, -0.9f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ -0.9f, 1.1f, 0.f }) },
+                    rt::Vertex{ .pos = rt::toP({ 1.1f, 1.1f, 0.f }) }
+                },
+                .indices = {
+                    0, 1, 2,
+                    3, 4, 5
                 },
                 .m = mat3
             }

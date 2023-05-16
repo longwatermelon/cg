@@ -6,5 +6,12 @@
 
 namespace rt
 {
-    void render(const Scene &sc, const std::string &outf);
+    enum RenderOptions
+    {
+        RENDER_LOG_PROGRESS = 1
+    };
+
+    void render(const Scene &sc, const std::string &outf,
+                RenderOptions ropt = (RenderOptions)0,
+                SceneRayOpts scopt = (SceneRayOpts)0);
 }

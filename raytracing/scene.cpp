@@ -19,7 +19,7 @@ namespace rt
 
         for (const auto &model : this->models)
         {
-            Intersection in = model.ray_intersect(r);
+            Intersection in = model.ray_intersect(r, opts & SC_INTERP_NORMALS);
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }

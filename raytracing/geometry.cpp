@@ -47,11 +47,32 @@ namespace rt
         };
     }
 
-    Intersection Triangle::ray_intersect(Ray r) const
+    Intersection Mesh::ray_intersect(Ray r, bool smooth_shading) const
     {
-        glm::vec3 v = to3(this->verts[0].pos - r.o);
-        glm::vec3 a_b = to3(this->verts[0].pos - this->verts[1].pos);
-        glm::vec3 a_c = to3(this->verts[0].pos - this->verts[2].pos);
+        Intersection nearest{ .intersects = false, .t = INFINITY };
+        for (unsigned int i = 0; i < this->indices.size(); i += 3)
+        {
+            Intersection in = ray_intersect_tri(r,
+                {
+                    this->verts[i],
+                    this->verts[i + 1],
+                    this->verts[i + 2]
+                }, smooth_shading);
+
+            if (in.intersects && in.t < nearest.t && in.t > 0.f)
+                nearest = in;
+        }
+
+        nearest.m = &this->m;
+        return nearest;
+    }
+
+    Intersection Mesh::ray_intersect_tri(Ray r, std::array<Vertex, 3> verts,
+                                    bool smooth_shading) const
+    {
+        glm::vec3 v = to3(verts[0].pos - r.o);
+        glm::vec3 a_b = to3(verts[0].pos - verts[1].pos);
+        glm::vec3 a_c = to3(verts[0].pos - verts[2].pos);
         glm::mat3 m = glm::transpose(glm::mat3{
             a_b.x, a_c.x, r.d.x,
             a_b.y, a_c.y, r.d.y,
@@ -65,14 +86,26 @@ namespace rt
             if (byt[2] < 0.f)
                 return Intersection{ .intersects = false };
 
-            glm::vec4 n = toD(glm::normalize(glm::cross(-a_b, -a_c)));
+            glm::vec4 n;
+            glm::vec3 bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] };
+            if (smooth_shading)
+            {
+                n = bary[0] * verts[0].norm +
+                    bary[1] * verts[1].norm +
+                    bary[2] * verts[2].norm;
+            }
+            else
+            {
+                n = toD(glm::normalize(glm::cross(-a_b, -a_c)));
+            }
+
             return Intersection{
                 .intersects = true,
                 .ray = r,
                 .t = byt[2],
                 .n = n,
                 .has_bary = true,
-                .bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] }
+                .bary = bary
             };
         }
 
@@ -81,27 +114,13 @@ namespace rt
         };
     }
 
-    Intersection Mesh::ray_intersect(Ray r) const
-    {
-        Intersection nearest{ .intersects = false, .t = INFINITY };
-        for (const auto &tri : this->tris)
-        {
-            Intersection in = tri.ray_intersect(r);
-            if (in.intersects && in.t < nearest.t && in.t > 0.f)
-                nearest = in;
-        }
-
-        nearest.m = &this->m;
-        return nearest;
-    }
-
-    Intersection Model::ray_intersect(Ray r) const
+    Intersection Model::ray_intersect(Ray r, bool smooth_shading) const
     {
         r.transform(glm::inverse(this->T));
         Intersection nearest{ .intersects = false, .t = INFINITY };
         for (const auto &mesh : this->meshes)
         {
-            Intersection in = mesh.ray_intersect(r);
+            Intersection in = mesh.ray_intersect(r, smooth_shading);
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }

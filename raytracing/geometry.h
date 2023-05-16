@@ -18,26 +18,25 @@ namespace rt
     struct Vertex
     {
         glm::vec4 pos;
-    };
 
-    struct Triangle
-    {
-        Intersection ray_intersect(Ray r) const;
-
-        std::array<Vertex, 3> verts;
+        // smooth shading
+        glm::vec4 norm;
     };
 
     struct Mesh
     {
-        Intersection ray_intersect(Ray r) const;
+        Intersection ray_intersect(Ray r, bool smooth_shading) const;
+        Intersection ray_intersect_tri(Ray r, std::array<Vertex, 3> verts,
+                                       bool smooth_shading) const;
 
-        std::vector<Triangle> tris;
+        std::vector<Vertex> verts;
+        std::vector<unsigned int> indices;
         Material m;
     };
 
     struct Model
     {
-        Intersection ray_intersect(Ray r) const;
+        Intersection ray_intersect(Ray r, bool smooth_shading) const;
 
         std::vector<Mesh> meshes;
         glm::mat4 T;
