@@ -1,5 +1,6 @@
 #pragma once
 #include "util.h"
+#include "optimization.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <array>
@@ -32,11 +33,16 @@ namespace rt
         std::vector<Vertex> verts;
         std::vector<unsigned int> indices;
         Material m;
+
+        AABB bounding_box{
+            glm::vec3(-INFINITY), glm::vec3(INFINITY)
+        };
     };
 
     struct Model
     {
         Intersection ray_intersect(Ray r, bool smooth_shading) const;
+        void generate_mesh_aabb();
 
         std::vector<Mesh> meshes;
         glm::mat4 T;

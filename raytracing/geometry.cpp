@@ -1,4 +1,5 @@
 #include "geometry.h"
+#include "optimization.h"
 #include "util.h"
 #include <algorithm>
 #include <cstdio>
@@ -49,6 +50,9 @@ namespace rt
 
     Intersection Mesh::ray_intersect(Ray r, bool smooth_shading) const
     {
+        if (!this->bounding_box.ray_intersect(r))
+            return Intersection{ .intersects = false };
+
         Intersection nearest{ .intersects = false, .t = INFINITY };
         for (unsigned int i = 0; i < this->indices.size(); i += 3)
         {
@@ -127,6 +131,12 @@ namespace rt
 
         nearest.ray.transform(this->T);
         return nearest;
+    }
+
+    void Model::generate_mesh_aabb()
+    {
+        for (auto &mesh : this->meshes)
+            mesh.bounding_box = AABB::create(mesh);
     }
 
     Intersection Plane::ray_intersect(Ray r) const
