@@ -15,7 +15,8 @@ int main(int argc, char **argv)
         .k_d = { .5f, .5f, .5f },
         .k_s = { .7f, .7f, .7f },
         .q = 50.f,
-        .reflectiveness = .6f
+        .reflectiveness = .6f,
+        .double_sided = true
     };
 
     rt::Material mat2 = {
@@ -61,9 +62,9 @@ int main(int argc, char **argv)
         .tris = {
             rt::Triangle{
                 .verts = {
+                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) },
                     rt::Vertex{ .pos = rt::toP({ -1.f, -1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) },
-                    rt::Vertex{ .pos = rt::toP({ 1.f, -1.f, 0.f }) }
+                    rt::Vertex{ .pos = rt::toP({ -1.f, 1.f, 0.f }) }
                 }
             },
             rt::Triangle{

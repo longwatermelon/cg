@@ -37,4 +37,10 @@ namespace rt
         glm::quat qz(glm::vec3(0.f, 0.f, rot.z));
         return glm::mat4_cast(glm::normalize(qx * qy * qz));
     }
+
+    glm::vec4 make_doublesided(glm::vec4 n, glm::vec4 rd)
+    {
+        // Flip if same direction
+        return glm::dot(n, rd) > 0.f ? -n : n;
+    }
 }

@@ -37,7 +37,10 @@ namespace rt
         float q;
         float reflectiveness{ 0.f };
         float refract_n{ 1.f };
+        bool double_sided{ false };
     };
+
+    glm::vec4 make_doublesided(glm::vec4 n, glm::vec4 rd);
 
     struct Intersection
     {

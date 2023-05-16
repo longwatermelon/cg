@@ -1,4 +1,5 @@
 #include "geometry.h"
+#include "util.h"
 #include <algorithm>
 #include <cstdio>
 #include <glm/gtx/string_cast.hpp>
@@ -39,7 +40,7 @@ namespace rt
             .intersects = true,
             .ray = r,
             .t = t,
-            .n = n,
+            .n = this->m.double_sided ? make_doublesided(n, r.d) : n,
             .m = &this->m
         };
     }
@@ -62,11 +63,12 @@ namespace rt
             if (byt[2] < 0.f)
                 return Intersection{ .intersects = false };
 
+            glm::vec4 n = toD(glm::normalize(glm::cross(-a_b, -a_c)));
             return Intersection{
                 .intersects = true,
                 .ray = r,
                 .t = byt[2],
-                .n = toD(glm::normalize(glm::cross(-a_b, -a_c))),
+                .n = n,
                 .has_bary = true,
                 .bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] }
             };
@@ -90,6 +92,9 @@ namespace rt
 
         nearest.ray.transform(this->T);
         nearest.m = &this->m;
+        if (this->m.double_sided)
+            nearest.n = make_doublesided(nearest.n, nearest.ray.d);
+
         return nearest;
     }
 
@@ -102,7 +107,7 @@ namespace rt
                 .intersects = true,
                 .ray = r,
                 .t = -glm::dot(toD(this->p0) - toD(r.o), this->n) / denom,
-                .n = this->n,
+                .n = this->m.double_sided ? make_doublesided(this->n, r.d) : this->n,
                 .m = &this->m
             };
         }
