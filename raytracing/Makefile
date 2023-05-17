@@ -8,7 +8,7 @@ LIBOBJ=$(LIBSRC:.cpp=.o)
 
 .PHONY: lib
 
-all: test
+all: main
 
 %: demo/%.cpp
 	$(CXX) $(CXXFLAGS) $(INC) $^ $(LDFLAGS)

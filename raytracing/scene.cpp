@@ -61,19 +61,25 @@ namespace rt
         for (auto &mat : j["materials"])
         {
             Material m;
-            glm::vec3 color = {
-                mat["color"][0],
-                mat["color"][1],
-                mat["color"][2]
-            };
-            m.k_a = mat["ambient"].get<float>() * color;
-            m.k_d = mat["diffuse"].get<float>() * color;
-            m.k_s = mat["specular"].get<float>() * color;
-            m.q = mat["specular exponent"];
+            if (mat.contains("color"))
+            {
+                glm::vec3 color = {
+                    mat["color"][0],
+                    mat["color"][1],
+                    mat["color"][2]
+                };
+                m.k_a = mat["ambient"].get<float>() * color;
+                m.k_d = mat["diffuse"].get<float>() * color;
+                m.k_s = mat["specular"].get<float>() * color;
+            }
+
+            if (mat.contains("specular exponent"))
+                m.q = mat["specular exponent"];
             if (mat.contains("reflect"))
                 m.reflectiveness = mat["reflect"];
             if (mat.contains("n"))
                 m.refract_n = mat["n"];
+
             sc.materials.emplace_back(mat["name"], m);
         }
 
@@ -89,6 +95,13 @@ namespace rt
                 }) * rotation({
                     obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
                 });
+                if (obj.contains("stretch"))
+                    sph.T = sph.T * glm::transpose(glm::mat4{
+                        obj["stretch"][0].get<float>(), 0.f, 0.f, 0.f,
+                        0.f, obj["stretch"][1].get<float>(), 0.f, 0.f,
+                        0.f, 0.f, obj["stretch"][2].get<float>(), 0.f,
+                        0.f, 0.f, 0.f, 1.f
+                    });
                 sc.spheres.emplace_back(sph);
             }
 

@@ -1,48 +1,106 @@
 {
     "image": {
-        "width": 1000,
-        "height": 1000
+        "width": 2000,
+        "height": 2000
     },
     "camera": {
-        "pos": [0, 0, -4],
-        "rotation": [0, 0, 0]
+        "pos": [5, 0, -5],
+        "rotation": [0, -0.5, 0]
     },
     "materials": [
         {
             "name": "mat",
-            "color": [1, 0, 0],
+            "color": [1, 1, 1],
             "ambient": 0.2,
             "diffuse": 0.5,
             "specular": 0.7,
-            "specular exponent": 50
+            "specular exponent": 50,
+            "reflect": 0.6
+        },
+        {
+            "name": "mat2",
+            "color": [0, 1, 0.5],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.7,
+            "specular exponent": 100
+        },
+        {
+            "name": "mat3",
+            "color": [0, 0.8, 1],
+            "ambient": 0.3,
+            "diffuse": 0.7,
+            "specular": 0.5,
+            "specular exponent": 10
+        },
+        {
+            "name": "mat4",
+            "color": [0, 0.8, 1],
+            "ambient": 0.3,
+            "diffuse": 0.7,
+            "specular": 0.5,
+            "specular exponent": 10
+        },
+        {
+            "name": "refract mat",
+            "color": [0, 0.8, 1],
+            "ambient": 0.3,
+            "diffuse": 0.7,
+            "specular": 0.5,
+            "specular exponent": 10,
+            "n": 2
         }
     ],
+
     "objects": [
-        {
-            "type": "sphere",
-            "radius": 1,
-            "material": "mat",
-            "pos": [0, 0, 5],
-            "rotation": [0, 0, 0]
-        },
-        {
-            "type": "model",
-            "path": "res/monkey.obj",
-            "material": "mat",
-            "pos": [2, 0, 2],
-            "rotation": [0, 0, 0]
-        },
         {
             "type": "plane",
             "p0": [0, 1, 0],
             "normal": [0, -1, 0],
             "material": "mat"
+        },
+        {
+            "type": "sphere",
+            "radius": 1,
+            "material": "mat2",
+            "pos": [0, 1, 5],
+            "rotation": [0, 0, 0],
+            "stretch": [2, 1, 2]
+        },
+        {
+            "type": "sphere",
+            "radius": 1,
+            "material": "mat4",
+            "pos": [2.2, -1, 8],
+            "rotation": [0, 0, 0]
+        },
+        {
+            "type": "sphere",
+            "radius": 0.5,
+            "material": "refract mat",
+            "pos": [1, 0.5, 1],
+            "rotation": [0, 0, 0]
+        },
+        {
+            "type": "model",
+            "path": "res/triangles.obj",
+            "material": "mat3",
+            "pos": [0, 0, 4.5],
+            "rotation": [0, 0, 0]
+        },
+        {
+            "type": "model",
+            "path": "res/bunny-small.obj",
+            "material": "refract mat",
+            "pos": [2.8, 0.75, 1.7],
+            "rotation": [0, 0, 0]
         }
     ],
+
     "lights": [
         {
             "intensity": 1,
-            "pos": [2, 0, 0]
+            "pos": [1, -1, 3]
         }
     ]
 }

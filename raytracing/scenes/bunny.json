@@ -1,0 +1,35 @@
+{
+    "image": {
+        "width": 1000,
+        "height": 1000
+    },
+    "camera": {
+        "pos": [0, 0, 0],
+        "rotation": [0, 0, 0]
+    },
+    "materials": [
+        {
+            "name": "mat",
+            "color": [1, 0, 0],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.8,
+            "specular exponent": 50
+        }
+    ],
+    "objects": [
+        {
+            "type": "model",
+            "path": "res/bunny.obj",
+            "material": "mat",
+            "pos": [0, 0, 5],
+            "rotation": [0, 0, 0]
+        }
+    ],
+    "lights": [
+        {
+            "intensity": 2,
+            "pos": [0, 0, 0]
+        }
+    ]
+}
