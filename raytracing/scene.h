@@ -2,6 +2,7 @@
 #include "util.h"
 #include <glm/glm.hpp>
 #include <vector>
+#include <string>
 
 namespace rt
 {
@@ -23,7 +24,12 @@ namespace rt
         std::vector<Model> models;
         std::vector<Plane> planes;
         std::vector<PointLight> lights;
+        std::vector<std::pair<std::string, Material>> materials;
 
         Intersection cast_ray(Ray r, SceneRayOpts opts = (SceneRayOpts)0) const;
+
+        static Scene from(const std::string &src);
+
+        const Material *find_material(const std::string &name) const;
     };
 }

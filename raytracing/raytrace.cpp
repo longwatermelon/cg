@@ -4,8 +4,8 @@
 #include <array>
 #include <fstream>
 
-#define WIDTH 2000
-#define HEIGHT 2000
+static int WIDTH = 1000;
+static int HEIGHT = 1000;
 
 namespace rt
 {
@@ -53,5 +53,15 @@ namespace rt
         }
 
         ofs.close();
+    }
+
+    void setw(int w)
+    {
+        WIDTH = w;
+    }
+
+    void seth(int h)
+    {
+        HEIGHT = h;
     }
 }

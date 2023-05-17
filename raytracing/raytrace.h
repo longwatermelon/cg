@@ -19,4 +19,7 @@ namespace rt
 
     void render(const Scene &sc, const std::string &outf,
             RenderConfig cfg = RenderConfig());
+
+    void setw(int w);
+    void seth(int h);
 }
