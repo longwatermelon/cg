@@ -8,7 +8,8 @@ namespace rt
 {
     enum RenderOptions
     {
-        RENDER_LOG_PROGRESS = 1
+        RENDER_LOG_PROGRESS = 1,
+        RENDER_ANTIALIASING = 2
     };
 
     struct RenderConfig

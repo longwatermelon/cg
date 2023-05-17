@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-std=c++17 -ggdb -Wall -Ofast
 INC=
-LDFLAGS=-L../lib/ -lraytrace -lassimp
+LDFLAGS=-L../lib/ -lraytrace
 
 LIBSRC=$(wildcard *.cpp)
 LIBOBJ=$(LIBSRC:.cpp=.o)

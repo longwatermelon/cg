@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 
     rt::Scene sc = rt::Scene::from(argv[1]);
     rt::render(sc, "out.ppm", rt::RenderConfig{
-        .render_opts = rt::RENDER_LOG_PROGRESS,
+        .render_opts = (rt::RenderOptions)(rt::RENDER_LOG_PROGRESS | rt::RENDER_ANTIALIASING),
         .scene_opts = rt::SC_INTERP_NORMALS
     });
     return 0;

@@ -1180,22 +1180,6 @@ Kd-tree traversal
 
 \subsection{Advanced techniques}
 
-\subsubsection{Antialiasing: Fourier transforms}
-
-\includegraphics[scale=.5]{images/fourier-fx.png}
-
-Raytracing on this 1D graph can be simulated by taking x values in
-constant intervals and evaluating $f$ at those points. After reconstruction,
-high frequency information (two negative bumps in the middle of the
-graph) gets lost due to lower sampling frequency.
-
-A fourier transform creates a function $\mathcal F [f](\xi)$ out of f:
-
-\includegraphics[scale=.5]{images/fourier-f-to-F.png}
-
-Definition of a fourier transform
-\[ \mathcal F[f](\xi) := \int_{-\infty}^{\infty} f(x) e^{2\pi ix\xi} \dif x \]
-
 \subsubsection{Global illumination}
 
 In simple raytracing, a ray is cast towards each light from the
@@ -1206,17 +1190,25 @@ every direction on the hemisphere.
 
 Reflectance equation, with $L_{out}$ = outgoing light in direction
 $\bm v$, $\bm x$ = intersection point,
-\[ L_{out} = \int_{\Omega} = L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
+\[ L_{out} = \int_{\Omega} L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
 \cos\theta \dif \bm l \]
 
 The full rendering equation just includes light sources in $E_{out}$,
 which is 0 if not a light source:
-\[ L_{out} = \int_{\Omega} = L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
+\[ L_{out} = \int_{\Omega} L_{in}(\bm l) f_r(\bm x,\bm l,\bm v)
 \cos\theta \dif \bm l + E_{out}(\bm x,\bm v) \]
 
 Analytical solution to rendering equation is usually impossible;
-however, there are many ways to solve it approximately, including
-Monte-Carlo raytracing, which casts random rays from the hit point
-to evaluate the integral
+however, there are many ways to solve it approximately.
+
+In Monte-Carlo raytracing, every ray intersection generates multiple new rays,
+which then generate multiple new rays until a recursion limit is hit, and then
+the contribution of each light source is added. If a ray directly intersects
+with a light source, the light contribution is directly added and the ray is
+stopped. However, this method is extremely computationally expensive since the
+number of rays grows exponentially with each intersection, which is what Monte-
+Carlo pathtracing solves. Monte-Carlo pathtracing casts a single ray from each
+intersection point but casts multiple rays for each pixel ($>$ 10 samples/pixel is
+reasonable).
 
 \end{document}

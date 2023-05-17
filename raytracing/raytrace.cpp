@@ -23,8 +23,11 @@ namespace rt
 
             for (int x = 0; x < WIDTH; ++x)
             {
-                float th = ((float)x / WIDTH) - .5f;
-                float phi = ((float)y / HEIGHT) - .5f;
+                float fx = cfg.render_opts & RENDER_ANTIALIASING ? (float)(x - .5f) : x;
+                float fy = cfg.render_opts & RENDER_ANTIALIASING ? (float)(y - .5f) : y;
+
+                float th = (fx / WIDTH) - .5f;
+                float phi = (fy / HEIGHT) - .5f;
                 Ray r{
                     .o = toP({ 0.f, 0.f, 0.f }),
                     .d = toD(glm::normalize(
@@ -39,6 +42,26 @@ namespace rt
 
         if (cfg.render_opts & RENDER_LOG_PROGRESS)
             printf("\r%d rows rendered\n", HEIGHT);
+
+        if (cfg.render_opts & RENDER_ANTIALIASING)
+        {
+            if (cfg.render_opts & RENDER_LOG_PROGRESS)
+                printf("Antialiasing...\n");
+
+            for (int y = 0; y < HEIGHT - 1; ++y)
+            {
+                for (int x = 0; x < WIDTH - 1; ++x)
+                {
+                    frame[y * WIDTH + x] = (frame[y * WIDTH + x] +
+                                   frame[(y + 1) * WIDTH + x] +
+                                   frame[y * WIDTH + x + 1] +
+                                   frame[(y + 1) * WIDTH + x + 1]) / 4.f;
+                }
+            }
+        }
+
+        if (cfg.render_opts & RENDER_LOG_PROGRESS)
+            printf("Writing to file...\n");
 
         std::ofstream ofs(outf);
         ofs << "P3\n" << WIDTH << ' ' << HEIGHT << "\n255\n";
