@@ -16,7 +16,7 @@ namespace rt
         if (!(opts & SC_NO_TRANSFORM_CAM))
             r.transform(this->cam);
 
-        Intersection nearest{ .intersects = false, .t = INFINITY };
+        Intersection nearest{ .intersects = false, .ray = r, .t = INFINITY };
 
         for (const auto &sph : this->spheres)
         {
@@ -66,6 +66,24 @@ namespace rt
                 });
         }
 
+        if (j.contains("skybox"))
+        {
+            sc.skybox = std::make_unique<Skybox>();
+            sc.skybox->images = {
+                // -x, +x, -y, +y, -z, +z
+                cv::imread(j["skybox"]["-x"]),
+                cv::imread(j["skybox"]["+x"]),
+                cv::imread(j["skybox"]["-y"]),
+                cv::imread(j["skybox"]["+y"]),
+                cv::imread(j["skybox"]["-z"]),
+                cv::imread(j["skybox"]["+z"])
+            };
+            sc.skybox->dim = {
+                sc.skybox->images[0].cols,
+                sc.skybox->images[0].rows
+            };
+        }
+
         if (j.contains("materials"))
         {
             for (auto &mat : j["materials"])
@@ -89,6 +107,8 @@ namespace rt
                     m.reflectiveness = mat["reflect"];
                 if (mat.contains("n"))
                     m.refract_n = mat["n"];
+                if (mat.contains("refract"))
+                    m.refractiveness = mat["refract"];
 
                 sc.materials.emplace_back(mat["name"], m);
             }

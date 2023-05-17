@@ -11,7 +11,7 @@ namespace rt
     glm::vec3 phong(const Intersection &in, const Scene &sc)
     {
         if (!in.intersects)
-            return { 0.f, 0.f, 0.f };
+            return sc.skybox ? sc.skybox->ray_intersect(in.ray.d) : glm::vec3{ 0.f, 0.f, 0.f };
 
         glm::vec4 hit = in.ray.along(in.t);
 
@@ -40,7 +40,8 @@ namespace rt
                 color = reflect_color(in, sc, color, phong);
 
             if (in.m->refract_n > 1.f)
-                color = refract_color(in, sc, phong);
+                color = in.m->refractiveness * refract_color(in, sc, phong) +
+                        (1.f - in.m->refractiveness) * color;
 
             float distance = glm::distance(in.ray.along(in.t), light.pos);
             total_color += (light.in / (.1f * distance * distance + .5f)) *
@@ -68,7 +69,7 @@ namespace rt
             &lighting_fn, int counter)
     {
         if (!in.intersects || counter > 4)
-            return { 0.f, 0.f, 0.f };
+            return sc.skybox ? sc.skybox->ray_intersect(in.ray.d) : glm::vec3{ 0.f, 0.f, 0.f };
 
         if (in.m->refract_n <= 1.f)
             return lighting_fn(in, sc);

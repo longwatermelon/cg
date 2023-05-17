@@ -7,6 +7,8 @@
 #include <sstream>
 #include <glm/gtx/string_cast.hpp>
 
+const float EPSILON = 1e-2f;
+
 namespace rt
 {
     Intersection Sphere::ray_intersect(Ray r) const
@@ -20,7 +22,7 @@ namespace rt
         float d = b * b - 4.f * a * c;
 
         if (d < 0.f)
-            return Intersection{ .intersects = false };
+            return Intersection{ .intersects = false, .ray = r };
 
         float t1 = (-b + std::sqrt(d)) / (2.f * a);
         float t2 = (-b - std::sqrt(d)) / (2.f * a);
@@ -28,7 +30,7 @@ namespace rt
         float t = INFINITY;
 
         if (t1 <= 1e-4f)
-            return Intersection{ .intersects = false };
+            return Intersection{ .intersects = false, .ray = r };
 
         if (t2 <= 1e-4f)
             t = t1;
@@ -53,9 +55,9 @@ namespace rt
     Intersection Mesh::ray_intersect(Ray r, bool smooth_shading) const
     {
         if (!this->bounding_box.ray_intersect(r))
-            return Intersection{ .intersects = false };
+            return Intersection{ .intersects = false, .ray = r };
 
-        Intersection nearest{ .intersects = false, .t = INFINITY };
+        Intersection nearest{ .intersects = false, .ray = r, .t = INFINITY };
         for (unsigned int i = 0; i < this->indices.size(); i += 3)
         {
             Intersection in = ray_intersect_tri(r,
@@ -90,7 +92,7 @@ namespace rt
         if (byt[0] + byt[1] <= 1.f && byt[0] >= 0.f && byt[1] >= 0.f)
         {
             if (byt[2] < 0.f)
-                return Intersection{ .intersects = false };
+                return Intersection{ .intersects = false, .ray = r };
 
             glm::vec4 n;
             glm::vec3 bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] };
@@ -126,7 +128,7 @@ namespace rt
     Intersection Model::ray_intersect(Ray r, bool smooth_shading) const
     {
         r.transform(glm::inverse(this->T));
-        Intersection nearest{ .intersects = false, .t = INFINITY };
+        Intersection nearest{ .intersects = false, .ray = r, .t = INFINITY };
         for (const auto &mesh : this->meshes)
         {
             Intersection in = mesh.ray_intersect(r, smooth_shading);
@@ -140,6 +142,9 @@ namespace rt
                 glm::inverse(this->T)
             ) * nearest.n)
         );
+
+        if (nearest.t < EPSILON)
+            return Intersection{ .intersects = false, .ray = r, .t = INFINITY };
 
         return nearest;
     }
@@ -227,7 +232,8 @@ namespace rt
         }
 
         return Intersection{
-            .intersects = false
+            .intersects = false,
+            .ray = r
         };
     }
 

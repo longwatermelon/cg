@@ -19,8 +19,8 @@ namespace rt
         else if (adir.y > adir.x && adir.y > adir.z) longest = 'y';
         else if (adir.z > adir.y && adir.z > adir.x) longest = 'z';
 
-        int u, v;
-        int index;
+        int u = 0, v = 0;
+        int index = 0;
 
         if (longest == 'x')
         {
@@ -31,13 +31,32 @@ namespace rt
             u = (dy + .5f) * this->dim.y;
             if (sign(dir.x) > 0)
             {
-                v = (1.f - dz + .5f) * this->dim.x;
+                v = (1.f - (dz + .5f)) * this->dim.x;
                 index = 1;
             }
             else
             {
                 v = (dz + .5f) * this->dim.x;
                 index = 0;
+            }
+        }
+
+        if (longest == 'y')
+        {
+            float dy = .5f * sign(dir.y);
+            float dx = dy / dir.y * dir.x;
+            float dz = dy / dir.y * dir.z;
+
+            v = (dx + .5f) * this->dim.x;
+            if (sign(dir.y) > 0)
+            {
+                u = (1.f - (dz + .5f)) * this->dim.y;
+                index = 3;
+            }
+            else
+            {
+                u = (dz + .5f) * this->dim.y;
+                index = 2;
             }
         }
 
@@ -48,23 +67,26 @@ namespace rt
             float dy = dz / dir.z * dir.y;
 
             u = (dy + .5f) * this->dim.y;
-            if (sign(dir.z > 0))
+            if (sign(dir.z) > 0)
             {
                 v = (dx + .5f) * this->dim.x;
                 index = 5;
             }
             else
             {
-                v = (1.f - dx + .5f) * this->dim.x;
+                v = (1.f - (dx + .5f)) * this->dim.x;
                 index = 4;
             }
         }
 
-        cv::Vec3b col = this->images[index].at<cv::Vec3b>(u, v);
+        cv::Vec3b col = this->images[index].at<cv::Vec3b>(
+            std::max(std::min(u, this->dim.x - 1), 0),
+            std::max(std::min(v, this->dim.y - 1), 0)
+        );
         return {
-            (float)col.val[0] / 255.f,
+            (float)col.val[2] / 255.f,
             (float)col.val[1] / 255.f,
-            (float)col.val[2] / 255.f
+            (float)col.val[0] / 255.f
         };
     }
 }

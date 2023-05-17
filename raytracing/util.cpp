@@ -35,6 +35,6 @@ namespace rt
         glm::quat qy(glm::vec3(0.f, rot.y, 0.f));
         glm::quat qx(glm::vec3(rot.x, 0.f, 0.f));
         glm::quat qz(glm::vec3(0.f, 0.f, rot.z));
-        return glm::mat4_cast(glm::normalize(qx * qy * qz));
+        return glm::mat4_cast(glm::normalize(qy * qx * qz));
     }
 }

@@ -1,0 +1,70 @@
+{
+    "image": {
+        "width": 2000,
+        "height": 2000
+    },
+
+    "camera": {
+        "rotation": [0, -1.57, 0]
+    },
+
+    "skybox": {
+        "-x": "res/skybox/left.jpg",
+        "+x": "res/skybox/right.jpg",
+        "-y": "res/skybox/top.jpg",
+        "+y": "res/skybox/bottom.jpg",
+        "-z": "res/skybox/back.jpg",
+        "+z": "res/skybox/front.jpg"
+    },
+
+    "materials": [
+        {
+            "name": "mat",
+            "color": [1, 0, 0],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.7,
+            "specular exponent": 50,
+            "reflect": 1
+        },
+        {
+            "name": "mat2",
+            "color": [0.2, 0.9, 1],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.7,
+            "specular exponent": 100,
+            "refract": 0.7,
+            "n": 1.11
+        },
+        {
+            "name": "mat3",
+            "color": [1, 0, 0],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.7,
+            "specular exponent": 50
+        }
+    ],
+
+    "objects": [
+        {
+            "type": "model",
+            "path": "res/bunny-small.obj",
+            "material": "mat2",
+            "pos": [-5, 0.3, 0],
+            "rotation": [0, -1.57, 0]
+        }
+    ],
+
+    "lights": [
+        {
+            "intensity": 3,
+            "pos": [0, 0, 0]
+        }
+    ],
+
+    "post": [
+        "feh out.ppm"
+    ]
+}

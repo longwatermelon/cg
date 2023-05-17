@@ -36,6 +36,7 @@ namespace rt
         glm::vec3 k_a, k_d, k_s;
         float q;
         float reflectiveness{ 0.f };
+        float refractiveness{ 0.f };
         float refract_n{ 1.f };
     };
 
