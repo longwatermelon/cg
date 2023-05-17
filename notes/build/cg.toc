@@ -43,3 +43,6 @@
 \contentsline {subsubsection}{\numberline {2.3.3}Kd-trees}{17}{subsubsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.4}Advanced techniques}{18}{subsection.2.4}%
 \contentsline {subsubsection}{\numberline {2.4.1}Global illumination}{18}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Irradiance caching, photon mapping}{18}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}Monte-Carlo integration}{19}{subsubsection.2.4.3}%
+\contentsline {section}{\numberline {3}Rasterization}{20}{section.3}%

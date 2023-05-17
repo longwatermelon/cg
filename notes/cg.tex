@@ -1201,14 +1201,65 @@ which is 0 if not a light source:
 Analytical solution to rendering equation is usually impossible;
 however, there are many ways to solve it approximately.
 
-In Monte-Carlo raytracing, every ray intersection generates multiple new rays,
-which then generate multiple new rays until a recursion limit is hit, and then
-the contribution of each light source is added. If a ray directly intersects
-with a light source, the light contribution is directly added and the ray is
-stopped. However, this method is extremely computationally expensive since the
-number of rays grows exponentially with each intersection, which is what Monte-
-Carlo pathtracing solves. Monte-Carlo pathtracing casts a single ray from each
-intersection point but casts multiple rays for each pixel ($>$ 10 samples/pixel is
-reasonable).
+Monte-Carlo raytracing: Cast a single ray per pixel, and have the ray generate
+multiple new rays for every intersection in the scene. After some recursion
+limit is hit, each final ray casts a ray towards each light source.
+
+Monte-Carlo pathtracing: Cast multiple rays per pixel, and have the ray
+generate only one ray for every intersection in the scene. After some
+recursion limit is hit, the final ray casts a ray towards each light source.
+
+The scene will typically be very noisy when rendered with Monte-Carlo methods,
+because they randomly generate rays within a hemisphere, which can be
+fixed with more samples.
+
+\subsubsection{Irradiance caching, photon mapping}
+
+In irradiance caching, because indirect illumination is smooth, the indirect light of multiple points
+in the scene can be sampled and then indrect light in between the points can be
+interpolated.
+
+\includegraphics[scale=.5]{images/irradiance-cache.png}
+
+Yellow points indicate points which were sampled for irradiance caching,
+notably around sharp features because that's where indirect illumination
+is not smooth.
+
+Photon mapping is similar to irradiance caching, but instead of having
+the camera cast rays to sample points, the light casts random rays
+and the points from that are used.
+
+\includegraphics[scale=.5]{images/photon-mapping.png}
+
+When accessing the data of irradiance caching or photon mapping, a hierarchical
+structure like a kd-tree is required because of the large number of data
+points to look through.
+
+\subsubsection{Monte-Carlo integration}
+
+\includegraphics[scale=.4]{images/monte-carlo-integration.png}
+
+Take random samples and find the average
+\[ \int_S f(x) \dif x \approx \frac{V(S)}{N} \sum_{i=1}^N f(x_i) \]
+
+where $S$ is the integration domain, $V(S)$ is the volume of $S$, $x_i$
+are random x values and $N$ is the number of random samples.
+
+The average error is proportional to $1/\sqrt{N}$, which means 4x the number
+of samples is required to halve the error.
+
+One disadvantage of Monte-Carlo integration is that it's very noisy, which
+importance sampling partially fixes. When sampling a BRDF function, it's better
+to sample areas that will contribute to the integral more, because they will
+make the largest difference depending on whether they're sampled or not.
+
+\includegraphics[scale=.4]{images/importance-sampling.png}
+
+Importance sampling can be represented by
+\[ \int_S f(x) \dif x \approx \frac{V(S)}{N} \sum_{i=1}^N \frac{f(x_i)}{p(x_i)} \]
+
+where $p$ is some probability distribution.
+
+\section{Rasterization}
 
 \end{document}
