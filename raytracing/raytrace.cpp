@@ -76,6 +76,9 @@ namespace rt
         }
 
         ofs.close();
+
+        for (const auto &cmd : sc.post_commands)
+            std::system(cmd.c_str());
     }
 
     void setw(int w)

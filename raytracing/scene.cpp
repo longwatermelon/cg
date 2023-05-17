@@ -49,97 +49,140 @@ namespace rt
         std::ifstream ifs(src);
         json j = json::parse(ifs);
 
-        setw(j["image"]["width"].get<float>());
-        seth(j["image"]["height"].get<float>());
+        if (j.contains("image") && j["image"].contains("width"))
+            setw(j["image"]["width"].get<float>());
+        if (j.contains("image") && j["image"].contains("height"))
+            seth(j["image"]["height"].get<float>());
 
-        sc.cam = glm::translate(glm::mat4(1.f), {
-            j["camera"]["pos"][0], j["camera"]["pos"][1], j["camera"]["pos"][2]
-        }) * rotation({
-            j["camera"]["rotation"][0], j["camera"]["rotation"][1], j["camera"]["rotation"][2]
-        });
-
-        for (auto &mat : j["materials"])
+        if (j.contains("camera"))
         {
-            Material m;
-            if (mat.contains("color"))
-            {
-                glm::vec3 color = {
-                    mat["color"][0],
-                    mat["color"][1],
-                    mat["color"][2]
-                };
-                m.k_a = mat["ambient"].get<float>() * color;
-                m.k_d = mat["diffuse"].get<float>() * color;
-                m.k_s = mat["specular"].get<float>() * color;
-            }
-
-            if (mat.contains("specular exponent"))
-                m.q = mat["specular exponent"];
-            if (mat.contains("reflect"))
-                m.reflectiveness = mat["reflect"];
-            if (mat.contains("n"))
-                m.refract_n = mat["n"];
-
-            sc.materials.emplace_back(mat["name"], m);
+            if (j["camera"].contains("pos"))
+                sc.cam = glm::translate(glm::mat4(1.f), {
+                    j["camera"]["pos"][0], j["camera"]["pos"][1], j["camera"]["pos"][2]
+                });
+            if (j["camera"].contains("rotation"))
+                sc.cam *= rotation({
+                    j["camera"]["rotation"][0], j["camera"]["rotation"][1], j["camera"]["rotation"][2]
+                });
         }
 
-        for (auto &obj : j["objects"])
+        if (j.contains("materials"))
         {
-            if (obj["type"] == "sphere")
+            for (auto &mat : j["materials"])
             {
-                Sphere sph;
-                sph.r = obj["radius"];
-                sph.m = *sc.find_material(obj["material"].get<std::string>());
-                sph.T = glm::translate(glm::mat4(1.f), {
-                    obj["pos"][0], obj["pos"][1], obj["pos"][2]
-                }) * rotation({
-                    obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
-                });
-                if (obj.contains("stretch"))
-                    sph.T = sph.T * glm::transpose(glm::mat4{
-                        obj["stretch"][0].get<float>(), 0.f, 0.f, 0.f,
-                        0.f, obj["stretch"][1].get<float>(), 0.f, 0.f,
-                        0.f, 0.f, obj["stretch"][2].get<float>(), 0.f,
-                        0.f, 0.f, 0.f, 1.f
+                Material m;
+                if (mat.contains("color"))
+                {
+                    glm::vec3 color = {
+                        mat["color"][0],
+                        mat["color"][1],
+                        mat["color"][2]
+                    };
+                    m.k_a = mat["ambient"].get<float>() * color;
+                    m.k_d = mat["diffuse"].get<float>() * color;
+                    m.k_s = mat["specular"].get<float>() * color;
+                }
+
+                if (mat.contains("specular exponent"))
+                    m.q = mat["specular exponent"];
+                if (mat.contains("reflect"))
+                    m.reflectiveness = mat["reflect"];
+                if (mat.contains("n"))
+                    m.refract_n = mat["n"];
+
+                sc.materials.emplace_back(mat["name"], m);
+            }
+        }
+        else
+        {
+            std::cout << "**WARNING**: No materials detected.\n";
+        }
+
+        if (j.contains("objects"))
+        {
+            for (auto &obj : j["objects"])
+            {
+                if (obj["type"] == "sphere")
+                {
+                    Sphere sph;
+                    sph.r = obj["radius"];
+                    sph.m = *sc.find_material(obj["material"].get<std::string>());
+                    sph.T = glm::translate(glm::mat4(1.f), {
+                        obj["pos"][0], obj["pos"][1], obj["pos"][2]
                     });
-                sc.spheres.emplace_back(sph);
-            }
 
-            if (obj["type"] == "model")
-            {
-                Model m;
-                m.load_meshes(obj["path"]);
-                m.generate_mesh_aabb();
-                m.T = glm::translate(glm::mat4(1.f), {
-                    obj["pos"][0], obj["pos"][1], obj["pos"][2]
-                }) * rotation({
-                    obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
-                });
-                for (auto &mesh : m.meshes)
-                    mesh.m = *sc.find_material(obj["material"].get<std::string>());
-                sc.models.emplace_back(m);
-            }
+                    if (obj.contains("rotation"))
+                        sph.T *= rotation({
+                            obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
+                        });
 
-            if (obj["type"] == "plane")
-            {
-                Plane p;
-                p.p0 = toP({
-                    obj["p0"][0], obj["p0"][1], obj["p0"][2]
-                });
-                p.n = toD({
-                    obj["normal"][0], obj["normal"][1], obj["normal"][2]
-                });
-                p.m = *sc.find_material(obj["material"].get<std::string>());
-                sc.planes.emplace_back(p);
+                    if (obj.contains("stretch"))
+                        sph.T = sph.T * glm::transpose(glm::mat4{
+                            obj["stretch"][0].get<float>(), 0.f, 0.f, 0.f,
+                            0.f, obj["stretch"][1].get<float>(), 0.f, 0.f,
+                            0.f, 0.f, obj["stretch"][2].get<float>(), 0.f,
+                            0.f, 0.f, 0.f, 1.f
+                        });
+                    sc.spheres.emplace_back(sph);
+                }
+
+                if (obj["type"] == "model")
+                {
+                    Model m;
+                    m.load_meshes(obj["path"]);
+                    m.generate_mesh_aabb();
+                    m.T = glm::translate(glm::mat4(1.f), {
+                        obj["pos"][0], obj["pos"][1], obj["pos"][2]
+                    });
+
+                    if (obj.contains("rotation"))
+                        m.T *= rotation({
+                            obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
+                        });
+
+                    for (auto &mesh : m.meshes)
+                        mesh.m = *sc.find_material(obj["material"].get<std::string>());
+                    sc.models.emplace_back(m);
+                }
+
+                if (obj["type"] == "plane")
+                {
+                    Plane p;
+                    p.p0 = toP({
+                        obj["p0"][0], obj["p0"][1], obj["p0"][2]
+                    });
+                    p.n = toD({
+                        obj["normal"][0], obj["normal"][1], obj["normal"][2]
+                    });
+                    p.m = *sc.find_material(obj["material"].get<std::string>());
+                    sc.planes.emplace_back(p);
+                }
             }
         }
-
-        for (auto &light : j["lights"])
+        else
         {
-            PointLight l;
-            l.in = light["intensity"];
-            l.pos = toP({ light["pos"][0], light["pos"][1], light["pos"][2] });
-            sc.lights.emplace_back(l);
+            std::cout << "**WARNING**: No objects detected.\n";
+        }
+
+        if (j.contains("lights"))
+        {
+            for (auto &light : j["lights"])
+            {
+                PointLight l;
+                l.in = light["intensity"];
+                l.pos = toP({ light["pos"][0], light["pos"][1], light["pos"][2] });
+                sc.lights.emplace_back(l);
+            }
+        }
+        else
+        {
+            std::cout << "**WARNING**: No lights detected.\n";
+        }
+
+        if (j.contains("post"))
+        {
+            for (auto &cmd : j["post"])
+                sc.post_commands.emplace_back(cmd);
         }
 
         return sc;

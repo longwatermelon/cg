@@ -1,7 +1,7 @@
 CXX=g++
 CXXFLAGS=-std=c++17 -ggdb -Wall -Ofast
-INC=
-LDFLAGS=-L../lib/ -lraytrace
+INC=`pkg-config --cflags opencv4`
+LDFLAGS=-L../lib/ -lraytrace `pkg-config --libs opencv4`
 
 LIBSRC=$(wildcard *.cpp)
 LIBOBJ=$(LIBSRC:.cpp=.o)

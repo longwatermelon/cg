@@ -34,20 +34,7 @@
             "specular exponent": 10
         },
         {
-            "name": "mat4",
-            "color": [0, 0.8, 1],
-            "ambient": 0.3,
-            "diffuse": 0.7,
-            "specular": 0.5,
-            "specular exponent": 10
-        },
-        {
             "name": "refract mat",
-            "color": [0, 0.8, 1],
-            "ambient": 0.3,
-            "diffuse": 0.7,
-            "specular": 0.5,
-            "specular exponent": 10,
             "n": 2
         }
     ],
@@ -70,7 +57,7 @@
         {
             "type": "sphere",
             "radius": 1,
-            "material": "mat4",
+            "material": "mat3",
             "pos": [2.2, -1, 8],
             "rotation": [0, 0, 0]
         },
@@ -102,5 +89,9 @@
             "intensity": 1,
             "pos": [1, -1, 3]
         }
+    ],
+
+    "post": [
+        "feh out.ppm"
     ]
 }

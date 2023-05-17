@@ -1,8 +1,10 @@
 #pragma once
 #include "util.h"
+#include "skybox.h"
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace rt
 {
@@ -25,6 +27,8 @@ namespace rt
         std::vector<Plane> planes;
         std::vector<PointLight> lights;
         std::vector<std::pair<std::string, Material>> materials;
+        std::unique_ptr<Skybox> skybox;
+        std::vector<std::string> post_commands;
 
         Intersection cast_ray(Ray r, SceneRayOpts opts = (SceneRayOpts)0) const;
 
