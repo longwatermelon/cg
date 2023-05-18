@@ -62,9 +62,9 @@ namespace rt
         {
             Intersection in = ray_intersect_tri(r,
                 {
-                    this->verts[i],
-                    this->verts[i + 1],
-                    this->verts[i + 2]
+                    &this->verts[i],
+                    &this->verts[i + 1],
+                    &this->verts[i + 2]
                 }, smooth_shading);
 
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
@@ -75,12 +75,12 @@ namespace rt
         return nearest;
     }
 
-    Intersection Mesh::ray_intersect_tri(Ray r, std::array<Vertex, 3> verts,
+    Intersection Mesh::ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts,
                                     bool smooth_shading) const
     {
-        glm::vec3 v = to3(verts[0].pos - r.o);
-        glm::vec3 a_b = to3(verts[0].pos - verts[1].pos);
-        glm::vec3 a_c = to3(verts[0].pos - verts[2].pos);
+        glm::vec3 v = to3(verts[0]->pos - r.o);
+        glm::vec3 a_b = to3(verts[0]->pos - verts[1]->pos);
+        glm::vec3 a_c = to3(verts[0]->pos - verts[2]->pos);
         glm::mat3 m = glm::transpose(glm::mat3{
             a_b.x, a_c.x, r.d.x,
             a_b.y, a_c.y, r.d.y,
@@ -98,9 +98,9 @@ namespace rt
             glm::vec3 bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] };
             if (smooth_shading)
             {
-                n = bary[0] * verts[0].norm +
-                    bary[1] * verts[1].norm +
-                    bary[2] * verts[2].norm;
+                n = bary[0] * verts[0]->norm +
+                    bary[1] * verts[1]->norm +
+                    bary[2] * verts[2]->norm;
             }
             else
             {
@@ -116,7 +116,12 @@ namespace rt
                 .t = byt[2],
                 .n = n,
                 .has_bary = true,
-                .bary = bary
+                .bary = bary,
+                .verts = {
+                    verts[0],
+                    verts[1],
+                    verts[2]
+                }
             };
         }
 
@@ -161,6 +166,7 @@ namespace rt
         std::string first;
 
         std::vector<glm::vec4> pos, norms;
+        std::vector<glm::vec2> tcs;
 
         for (std::string line; std::getline(ifs, line);)
         {
@@ -193,21 +199,31 @@ namespace rt
                 norms.emplace_back(n);
             }
 
+            if (first == "vt")
+            {
+                glm::vec2 tc;
+                ss >> tc.x >> tc.y;
+                tcs.emplace_back(tc);
+            }
+
             if (first == "f")
             {
                 char c;
-                int int_;
                 for (int i = 0; i < 3; ++i)
                 {
-                    int ip, in;
+                    int ip, it = -1, in;
                     ss >> ip >> c;
                     if (ss.peek() == '/') ss >> c;
-                    else ss >> int_ >> c;
+                    else ss >> it >> c;
                     ss >> in;
+
+                    if (it == -1)
+                        printf("it == -1\n");
 
                     this->meshes.back().verts.emplace_back(Vertex{
                         .pos = pos[ip - 1],
-                        .norm = norms[in - 1]
+                        .norm = norms[in - 1],
+                        .tc = it > 0 ? tcs[it - 1] : glm::vec2(0.f, 0.f)
                     });
                     this->meshes.back().indices.emplace_back(
                         this->meshes.back().verts.size() - 1

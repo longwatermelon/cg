@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-std=c++17 -ggdb -Wall -Ofast
+CXXFLAGS=-std=c++17 -ggdb -Wall -O3
 INC=`pkg-config --cflags opencv4`
 LDFLAGS=-L../lib/ -lraytrace `pkg-config --libs opencv4`
 

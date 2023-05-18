@@ -21,15 +21,36 @@ namespace rt
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
 
+            glm::vec3 d = in.m->k_d;
+            glm::vec3 s = in.m->k_s;
+
             // Color
             if (!check_shadowed(in, sc, light))
             {
-                glm::vec3 diffuse = in.m->k_d *
+                if (in.m->textured && in.has_bary)
+                {
+                    glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
+                                   in.bary[1] * in.verts[1]->tc +
+                                   in.bary[2] * in.verts[2]->tc;
+                    cv::Vec3b col = in.m->texture.at<cv::Vec3b>(
+                        uv.y * in.m->texture.rows,
+                        uv.x * in.m->texture.cols
+                    );
+                    glm::vec3 tex = {
+                        (float)col.val[2] / 255.f,
+                        (float)col.val[1] / 255.f,
+                        (float)col.val[0] / 255.f
+                    };
+                    d *= tex;
+                    s *= tex;
+                }
+
+                glm::vec3 diffuse = d *
                     glm::dot(in.n, glm::normalize(toD(light.pos - hit)));
 
                 glm::vec4 v = glm::normalize(toD(in.ray.o) - toD(hit)); // towards cam
                 glm::vec4 r = reflect(-l, in.n);
-                glm::vec3 specular = in.m->k_s *
+                glm::vec3 specular = s *
                     std::pow(std::max(glm::dot(v, r), 0.f), in.m->q);
 
                 color += diffuse + specular;

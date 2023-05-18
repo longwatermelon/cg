@@ -109,6 +109,11 @@ namespace rt
                     m.refract_n = mat["n"];
                 if (mat.contains("refract"))
                     m.refractiveness = mat["refract"];
+                if (mat.contains("texture"))
+                {
+                    m.textured = true;
+                    m.texture = cv::imread(mat["texture"]);
+                }
 
                 sc.materials.emplace_back(mat["name"], m);
             }
@@ -204,6 +209,10 @@ namespace rt
             for (auto &cmd : j["post"])
                 sc.post_commands.emplace_back(cmd);
         }
+
+/*         for (const auto &v : sc.models[0].meshes[0].verts) */
+/*             printf("%f %f %f | %f %f %f | %f %f\n", v.pos.x, v.pos.y, v.pos.z, */
+/*                     v.norm.x, v.norm.y, v.norm.z, v.tc.x, v.tc.y); */
 
         return sc;
     }

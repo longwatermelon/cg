@@ -19,16 +19,14 @@ namespace rt
 
     struct Vertex
     {
-        glm::vec4 pos;
-
-        // smooth shading
-        glm::vec4 norm;
+        glm::vec4 pos, norm;
+        glm::vec2 tc;
     };
 
     struct Mesh
     {
         Intersection ray_intersect(Ray r, bool smooth_shading) const;
-        Intersection ray_intersect_tri(Ray r, std::array<Vertex, 3> verts,
+        Intersection ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts,
                                        bool smooth_shading) const;
 
         std::vector<Vertex> verts;

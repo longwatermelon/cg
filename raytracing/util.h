@@ -1,5 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <opencv2/opencv.hpp>
+#include <array>
 
 namespace rt
 {
@@ -38,7 +40,12 @@ namespace rt
         float reflectiveness{ 0.f };
         float refractiveness{ 0.f };
         float refract_n{ 1.f };
+
+        bool textured{ false };
+        cv::Mat texture;
     };
+
+    struct Vertex;
 
     struct Intersection
     {
@@ -50,5 +57,6 @@ namespace rt
 
         bool has_bary{ false };
         glm::vec3 bary;
+        std::array<const Vertex*, 3> verts;
     };
 }
