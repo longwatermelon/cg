@@ -1262,4 +1262,18 @@ where $p$ is some probability distribution.
 
 \section{Rasterization}
 
+In rasterization, geometry (often triangles) are projected onto the screen using their vertices,
+and then interpolating the pixels in between the vertices.
+
+\subsection{Z-buffer}
+
+When there is a pixel that is a part of multiple objects, determining which one is nearest requires
+a z-buffer, which contains depth information of each pixel on the screen.
+
+\subsubsection{Interpolating z values}
+
+Scanline rendering iterates over all y values (screen space) from the highest vertex to
+the lowest vertex, taking two points on opposite sides on the edges of the triangle for
+each y value.
+
 \end{document}

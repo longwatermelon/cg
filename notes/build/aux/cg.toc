@@ -46,3 +46,5 @@
 \contentsline {subsubsection}{\numberline {2.4.2}Irradiance caching, photon mapping}{18}{subsubsection.2.4.2}%
 \contentsline {subsubsection}{\numberline {2.4.3}Monte-Carlo integration}{19}{subsubsection.2.4.3}%
 \contentsline {section}{\numberline {3}Rasterization}{20}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Z-buffer}{20}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Interpolating z values}{20}{subsubsection.3.1.1}%

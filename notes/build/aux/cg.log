@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.3)  17 MAY 2023 14:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Arch Linux) (preloaded format=pdflatex 2023.4.3)  18 MAY 2023 09:47
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/long/workspace/cg/notes/cg.tex
-(/home/long/workspace/cg/notes/cg.tex
+**cg.tex
+(./cg.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22> (/usr/share/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -189,7 +189,8 @@ Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (/usr/share/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
-) (/usr/share/texmf-dist/tex/generic/etexcmds/etexcmds.sty
+)
+(/usr/share/texmf-dist/tex/generic/etexcmds/etexcmds.sty
 Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
 \Hy@SavedSpaceFactor=\count277
@@ -327,7 +328,8 @@ Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
 ) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
 Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
- (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+
+(/usr/share/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex) (/usr/share/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
 \pgfmath@dimen=\dimen176
 \pgfmath@count=\count292
 \pgfmath@box=\box54
@@ -388,7 +390,8 @@ File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@max=\dimen256
 \pgf@sys@shading@range@num=\count295
 \pgf@shadingcount=\count296
-) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+)
+(/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ) (/usr/share/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
 File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -474,7 +477,8 @@ File: pgflibrarycurvilinear.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@curvilinear@length@d=\dimen279
 )
 \pgf@arrows@the@rigidity=\dimen280
-)) (/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfpu.code.tex (/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex)) (/usr/share/texmf-dist/tex/generic/circuitikz/pgfcirc.defines.tex
+))
+(/usr/share/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfpu.code.tex (/usr/share/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex)) (/usr/share/texmf-dist/tex/generic/circuitikz/pgfcirc.defines.tex
 \pgf@circ@count@a=\count306
 \pgf@circ@count@b=\count307
 \pgf@circ@count@c=\count308
@@ -568,11 +572,12 @@ Package: enumitem 2019/06/20 v3.9 Customized lists
 \enitdp@description=\count328
 )
 Package translations Info: No language package found. I am going to use `english' as default language. on input line 21.
- (/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+
+(/usr/share/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count329
 \l__pdf_internal_box=\box77
-) (build/cg.aux)
+) (build/aux/cg.aux)
 \openout1 = `cg.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
@@ -593,8 +598,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
-
-(/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count330
 \scratchdimen=\dimen308
@@ -648,7 +652,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 21.
-(build/cg.out) (build/cg.out)
+(build/aux/cg.out) (build/aux/cg.out)
 \@outlinefile=\write4
 \openout4 = `cg.out'.
 
@@ -656,7 +660,7 @@ Package hyperref Info: Link coloring ON on input line 21.
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 21.
- (build/cg.toc
+ (build/aux/cg.toc
 LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
  (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -671,172 +675,172 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<images/cubic-hermite-interpolation.png, id=303, 924.45375pt x 541.02126pt>
+<images/cubic-hermite-interpolation.png, id=316, 924.45375pt x 541.02126pt>
 File: images/cubic-hermite-interpolation.png Graphic file (type png)
 <use images/cubic-hermite-interpolation.png>
 Package pdftex.def Info: images/cubic-hermite-interpolation.png  used on input line 78.
 (pdftex.def)             Requested size: 462.22574pt x 270.50996pt.
  [2 <./images/cubic-hermite-interpolation.png>]
-<images/parametric-hermite.png, id=317, 897.3525pt x 421.575pt>
+<images/parametric-hermite.png, id=329, 897.3525pt x 421.575pt>
 File: images/parametric-hermite.png Graphic file (type png)
 <use images/parametric-hermite.png>
 Package pdftex.def Info: images/parametric-hermite.png  used on input line 153.
 (pdftex.def)             Requested size: 448.67514pt x 210.78697pt.
  [3{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc} <./images/parametric-hermite.png>] [4] [5]
-<images/bezier-vs-bspline.png, id=336, 913.4125pt x 523.9575pt>
+<images/bezier-vs-bspline.png, id=348, 913.4125pt x 523.9575pt>
 File: images/bezier-vs-bspline.png Graphic file (type png)
 <use images/bezier-vs-bspline.png>
 Package pdftex.def Info: images/bezier-vs-bspline.png  used on input line 491.
 (pdftex.def)             Requested size: 456.70514pt x 261.9781pt.
  [6 <./images/bezier-vs-bspline.png>]
-<images/surface-example.png, id=342, 124.3044pt x 109.3686pt>
+<images/surface-example.png, id=354, 124.3044pt x 109.3686pt>
 File: images/surface-example.png Graphic file (type png)
 <use images/surface-example.png>
 Package pdftex.def Info: images/surface-example.png  used on input line 514.
 (pdftex.def)             Requested size: 248.60815pt x 218.73663pt.
-<images/bicubic-bezier-surface.png, id=343, 123.5817pt x 112.0185pt>
+<images/bicubic-bezier-surface.png, id=355, 123.5817pt x 112.0185pt>
 File: images/bicubic-bezier-surface.png Graphic file (type png)
 <use images/bicubic-bezier-surface.png>
 Package pdftex.def Info: images/bicubic-bezier-surface.png  used on input line 528.
 (pdftex.def)             Requested size: 247.16275pt x 224.0364pt.
  [7 <./images/surface-example.png> <./images/bicubic-bezier-surface.png>]
-<images/arm.png, id=351, 211.0284pt x 148.8762pt>
+<images/arm.png, id=363, 211.0284pt x 148.8762pt>
 File: images/arm.png Graphic file (type png)
 <use images/arm.png>
 Package pdftex.def Info: images/arm.png  used on input line 593.
 (pdftex.def)             Requested size: 422.05576pt x 297.75168pt.
  [8 <./images/arm.png>]
-<images/skinning-vertices.png, id=358, 880.28876pt x 521.95pt>
+<images/skinning-vertices.png, id=370, 880.28876pt x 521.95pt>
 File: images/skinning-vertices.png Graphic file (type png)
 <use images/skinning-vertices.png>
 Package pdftex.def Info: images/skinning-vertices.png  used on input line 651.
 (pdftex.def)             Requested size: 352.10927pt x 208.77629pt.
  [9 <./images/skinning-vertices.png>]
-<images/raytrace-world-to-object.png, id=367, 893.3375pt x 361.35pt>
+<images/raytrace-world-to-object.png, id=379, 893.3375pt x 361.35pt>
 File: images/raytrace-world-to-object.png Graphic file (type png)
 <use images/raytrace-world-to-object.png>
 Package pdftex.def Info: images/raytrace-world-to-object.png  used on input line 735.
 (pdftex.def)             Requested size: 446.66765pt x 180.67456pt.
  [10 <./images/raytrace-world-to-object.png>] [11]
-<images/epsilon-vs-no-epsilon.jpeg, id=377, 308.15125pt x 164.615pt>
+<images/epsilon-vs-no-epsilon.jpeg, id=389, 308.15125pt x 164.615pt>
 File: images/epsilon-vs-no-epsilon.jpeg Graphic file (type jpg)
 <use images/epsilon-vs-no-epsilon.jpeg>
 Package pdftex.def Info: images/epsilon-vs-no-epsilon.jpeg  used on input line 930.
 (pdftex.def)             Requested size: 308.15048pt x 164.6146pt.
-<images/reflection.png, id=378, 145.7445pt x 94.6737pt>
+<images/reflection.png, id=390, 145.7445pt x 94.6737pt>
 File: images/reflection.png Graphic file (type png)
 <use images/reflection.png>
 Package pdftex.def Info: images/reflection.png  used on input line 934.
 (pdftex.def)             Requested size: 291.48828pt x 189.34692pt.
  [12 <./images/epsilon-vs-no-epsilon.jpeg> <./images/reflection.png>]
-<images/refraction.png, id=384, 902.37125pt x 346.29375pt>
+<images/refraction.png, id=396, 902.37125pt x 346.29375pt>
 File: images/refraction.png Graphic file (type png)
 <use images/refraction.png>
 Package pdftex.def Info: images/refraction.png  used on input line 954.
 (pdftex.def)             Requested size: 451.18452pt x 173.14644pt.
-<images/brdf.png, id=385, 129.8451pt x 105.0324pt>
+<images/brdf.png, id=397, 129.8451pt x 105.0324pt>
 File: images/brdf.png Graphic file (type png)
 <use images/brdf.png>
 Package pdftex.def Info: images/brdf.png  used on input line 1002.
 (pdftex.def)             Requested size: 259.68951pt x 210.06427pt.
  [13 <./images/refraction.png> <./images/brdf.png>]
-<images/brdf-plot.png, id=393, 225.4824pt x 85.7604pt>
+<images/brdf-plot.png, id=405, 225.4824pt x 85.7604pt>
 File: images/brdf-plot.png Graphic file (type png)
 <use images/brdf-plot.png>
 Package pdftex.def Info: images/brdf-plot.png  used on input line 1008.
 (pdftex.def)             Requested size: 450.96368pt x 171.52036pt.
-<images/specular-brdf.png, id=394, 642.4pt x 190.7125pt>
+<images/specular-brdf.png, id=406, 642.4pt x 190.7125pt>
 File: images/specular-brdf.png Graphic file (type png)
 <use images/specular-brdf.png>
 Package pdftex.def Info: images/specular-brdf.png  used on input line 1034.
 (pdftex.def)             Requested size: 385.44298pt x 114.42838pt.
-<images/brdf-specular-reflectance.png, id=395, 781.92125pt x 443.6575pt>
+<images/brdf-specular-reflectance.png, id=407, 781.92125pt x 443.6575pt>
 File: images/brdf-specular-reflectance.png Graphic file (type png)
 <use images/brdf-specular-reflectance.png>
 Package pdftex.def Info: images/brdf-specular-reflectance.png  used on input line 1039.
 (pdftex.def)             Requested size: 390.95967pt x 221.8282pt.
-<images/specular-exponent-graph.png, id=396, 942.52126pt x 486.81876pt>
+<images/specular-exponent-graph.png, id=408, 942.52126pt x 486.81876pt>
 File: images/specular-exponent-graph.png Graphic file (type png)
 <use images/specular-exponent-graph.png>
 Package pdftex.def Info: images/specular-exponent-graph.png  used on input line 1051.
 (pdftex.def)             Requested size: 471.25948pt x 243.40878pt.
  [14 <./images/brdf-plot.png> <./images/specular-brdf.png> <./images/brdf-specular-reflectance.png>]
-<images/phong-brdf-shapes.png, id=404, 481.8pt x 359.3425pt>
+<images/phong-brdf-shapes.png, id=416, 481.8pt x 359.3425pt>
 File: images/phong-brdf-shapes.png Graphic file (type png)
 <use images/phong-brdf-shapes.png>
 Package pdftex.def Info: images/phong-brdf-shapes.png  used on input line 1071.
 (pdftex.def)             Requested size: 481.79881pt x 359.34161pt.
-<images/blinn-torrance.png, id=405, 781.92125pt x 375.4025pt>
+<images/blinn-torrance.png, id=417, 781.92125pt x 375.4025pt>
 File: images/blinn-torrance.png Graphic file (type png)
 <use images/blinn-torrance.png>
 Package pdftex.def Info: images/blinn-torrance.png  used on input line 1077.
 (pdftex.def)             Requested size: 390.95967pt x 187.70079pt.
  [15 <./images/specular-exponent-graph.png> <./images/phong-brdf-shapes.png>]
-<images/phong-blinn-lobe-comparison.png, id=412, 940.51375pt x 368.37625pt>
+<images/phong-blinn-lobe-comparison.png, id=424, 940.51375pt x 368.37625pt>
 File: images/phong-blinn-lobe-comparison.png Graphic file (type png)
 <use images/phong-blinn-lobe-comparison.png>
 Package pdftex.def Info: images/phong-blinn-lobe-comparison.png  used on input line 1086.
 (pdftex.def)             Requested size: 470.25572pt x 184.18767pt.
-<images/texture-map.png, id=413, 952.55875pt x 454.69875pt>
+<images/texture-map.png, id=425, 952.55875pt x 454.69875pt>
 File: images/texture-map.png Graphic file (type png)
 <use images/texture-map.png>
 Package pdftex.def Info: images/texture-map.png  used on input line 1107.
 (pdftex.def)             Requested size: 476.27821pt x 227.34882pt.
  [16 <./images/blinn-torrance.png> <./images/phong-blinn-lobe-comparison.png> <./images/texture-map.png>]
-<images/bounding-volume.png, id=421, 213.6783pt x 121.6545pt>
+<images/bounding-volume.png, id=433, 213.6783pt x 121.6545pt>
 File: images/bounding-volume.png Graphic file (type png)
 <use images/bounding-volume.png>
 Package pdftex.def Info: images/bounding-volume.png  used on input line 1119.
 (pdftex.def)             Requested size: 427.35553pt x 243.30838pt.
-<images/kd-tree.png, id=422, 168.63pt x 116.435pt>
+<images/kd-tree.png, id=434, 168.63pt x 116.435pt>
 File: images/kd-tree.png Graphic file (type png)
 <use images/kd-tree.png>
 Package pdftex.def Info: images/kd-tree.png  used on input line 1155.
 (pdftex.def)             Requested size: 168.62958pt x 116.43471pt.
  [17 <./images/bounding-volume.png> <./images/kd-tree.png>]
-<images/reflectance-equation.png, id=429, 742.775pt x 350.30875pt>
+<images/reflectance-equation.png, id=441, 742.775pt x 350.30875pt>
 File: images/reflectance-equation.png Graphic file (type png)
 <use images/reflectance-equation.png>
 Package pdftex.def Info: images/reflectance-equation.png  used on input line 1189.
 (pdftex.def)             Requested size: 371.38658pt x 175.15395pt.
-<images/irradiance-cache.png, id=430, 569.12625pt x 424.58624pt>
+<images/irradiance-cache.png, id=442, 569.12625pt x 424.58624pt>
 File: images/irradiance-cache.png Graphic file (type png)
 <use images/irradiance-cache.png>
 Package pdftex.def Info: images/irradiance-cache.png  used on input line 1222.
 (pdftex.def)             Requested size: 284.56242pt x 212.2926pt.
-<images/photon-mapping.png, id=431, 575.14874pt x 427.5975pt>
+<images/photon-mapping.png, id=443, 575.14874pt x 427.5975pt>
 File: images/photon-mapping.png Graphic file (type png)
 <use images/photon-mapping.png>
 Package pdftex.def Info: images/photon-mapping.png  used on input line 1232.
 (pdftex.def)             Requested size: 287.57367pt x 213.79822pt.
  [18 <./images/reflectance-equation.png> <./images/irradiance-cache.png>]
-<images/monte-carlo-integration.png, id=438, 846.16125pt x 481.8pt>
+<images/monte-carlo-integration.png, id=451, 846.16125pt x 481.8pt>
 File: images/monte-carlo-integration.png Graphic file (type png)
 <use images/monte-carlo-integration.png>
 Package pdftex.def Info: images/monte-carlo-integration.png  used on input line 1240.
 (pdftex.def)             Requested size: 338.45851pt x 192.71658pt.
-<images/importance-sampling.png, id=439, 925.4575pt x 537.00626pt>
+<images/importance-sampling.png, id=452, 925.4575pt x 537.00626pt>
 File: images/importance-sampling.png Graphic file (type png)
 <use images/importance-sampling.png>
 Package pdftex.def Info: images/importance-sampling.png  used on input line 1256.
 (pdftex.def)             Requested size: 370.17644pt x 214.79869pt.
- [19 <./images/photon-mapping.png> <./images/monte-carlo-integration.png> <./images/importance-sampling.png>] [20] (build/cg.aux)
+ [19 <./images/photon-mapping.png> <./images/monte-carlo-integration.png> <./images/importance-sampling.png>] [20] (build/aux/cg.aux)
 Package rerunfilecheck Info: File `cg.out' has not changed.
-(rerunfilecheck)             Checksum: ED089A45602790AD215B5CE4A90D9755;7116.
+(rerunfilecheck)             Checksum: D1AEA11806985DCA753565A9F7AA8ED6;7398.
  ) 
 Here is how much of TeX's memory you used:
- 42043 strings out of 476025
- 1025066 string characters out of 5796533
- 1880388 words of memory out of 5000000
- 61929 multiletter control sequences out of 15000+600000
+ 42046 strings out of 476025
+ 1025100 string characters out of 5796533
+ 1881388 words of memory out of 5000000
+ 61931 multiletter control sequences out of 15000+600000
  521249 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,15n,103p,460b,894s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 99i,15n,103p,430b,894s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on build/cg.pdf (20 pages, 3368359 bytes).
+Output written on build/aux/cg.pdf (20 pages, 3369597 bytes).
 PDF statistics:
- 531 PDF objects out of 1000 (max. 8388607)
- 423 compressed objects within 5 object streams
- 72 named destinations out of 1000 (max. 500000)
- 532 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 545 PDF objects out of 1000 (max. 8388607)
+ 437 compressed objects within 5 object streams
+ 74 named destinations out of 1000 (max. 500000)
+ 548 words of extra memory for PDF output out of 10000 (max. 10000000)
 

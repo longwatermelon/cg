@@ -1,6 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1684358129 "/home/long/workspace/cg/notes/cg.tex" "build/cg.pdf" "cg" 1684358133 0
-  "/home/long/workspace/cg/notes/cg.tex" 1684358125 44785 b434ffd448d75a05f8993a6824892a9a ""
+["pdflatex"] 1684428433 "cg.tex" "build/cg.pdf" "cg" 1684428435 0
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1680514707 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1680514707 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1680514707 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -202,10 +201,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1680514707 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1680587401 4489108 b792e88589579c1ee40003d436ebd5cf ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1680587386 8204060 8649dac4506be64545d650fd2b770df4 ""
-  "build/cg.aux" 1684358133 6797 dfca295e25122f7c5916bbb8c38a16ae "pdflatex"
-  "build/cg.out" 1684358133 7116 ed089a45602790ad215b5ce4a90d9755 "pdflatex"
-  "build/cg.toc" 1684358133 4274 36bb2c7ac4a92a5a75acc4f478a32865 "pdflatex"
-  "cg.tex" 1684358125 44785 b434ffd448d75a05f8993a6824892a9a ""
+  "build/aux/cg.aux" 1684428435 7053 2da34aa56b609a96a01159bac462907f "pdflatex"
+  "build/aux/cg.out" 1684428435 7398 d1aea11806985dca753565a9f7aa8ed6 "pdflatex"
+  "build/aux/cg.toc" 1684428435 4448 ac03790dff6db1749adf97a621559d5e "pdflatex"
+  "cg.tex" 1684428431 45371 d834f1425c1098c8a8e20e628254d079 ""
   "images/arm.png" 1683776367 167659 c76ce56895a18a0db354151df74a6d7b ""
   "images/bezier-vs-bspline.png" 1683760553 99745 ce840050587b7cdd55101b91ecebae6c ""
   "images/bicubic-bezier-surface.png" 1683767021 82595 432542cadab1cfade03e48b05a581f60 ""
@@ -234,9 +233,9 @@
   "images/surface-example.png" 1683762594 53085 3ea8d4a4f0792dbe5b69aed18f43d352 ""
   "images/texture-map.png" 1684001006 489695 2a24d1ab4b1ab39a093bc198fe786027 ""
   (generated)
-  "build/cg.aux"
-  "build/cg.log"
-  "build/cg.out"
+  "build/aux/cg.aux"
+  "build/aux/cg.log"
+  "build/aux/cg.out"
+  "build/aux/cg.toc"
   "build/cg.pdf"
-  "build/cg.toc"
   (rewritten before read)
