@@ -13,5 +13,4 @@ namespace rt
 
         glm::vec3 min, max;
     };
-
 }

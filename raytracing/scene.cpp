@@ -155,7 +155,6 @@ namespace rt
                 {
                     Model m;
                     m.load_meshes(obj["path"]);
-                    m.generate_mesh_aabb();
                     m.T = glm::translate(glm::mat4(1.f), {
                         obj["pos"][0], obj["pos"][1], obj["pos"][2]
                     });
@@ -167,6 +166,15 @@ namespace rt
 
                     for (auto &mesh : m.meshes)
                         mesh.m = *sc.find_material(obj["material"].get<std::string>());
+
+                    if (obj.contains("subdivide"))
+                    {
+                        for (int i = 0; i < obj["subdivide"]; ++i)
+                            m.split_into8();
+                    }
+
+                    m.generate_mesh_aabb();
+
                     sc.models.emplace_back(m);
                 }
 

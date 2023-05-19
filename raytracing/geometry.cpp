@@ -130,6 +130,62 @@ namespace rt
         };
     }
 
+    std::array<Mesh, 8> Mesh::split_into8() const
+    {
+        glm::vec3 average_pos(0.f);
+        for (const auto &v : this->verts)
+            average_pos += to3(v.pos);
+        average_pos /= this->verts.size();
+
+        // 0 = -x -y -z
+        // 1 = +x -y -z
+        // 2 = +x -y +z
+        // 3 = -x -y +z
+
+        // 4 = -x +y -z
+        // 5 = +x +y -z
+        // 6 = +x +y +z
+        // 7 = -x +y +z
+        std::array<Mesh, 8> meshes;
+        for (auto &m : meshes)
+            m.m = this->m;
+
+        for (unsigned int i = 0; i < this->indices.size(); i += 3)
+        {
+            std::array<Vertex, 3> v = {
+                this->verts[this->indices[i]],
+                this->verts[this->indices[i + 1]],
+                this->verts[this->indices[i + 2]]
+            };
+
+            for (auto &vert : v)
+            {
+                std::vector<unsigned int> indexes;
+                glm::vec3 p = to3(vert.pos - toP(average_pos));
+                if (p.x < 0 && p.y < 0 && p.z < 0) indexes.emplace_back(0);
+                if (p.x >= 0 && p.y < 0 && p.z < 0) indexes.emplace_back(1);
+                if (p.x >= 0 && p.y < 0 && p.z >= 0) indexes.emplace_back(2);
+                if (p.x < 0 && p.y < 0 && p.z >= 0) indexes.emplace_back(3);
+
+                if (p.x < 0 && p.y >= 0 && p.z < 0) indexes.emplace_back(4);
+                if (p.x >= 0 && p.y >= 0 && p.z < 0) indexes.emplace_back(5);
+                if (p.x >= 0 && p.y >= 0 && p.z >= 0) indexes.emplace_back(6);
+                if (p.x < 0 && p.y >= 0 && p.z >= 0) indexes.emplace_back(7);
+
+                for (unsigned int index : indexes)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        meshes[index].verts.emplace_back(v[j]);
+                        meshes[index].indices.emplace_back(meshes[index].verts.size() - 1);
+                    }
+                }
+            }
+        }
+
+        return meshes;
+    }
+
     Intersection Model::ray_intersect(Ray r, bool smooth_shading) const
     {
         r.transform(glm::inverse(this->T));
@@ -158,6 +214,19 @@ namespace rt
     {
         for (auto &mesh : this->meshes)
             mesh.bounding_box = AABB::create(mesh);
+    }
+
+    void Model::split_into8()
+    {
+        std::vector<Mesh> meshes;
+        for (const auto &mesh : this->meshes)
+        {
+            std::array<Mesh, 8> submeshes = mesh.split_into8();
+            for (const auto &mesh : submeshes)
+                meshes.emplace_back(mesh);
+        }
+
+        this->meshes = meshes;
     }
 
     void Model::load_meshes(const std::string &path)
@@ -216,9 +285,6 @@ namespace rt
                     if (ss.peek() == '/') ss >> c;
                     else ss >> it >> c;
                     ss >> in;
-
-                    if (it == -1)
-                        printf("it == -1\n");
 
                     this->meshes.back().verts.emplace_back(Vertex{
                         .pos = pos[ip - 1],

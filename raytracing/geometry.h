@@ -29,6 +29,8 @@ namespace rt
         Intersection ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts,
                                        bool smooth_shading) const;
 
+        std::array<Mesh, 8> split_into8() const;
+
         std::vector<Vertex> verts;
         std::vector<unsigned int> indices;
         Material m;
@@ -44,6 +46,7 @@ namespace rt
         void generate_mesh_aabb();
 
         void load_meshes(const std::string &path);
+        void split_into8();
 
         std::vector<Mesh> meshes;
         glm::mat4 T;

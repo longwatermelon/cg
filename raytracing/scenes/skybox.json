@@ -1,7 +1,7 @@
 {
     "image": {
-        "width": 2000,
-        "height": 2000
+        "width": 1000,
+        "height": 1000
     },
 
     "camera": {
@@ -55,7 +55,8 @@
             "path": "res/bunny-small.obj",
             "material": "mat2",
             "pos": [-5, 0.3, 1.4],
-            "rotation": [0, -1.57, 0]
+            "rotation": [0, -1.57, 0],
+            "subdivide": 1
         },
         {
             "type": "sphere",

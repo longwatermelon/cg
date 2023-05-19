@@ -1,0 +1,33 @@
+{
+    "materials": [
+        {
+            "name": "mat",
+            "color": [1, 1, 1],
+            "ambient": 0.2,
+            "diffuse": 0.5,
+            "specular": 0.7,
+            "specular exponent": 50
+        }
+    ],
+
+    "objects": [
+        {
+            "type": "model",
+            "path": "res/lucy.obj",
+            "material": "mat",
+            "pos": [0, 0, 5],
+            "subdivide": 1
+        }
+    ],
+
+    "lights": [
+        {
+            "intensity": 1,
+            "pos": [0, 0, 0]
+        }
+    ],
+
+    "post": [
+        "feh out.ppm"
+    ]
+}
