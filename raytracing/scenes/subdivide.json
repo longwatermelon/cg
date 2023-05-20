@@ -13,7 +13,7 @@
     "objects": [
         {
             "type": "model",
-            "path": "res/lucy.obj",
+            "path": "res/bunny-small.obj",
             "material": "mat",
             "pos": [0, 0, 5],
             "subdivide": 1

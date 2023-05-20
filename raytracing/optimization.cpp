@@ -11,12 +11,16 @@ namespace rt
         float tx1, tx2,
               ty1, ty2,
               tz1, tz2;
-        tx1 = (this->min.x - r.o.x) / r.d.x;
-        tx2 = (this->max.x - r.o.x) / r.d.x;
-        ty1 = (this->min.y - r.o.y) / r.d.y;
-        ty2 = (this->max.y - r.o.y) / r.d.y;
-        tz1 = (this->min.z - r.o.z) / r.d.z;
-        tz2 = (this->max.z - r.o.z) / r.d.z;
+        float oox = 1.f / r.d.x;
+        float ooy = 1.f / r.d.y;
+        float ooz = 1.f / r.d.z;
+
+        tx1 = (this->min.x - r.o.x) * oox;
+        tx2 = (this->max.x - r.o.x) * oox;
+        ty1 = (this->min.y - r.o.y) * ooy;
+        ty2 = (this->max.y - r.o.y) * ooy;
+        tz1 = (this->min.z - r.o.z) * ooz;
+        tz2 = (this->max.z - r.o.z) * ooz;
         return std::max(std::max(std::min(tx1, tx2), std::min(ty1, ty2)), std::min(tz1, tz2)) <=
                std::min(std::min(std::max(tx1, tx2), std::max(ty1, ty2)), std::max(tz1, tz2));
     }
