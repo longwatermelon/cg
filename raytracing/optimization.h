@@ -11,6 +11,6 @@ namespace rt
         bool ray_intersect(Ray r) const;
         static AABB create(const Mesh &m);
 
-        glm::vec3 min, max;
+        glm::vec3 min{}, max{};
     };
 }

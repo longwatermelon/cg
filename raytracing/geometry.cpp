@@ -7,6 +7,8 @@
 #include <sstream>
 #include <glm/gtx/string_cast.hpp>
 
+#define NO_INTERSECTION Intersection{ .intersects = false, .ray = r, .t = INFINITY }
+
 const float EPSILON = 1e-2f;
 
 namespace rt
@@ -22,15 +24,14 @@ namespace rt
         float d = b * b - 4.f * a * c;
 
         if (d < 0.f)
-            return Intersection{ .intersects = false, .ray = r };
-
+            return NO_INTERSECTION;
         float t1 = (-b + std::sqrt(d)) / (2.f * a);
         float t2 = (-b - std::sqrt(d)) / (2.f * a);
 
         float t = INFINITY;
 
         if (t1 <= 1e-4f)
-            return Intersection{ .intersects = false, .ray = r };
+            return NO_INTERSECTION;
 
         if (t2 <= 1e-4f)
             t = t1;
@@ -52,20 +53,20 @@ namespace rt
         };
     }
 
-    Intersection Mesh::ray_intersect(Ray r, bool smooth_shading) const
+    Intersection Mesh::ray_intersect(Ray r) const
     {
         if (!this->bounding_box.ray_intersect(r))
-            return Intersection{ .intersects = false, .ray = r };
+            return NO_INTERSECTION;
 
-        Intersection nearest{ .intersects = false, .ray = r, .t = INFINITY };
-        for (unsigned int i = 0; i < this->indices.size(); i += 3)
+        Intersection nearest = NO_INTERSECTION;
+        for (size_t i = 0; i < this->indices.size(); i += 3)
         {
             Intersection in = ray_intersect_tri(r,
                 {
                     &this->verts[i],
                     &this->verts[i + 1],
                     &this->verts[i + 2]
-                }, smooth_shading);
+                });
 
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
@@ -75,8 +76,7 @@ namespace rt
         return nearest;
     }
 
-    Intersection Mesh::ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts,
-                                    bool smooth_shading) const
+    Intersection Mesh::ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts) const
     {
         glm::vec3 v = to3(verts[0]->pos - r.o);
         glm::vec3 a_b = to3(verts[0]->pos - verts[1]->pos);
@@ -92,20 +92,12 @@ namespace rt
         if (byt[0] + byt[1] <= 1.f && byt[0] >= 0.f && byt[1] >= 0.f)
         {
             if (byt[2] < 0.f)
-                return Intersection{ .intersects = false, .ray = r };
+                return NO_INTERSECTION;
 
-            glm::vec4 n;
             glm::vec3 bary = { 1.f - byt[0] - byt[1], byt[0], byt[1] };
-            if (smooth_shading)
-            {
-                n = bary[0] * verts[0]->norm +
-                    bary[1] * verts[1]->norm +
-                    bary[2] * verts[2]->norm;
-            }
-            else
-            {
-                n = toD(glm::normalize(glm::cross(-a_b, -a_c)));
-            }
+            glm::vec4 n = bary[0] * verts[0]->norm +
+                          bary[1] * verts[1]->norm +
+                          bary[2] * verts[2]->norm;
 
             if (glm::dot(n, r.d) > 0.f)
                 n = -n;
@@ -117,17 +109,11 @@ namespace rt
                 .n = n,
                 .has_bary = true,
                 .bary = bary,
-                .verts = {
-                    verts[0],
-                    verts[1],
-                    verts[2]
-                }
+                .verts = verts
             };
         }
 
-        return Intersection{
-            .intersects = false
-        };
+        return NO_INTERSECTION;
     }
 
     std::array<Mesh, 8> Mesh::split_into8() const
@@ -186,13 +172,13 @@ namespace rt
         return meshes;
     }
 
-    Intersection Model::ray_intersect(Ray r, bool smooth_shading) const
+    Intersection Model::ray_intersect(Ray r) const
     {
         r.transform(glm::inverse(this->T));
-        Intersection nearest{ .intersects = false, .ray = r, .t = INFINITY };
+        Intersection nearest = NO_INTERSECTION;
         for (const auto &mesh : this->meshes)
         {
-            Intersection in = mesh.ray_intersect(r, smooth_shading);
+            Intersection in = mesh.ray_intersect(r);
             if (in.intersects && in.t < nearest.t && in.t > 0.f)
                 nearest = in;
         }
@@ -205,7 +191,7 @@ namespace rt
         );
 
         if (nearest.t < EPSILON)
-            return Intersection{ .intersects = false, .ray = r, .t = INFINITY };
+            return NO_INTERSECTION;
 
         return nearest;
     }
@@ -258,14 +244,14 @@ namespace rt
             {
                 glm::vec4 p;
                 ss >> p.x >> p.y >> p.z;
-                pos.emplace_back(p);
+                pos.emplace_back(toP(p));
             }
 
             if (first == "vn")
             {
                 glm::vec4 n;
                 ss >> n.x >> n.y >> n.z;
-                norms.emplace_back(n);
+                norms.emplace_back(toD(n));
             }
 
             if (first == "vt")
@@ -313,10 +299,7 @@ namespace rt
             };
         }
 
-        return Intersection{
-            .intersects = false,
-            .ray = r
-        };
+        return NO_INTERSECTION;
     }
 
     glm::vec4 reflect(glm::vec4 in, glm::vec4 n)

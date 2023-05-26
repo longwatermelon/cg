@@ -115,6 +115,6 @@ namespace rt
         sray.d = glm::normalize(toD(l.pos - sray.o));
         Intersection in_s = sc.cast_ray(sray, SC_NO_TRANSFORM_CAM);
 
-        return in_s.intersects && in_s.t < glm::length(to3(l.pos - sray.o));
+        return in_s.intersects && in_s.t < glm::length(to3(l.pos - sray.o)) && in_s.t > 0.f;
     }
 }

@@ -25,9 +25,8 @@ namespace rt
 
     struct Mesh
     {
-        Intersection ray_intersect(Ray r, bool smooth_shading) const;
-        Intersection ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts,
-                                       bool smooth_shading) const;
+        Intersection ray_intersect(Ray r) const;
+        Intersection ray_intersect_tri(Ray r, std::array<const Vertex*, 3> verts) const;
 
         std::array<Mesh, 8> split_into8() const;
 
@@ -42,7 +41,7 @@ namespace rt
 
     struct Model
     {
-        Intersection ray_intersect(Ray r, bool smooth_shading) const;
+        Intersection ray_intersect(Ray r) const;
         void generate_mesh_aabb();
 
         void load_meshes(const std::string &path);

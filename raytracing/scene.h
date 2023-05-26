@@ -15,8 +15,7 @@ namespace rt
 
     enum SceneRayOpts
     {
-        SC_NO_TRANSFORM_CAM = 1,
-        SC_INTERP_NORMALS = 2
+        SC_NO_TRANSFORM_CAM = 1
     };
 
     struct Scene

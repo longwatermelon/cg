@@ -30,7 +30,7 @@ namespace rt
             return o + t * d;
         }
 
-        glm::vec4 o, d;
+        glm::vec4 o{ toP(glm::vec3{ 0.f }) }, d{ 0.f };
     };
 
     struct Material
@@ -49,14 +49,14 @@ namespace rt
 
     struct Intersection
     {
-        bool intersects;
+        bool intersects{ false };
         Ray ray;
-        float t;
-        glm::vec4 n;
-        const Material *m;
+        float t{ 0.f };
+        glm::vec4 n{ 0.f };
+        const Material *m{ nullptr };
 
         bool has_bary{ false };
-        glm::vec3 bary;
+        glm::vec3 bary{ 0.f };
         std::array<const Vertex*, 3> verts;
     };
 }

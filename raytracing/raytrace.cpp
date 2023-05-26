@@ -34,8 +34,9 @@ namespace rt
                                 glm::vec3{ std::sin(th), std::sin(phi), 1.f }))
                 };
 
+                Intersection in = sc.cast_ray(r, cfg.scene_opts);
                 frame[y * WIDTH + x] = phong(
-                    sc.cast_ray(r, cfg.scene_opts), sc
+                    in, sc
                 );
             }
         }
