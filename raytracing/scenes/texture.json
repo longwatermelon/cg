@@ -14,7 +14,7 @@
     "objects": [
         {
             "type": "model",
-            "path": "res/monkey.obj",
+            "path": "res/sphere.obj",
             "material": "mat",
             "pos": [0, 0, 4]
         }

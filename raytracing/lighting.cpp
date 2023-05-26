@@ -4,7 +4,7 @@
 #include "scene.h"
 #include <cstdio>
 
-static const float EPSILON = 1e-3f;
+static const float EPSILON = 1e-5f;
 
 namespace rt
 {
@@ -43,16 +43,19 @@ namespace rt
                     };
                     d *= tex;
                     s *= tex;
+                    color *= tex;
                 }
 
                 glm::vec3 diffuse = d *
-                    glm::dot(in.n, glm::normalize(toD(light.pos - hit)));
+                    std::max(glm::dot(in.n, glm::normalize(toD(light.pos - hit))), 0.f);
 
                 glm::vec4 v = glm::normalize(toD(in.ray.o) - toD(hit)); // towards cam
                 glm::vec4 r = reflect(-l, in.n);
                 glm::vec3 specular = s *
                     std::pow(std::max(glm::dot(v, r), 0.f), in.m->q);
 
+                /* if (diffuse.x < 0.f || diffuse.y < 0.f || diffuse.z < 0.f) */
+                /*     printf("%f\n", diffuse.x); */
                 color += diffuse + specular;
             }
 

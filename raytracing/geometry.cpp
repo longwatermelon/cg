@@ -275,7 +275,7 @@ namespace rt
                     this->meshes.back().verts.emplace_back(Vertex{
                         .pos = pos[ip - 1],
                         .norm = norms[in - 1],
-                        .tc = it > 0 ? tcs[it - 1] : glm::vec2(0.f, 0.f)
+                        .tc = it > 0 ? tcs[it - 1] : glm::vec2(0.f)
                     });
                     this->meshes.back().indices.emplace_back(
                         this->meshes.back().verts.size() - 1
