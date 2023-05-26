@@ -1,4 +1,9 @@
 {
+    "camera": {
+        "pos": [-8, 0, -0.05],
+        "rotation": [0, 0.8, 0]
+    },
+
     "materials": [
         {
             "name": "mat",
@@ -6,24 +11,29 @@
             "ambient": 0.2,
             "diffuse": 0.5,
             "specular": 0.7,
-            "specular exponent": 50,
-            "texture": "res/texture.png"
+            "specular exponent": 100,
+            "texture": "res/color.jpg",
+            "norm": "res/norm.jpg"
         }
     ],
 
     "objects": [
         {
             "type": "model",
-            "path": "res/sphere.obj",
+            "path": "res/plane.obj",
             "material": "mat",
-            "pos": [0, 0, 4]
+            "pos": [0, 0, 7]
         }
     ],
 
     "lights": [
         {
-            "intensity": 5,
-            "pos": [3, -3, 0]
+            "intensity": 6,
+            "pos": [7, -2, 3]
+        },
+        {
+            "intensity": 4,
+            "pos": [3, 3, 3]
         }
     ],
 

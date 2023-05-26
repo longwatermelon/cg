@@ -115,6 +115,11 @@ namespace rt
                     m.textured = true;
                     m.texture = cv::imread(mat["texture"]);
                 }
+                if (mat.contains("norm"))
+                {
+                    m.has_norm_map = true;
+                    m.norm_map = cv::imread(mat["norm"]);
+                }
 
                 sc.materials.emplace_back(mat["name"], m);
             }

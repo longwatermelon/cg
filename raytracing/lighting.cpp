@@ -8,7 +8,7 @@ static const float EPSILON = 1e-5f;
 
 namespace rt
 {
-    glm::vec3 phong(const Intersection &in, const Scene &sc)
+    glm::vec3 phong(Intersection in, const Scene &sc)
     {
         if (!in.intersects)
             return sc.skybox ? sc.skybox->ray_intersect(in.ray.d) : glm::vec3{ 0.f, 0.f, 0.f };
@@ -16,13 +16,32 @@ namespace rt
         glm::vec4 hit = in.ray.along(in.t);
 
         glm::vec3 total_color(0.f);
-        for (const auto &light : sc.lights)
+        for (auto light : sc.lights)
         {
             glm::vec3 color = in.m->k_a;
             glm::vec4 l = glm::normalize(toD(light.pos - hit)); // towards light
 
             glm::vec3 d = in.m->k_d;
             glm::vec3 s = in.m->k_s;
+
+            if (in.m->has_norm_map && in.has_bary)
+            {
+                glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
+                               in.bary[1] * in.verts[1]->tc +
+                               in.bary[2] * in.verts[2]->tc;
+                cv::Vec3b col = in.m->norm_map.at<cv::Vec3b>(
+                    uv.y * in.m->norm_map.rows,
+                    uv.x * in.m->norm_map.cols
+                );
+                glm::vec3 norm = {
+                    (float)col.val[2] / 255.f,
+                    (float)col.val[1] / 255.f,
+                    (float)col.val[0] / 255.f
+                };
+                norm = glm::normalize(norm * 2.f - 1.f);
+                norm.z = -norm.z;
+                in.n = toD(norm);
+            }
 
             // Color
             if (!check_shadowed(in, sc, light))
@@ -54,8 +73,6 @@ namespace rt
                 glm::vec3 specular = s *
                     std::pow(std::max(glm::dot(v, r), 0.f), in.m->q);
 
-                /* if (diffuse.x < 0.f || diffuse.y < 0.f || diffuse.z < 0.f) */
-                /*     printf("%f\n", diffuse.x); */
                 color += diffuse + specular;
             }
 

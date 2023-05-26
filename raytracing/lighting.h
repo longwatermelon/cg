@@ -13,7 +13,7 @@ namespace rt
         float in;
     };
 
-    glm::vec3 phong(const Intersection &in, const Scene &sc);
+    glm::vec3 phong(Intersection in, const Scene &sc);
     glm::vec3 reflect_color(const Intersection &in, const Scene &sc, glm::vec3 obj_col,
         const std::function<glm::vec3(const Intersection&, const Scene&)> &lighting_fn);
     glm::vec3 refract_color(const Intersection &in, const Scene &sc,

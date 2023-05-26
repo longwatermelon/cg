@@ -41,8 +41,8 @@ namespace rt
         float refractiveness{ 0.f };
         float refract_n{ 1.f };
 
-        bool textured{ false };
-        cv::Mat texture;
+        bool textured{ false }, has_norm_map{ false };
+        cv::Mat texture, norm_map;
     };
 
     struct Vertex;
