@@ -47,32 +47,32 @@ namespace rt
                 in.n = toD(norm);
             }
 
+            if (in.m->textured && in.has_bary)
+            {
+                glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
+                               in.bary[1] * in.verts[1]->tc +
+                               in.bary[2] * in.verts[2]->tc;
+                uv *= in.m->texscale;
+                uv.x = std::fmod(uv.x, 1.f);
+                uv.y = std::fmod(uv.y, 1.f);
+
+                cv::Vec3b col = in.m->texture.at<cv::Vec3b>(
+                    uv.y * in.m->texture.rows,
+                    uv.x * in.m->texture.cols
+                );
+                glm::vec3 tex = {
+                    (float)col.val[2] / 255.f,
+                    (float)col.val[1] / 255.f,
+                    (float)col.val[0] / 255.f
+                };
+                d *= tex;
+                s *= tex;
+                color *= tex;
+            }
+
             // Color
             if (!check_shadowed(in, sc, light))
             {
-                if (in.m->textured && in.has_bary)
-                {
-                    glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
-                                   in.bary[1] * in.verts[1]->tc +
-                                   in.bary[2] * in.verts[2]->tc;
-                    uv *= in.m->texscale;
-                    uv.x = std::fmod(uv.x, 1.f);
-                    uv.y = std::fmod(uv.y, 1.f);
-
-                    cv::Vec3b col = in.m->texture.at<cv::Vec3b>(
-                        uv.y * in.m->texture.rows,
-                        uv.x * in.m->texture.cols
-                    );
-                    glm::vec3 tex = {
-                        (float)col.val[2] / 255.f,
-                        (float)col.val[1] / 255.f,
-                        (float)col.val[0] / 255.f
-                    };
-                    d *= tex;
-                    s *= tex;
-                    color *= tex;
-                }
-
                 glm::vec3 diffuse = d *
                     std::max(glm::dot(in.n, glm::normalize(toD(light.pos - hit))), 0.f);
 
