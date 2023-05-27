@@ -29,6 +29,9 @@ namespace rt
                 glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
                                in.bary[1] * in.verts[1]->tc +
                                in.bary[2] * in.verts[2]->tc;
+                uv *= 4.f;
+                uv.x = std::fmod(uv.x, 1.f);
+                uv.y = std::fmod(uv.y, 1.f);
                 cv::Vec3b col = in.m->norm_map.at<cv::Vec3b>(
                     uv.y * in.m->norm_map.rows,
                     uv.x * in.m->norm_map.cols
@@ -40,6 +43,7 @@ namespace rt
                 };
                 norm = glm::normalize(norm * 2.f - 1.f);
                 norm.z = -norm.z;
+                norm.y = -norm.y;
                 in.n = toD(norm);
             }
 
@@ -51,6 +55,10 @@ namespace rt
                     glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
                                    in.bary[1] * in.verts[1]->tc +
                                    in.bary[2] * in.verts[2]->tc;
+                    uv *= 4.f;
+                    uv.x = std::fmod(uv.x, 1.f);
+                    uv.y = std::fmod(uv.y, 1.f);
+
                     cv::Vec3b col = in.m->texture.at<cv::Vec3b>(
                         uv.y * in.m->texture.rows,
                         uv.x * in.m->texture.cols

@@ -169,6 +169,13 @@ namespace rt
                         m.T *= rotation({
                             obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]
                         });
+                    if (obj.contains("stretch"))
+                        m.T = m.T * glm::transpose(glm::mat4{
+                            obj["stretch"][0].get<float>(), 0.f, 0.f, 0.f,
+                            0.f, obj["stretch"][1].get<float>(), 0.f, 0.f,
+                            0.f, 0.f, obj["stretch"][2].get<float>(), 0.f,
+                            0.f, 0.f, 0.f, 1.f
+                        });
 
                     for (auto &mesh : m.meshes)
                         mesh.m = *sc.find_material(obj["material"].get<std::string>());
