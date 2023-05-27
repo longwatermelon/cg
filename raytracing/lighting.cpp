@@ -29,7 +29,7 @@ namespace rt
                 glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
                                in.bary[1] * in.verts[1]->tc +
                                in.bary[2] * in.verts[2]->tc;
-                uv *= 4.f;
+                uv *= in.m->texscale;
                 uv.x = std::fmod(uv.x, 1.f);
                 uv.y = std::fmod(uv.y, 1.f);
                 cv::Vec3b col = in.m->norm_map.at<cv::Vec3b>(
@@ -55,7 +55,7 @@ namespace rt
                     glm::vec2 uv = in.bary[0] * in.verts[0]->tc +
                                    in.bary[1] * in.verts[1]->tc +
                                    in.bary[2] * in.verts[2]->tc;
-                    uv *= 4.f;
+                    uv *= in.m->texscale;
                     uv.x = std::fmod(uv.x, 1.f);
                     uv.y = std::fmod(uv.y, 1.f);
 

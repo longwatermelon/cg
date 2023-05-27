@@ -43,6 +43,7 @@ namespace rt
 
         bool textured{ false }, has_norm_map{ false };
         cv::Mat texture, norm_map;
+        float texscale{ 1.f };
     };
 
     struct Vertex;

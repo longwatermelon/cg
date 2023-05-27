@@ -121,6 +121,9 @@ namespace rt
                     m.norm_map = cv::imread(mat["norm"]);
                 }
 
+                if (mat.contains("texscale"))
+                    m.texscale = mat["texscale"];
+
                 sc.materials.emplace_back(mat["name"], m);
             }
         }

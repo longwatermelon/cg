@@ -1,4 +1,9 @@
 {
+    "image": {
+        "width": 2000,
+        "height": 2000
+    },
+
     "camera": {
         "pos": [-8, 0, -0.05],
         "rotation": [0, 0.8, 0]
