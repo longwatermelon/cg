@@ -37,6 +37,7 @@
 \contentsline {subsubsection}{\numberline {2.2.7}Phong lighting model}{15}{subsubsection.2.2.7}%
 \contentsline {subsubsection}{\numberline {2.2.8}Normal interpolation}{16}{subsubsection.2.2.8}%
 \contentsline {subsubsection}{\numberline {2.2.9}Textures}{16}{subsubsection.2.2.9}%
+\contentsline {subsubsection}{\numberline {2.2.10}Skybox}{17}{subsubsection.2.2.10}%
 \contentsline {subsection}{\numberline {2.3}Optimization}{17}{subsection.2.3}%
 \contentsline {subsubsection}{\numberline {2.3.1}Bounding volume: Axis-aligned bounding box}{17}{subsubsection.2.3.1}%
 \contentsline {subsubsection}{\numberline {2.3.2}Bounding volume hierarchy (BVH)}{17}{subsubsection.2.3.2}%
@@ -45,6 +46,6 @@
 \contentsline {subsubsection}{\numberline {2.4.1}Global illumination}{18}{subsubsection.2.4.1}%
 \contentsline {subsubsection}{\numberline {2.4.2}Irradiance caching, photon mapping}{18}{subsubsection.2.4.2}%
 \contentsline {subsubsection}{\numberline {2.4.3}Monte-Carlo integration}{19}{subsubsection.2.4.3}%
-\contentsline {section}{\numberline {3}Rasterization}{20}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Z-buffer}{20}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Interpolating z values}{20}{subsubsection.3.1.1}%
+\contentsline {section}{\numberline {3}Rasterization}{19}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Z-buffer}{19}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Interpolating z values}{19}{subsubsection.3.1.1}%

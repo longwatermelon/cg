@@ -17,6 +17,8 @@
 \usetikzlibrary{patterns}
 \usetikzlibrary{decorations.markings}
 \graphicspath{ {./images/} }
+\usepackage{amssymb}    
+\newcommand{\sign}{\text{sign}}
 \usepackage{enumitem}
 \begin{document}
 \newcommand*\dif{\mathop{}\!\mathrm{d}}
@@ -1107,6 +1109,17 @@ triangle.
 \includegraphics[scale=.5]{images/texture-map.png}
 
 This technique of texture interpolation can also be used for normals.
+
+\subsubsection{Skybox}
+
+If a casted ray intersects nothing, use the skybox color instead. Cast a ray in the same
+direction inside of a unit cube. The longest dimension of the ray direction determines which
+side the ray will hit, and which other two dimensions are used to determine $u$ and $v$ coordinates
+of the texture on that side.
+
+For example, if the longest dimension is $x$, the sides of the skybox that can be intersected are
+$-x$ and $+x$. Then $u$ and $v$ can be determined from $y$ and $z$ using $\frac{\Delta x}{x} =
+\frac{\Delta y}{y} = \frac{\Delta z}{z}$, with $\Delta x = \sign(x)/2$.
 
 \subsection{Optimization}
 
